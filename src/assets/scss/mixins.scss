@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+@import './functions.scss';
+// http://www.html-js.com/article/Mobile-terminal-H5-mobile-terminal-HD-multi-screen-adaptation-scheme%203041
+@mixin px2rem($name, $px) {
+  #{$name}: px2rem($px);
+}
+
+@mixin border-1px($position, $color) {
+  position: relative;
+  &::after {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-#{$position}: 1px solid $color;
+    content: ' ';
+  }
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    @content;
+  }
+
+  &:-moz-placeholder {
+    /* Firefox 18- */
+    @content;
+  }
+
+  &::-moz-placeholder {
+    /* Firefox 19+ */
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    /* IE 10+ */
+    @content;
+  }
+
+  &::-ms-input-placeholder {
+    /* Edge */
+    @content;
+  }
+
+  :placeholder-shown {
+    /* Standard one last! */
+    @content;
+  }
+}
+
+@mixin setSize($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin textCenter($width, $height) {
+  width: $width;
+  height: $height;
+  line-height: $height;
+  text-align: center;
+}
+
+@mixin setHeight($height) {
+  height: $height;
+  line-height: $height;
+}
+
+@mixin setTextEllipsis($maxLine) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $maxLine;
+  overflow: hidden;
+}
+
+@mixin setFlexPos($xPos, $yPos) {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: $xPos;
+  -webkit-justify-content: $xPos;
+  align-items: $yPos;
+  -webkit-align-items: $yPos;
+}
+
+@mixin setDownTriangle($left, $top1, $top2, $boderWidth, $triangleColor, $fillColor: #fff) {
+  position: absolute;
+  &:before,
+  &:after {
+    content: '';
+    left: $left;
+    position: absolute;
+    width: 0;
+    height: 0;
+    font-size: 0;
+    border-width: $boderWidth;
+    border-style: dashed dashed solid dashed;
+  }
+  &:before {
+    top: $top1;
+    border-color: $triangleColor transparent transparent transparent;
+  }
+  &:after {
+    top: $top2;
+    border-color: $fillColor transparent transparent transparent;
+  }
+}
+
+@mixin setElWidth($width, $left) {
+  width: $width;
+  &.el-input {
+    width: $width;
+    &.el-date-editor {
+      width: $width;
+    }
+  }
+  &.common-select {
+    .popper__arrow {
+      left: $left !important;
+    }
+  }
+}
+
+@mixin setSpanWidth($width) {
+  display: inline-block;
+  width: $width;
+  text-align: right;
+  &.left {
+    text-align: left;
+  }
+}

@@ -1,0 +1,72 @@
+html {
+  font-size: 10vw;
+  // 同时，通过Media Queries 限制根元素最大最小值
+  @media screen and (max-width: 320px) {
+    font-size: 28px;
+  }
+  @media screen and (min-width: 540px) {
+    font-size: 54px;
+  }
+  -webkit-text-size-adjust: none;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  box-sizing: border-box;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: 'pingfang sc', 'ROBOTO', sans-serif, Helvetica, NotoSans CJK, Droid Sans,
+    'microsoft yahei';
+}
+
+// body 也增加最大最小宽度限制，避免默认100%宽度的 block 元素跟随 body 而过大过小
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  min-width: 320px;
+}
+
+* {
+  box-sizing: inherit;
+  &:before,
+  &:after {
+    box-sizing: inherit;
+  }
+}
+
+ol,
+ul,
+li,
+dl,
+dt,
+dd {
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .border-1px {
+    &::after {
+      -webkit-transform: scaleY(0.7);
+      transform: scaleY(0.7);
+    }
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+  .border-1px {
+    &::after {
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+    }
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+  .border-1px {
+    &::after {
+      -webkit-transform: scaleY(0.4);
+      transform: scaleY(0.4);
+    }
+  }
+}
