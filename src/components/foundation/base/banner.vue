@@ -4,8 +4,8 @@
       <div class="slider-wrapper">
         <div v-for='item in dataArray'>
           <a href="">
-                  <img :src="item" alt="">
-              </a>
+              <img :src="item" alt="">
+          </a>
         </div>
       </div>
       <ul v-for='(item,index) in dataArray'>
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Provide } from 'vue-property-decorator'
 import Scroll from '~/foundation/base/scroll.vue'
 
 @Component({

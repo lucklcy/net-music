@@ -14,7 +14,7 @@ import MiniPlayer from '~/foundation/base/mini.vue'
     MiniPlayer
   }
 })
-export default class Home extends Vue {}
+export default class Search extends Vue {}
 </script>
 <style lang="scss" scoped>
 $baseAssets: '../../../assets';
