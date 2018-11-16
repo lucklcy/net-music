@@ -7,7 +7,6 @@ html {
   @media screen and (min-width: 540px) {
     font-size: 54px;
   }
-  -webkit-text-size-adjust: none;
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -25,6 +24,7 @@ body {
   padding: 0;
   min-height: 100vh;
   min-width: 320px;
+  font-size: 0.42rem;
 }
 
 * {
