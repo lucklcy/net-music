@@ -1,5 +1,5 @@
 {
-  "defaultSeverity": "warning",
+  "defaultSeverity": "error",
   "extends": ["tslint:recommended"],
   "linterOptions": {
     "exclude": ["node_modules/**"]
@@ -26,6 +26,7 @@
         "esSpecCompliant": true
       }
     ],
-    "arrow-parens": [true, "ban-single-arg-parens"]
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "no-unnecessary-initializer": true
   }
 }

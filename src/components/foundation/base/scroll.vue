@@ -9,54 +9,54 @@ import BScroll from 'better-scroll'
 
 @Component({})
 export default class Scroll extends Vue {
-  private scroll: BScroll = new BScroll('body')
+  private scroll: BScroll
   /**
    * 1 滚动的时候会派发scroll事件，会截流。
    * 2 滚动的时候实时派发scroll事件，不会截流。
    * 3 除了实时派发scroll事件，在swipe的情况下仍然能实时派发scroll事件
    */
   @Prop({ default: 1 })
-  private probeType: number = 1
+  private probeType: number
   /**
    * 点击列表是否派发click事件
    */
   @Prop({ default: true })
-  private click: boolean = true
+  private click: boolean
   /**
    * 是否开启横向滚动
    */
   @Prop({ default: false })
-  private scrollX: boolean = false
+  private scrollX: boolean 
   /**
    * 是否派发滚动事件
    */
   @Prop({ default: false })
-  private listenScroll: boolean = false
+  private listenScroll: boolean 
   /**
    * 列表的数据
    */
   @Prop({ default: [] })
-  private dataList: Array<any> = []
+  private dataList: Array<any> 
   /**
    * 是否派发滚动到底部的事件，用于上拉加载
    */
   @Prop({ default: false })
-  private pullup: boolean = false
+  private pullup: boolean 
   /**
    * 是否派发顶部下拉的事件，用于下拉刷新
    */
   @Prop({ default: false })
-  private pulldown: boolean = false
+  private pulldown: boolean 
   /**
    * 是否派发列表滚动开始的事件
    */
   @Prop(Boolean)
-  private beforeScroll: boolean = false
+  private beforeScroll: boolean 
   /**
    * 当数据更新后，刷新scroll的延时。
    */
   @Prop({ default: 20 })
-  private refreshDelay: number = 20
+  private refreshDelay: number
 
   private _initScroll() {
     if (!this.$refs.wrapper) {

@@ -8,25 +8,58 @@
       </div>
       <div class="under-tag"></div>
     </div>
-    <Banner></Banner>
+    <Slide ref="slide"
+           :autoPlay="isAutoPlay"
+           :loop="isLoop"
+           :showDot="isShowDot"
+           :interval="interval"
+           :threshold="threshold"
+           :speed="speed">
+      <div v-for="(item,index) in data"
+           :key="index">
+        <a :href="item.linkUrl">
+          <img :src="item.picUrl">
+        </a>
+      </div>
+    </Slide>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Search from '~/foundation/base/search.vue'
-import Banner from '~/foundation/base/banner.vue'
+import Slide from '~/foundation/base/slide.vue'
 
 @Component({
   components: {
     Search,
-    Banner
+    Slide
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  private data = [
+      {
+        linkUrl: 'http://y.qq.com/w/album.html?albummid=0044K2vN1sT5mE',
+        picUrl: 'http://y.gtimg.cn/music/photo_new/T003R720x288M000001YCZlY3aBifi.jpg',
+        id: 11351
+      },
+      {
+        linkUrl: 'https://y.qq.com/m/digitalbum/gold/index.html?_video=true&id=2197820&g_f=shoujijiaodian',
+        picUrl: 'http://y.gtimg.cn/music/photo_new/T003R720x288M000004ckGfg3zaho0.jpg',
+        id: 11372
+      }
+    ]
+    private isAutoPlay:boolean = true
+    private isLoop:boolean = true
+    private isShowDot:boolean = true
+    private interval:number = 1500
+    private threshold:number = 0.5
+    private speed:number = 500
+}
 </script>
 <style lang="scss" scoped>
 .home {
+  width: 100%;
   .panel-container {
     @include setSize(100%, 100px);
     display: flex;
