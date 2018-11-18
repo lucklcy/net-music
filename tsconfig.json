@@ -7,8 +7,11 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
+    // 启用装饰器
     "allowSyntheticDefaultImports": true,
+    // 为装饰器提供元数据的支持
     "strictPropertyInitialization": false,
     "noImplicitAny": true,
     "sourceMap": true,

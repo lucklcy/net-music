@@ -27,6 +27,7 @@
       }
     ],
     "arrow-parens": [true, "ban-single-arg-parens"],
-    "no-unnecessary-initializer": true
+    "no-unnecessary-initializer": true,
+    "no-bitwise": false
   }
 }

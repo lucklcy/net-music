@@ -82,9 +82,9 @@ export default class Home extends Vue {
     .under-tag {
       display: inline-block;
       position: relative;
-      @include setSize(100px, 12px);
-      left: -198px;
-      border-radius: 40px;
+      @include setSize(132px, 10px);
+      left: -194px;
+      border-radius: 50px;
       border: none;
       background-color: #adadad;
     }

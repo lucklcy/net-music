@@ -84,7 +84,7 @@ export default class Slide extends Vue {
   private _setSlideWidth(isResize:boolean = false) {
     this.children = (this.$refs.slideGroup as HTMLElement).children
     let width = 0
-    let slideWidth = (this.$refs.slide as Element).clientWidth
+    let slideWidth = (this.$refs.slide as HTMLElement).clientWidth
     for (let i = 0; i < this.children.length; i++) {
       let child = this.children[i] as HTMLElement
       addClass(child, 'slide-item')
@@ -212,6 +212,7 @@ export default class Slide extends Vue {
   position: relative;
   min-height: 1px;
   max-height: 480px;
+  overflow: hidden;
 
   .slide-group {
     position: relative;
