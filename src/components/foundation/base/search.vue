@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import MiniPlayer from '~/foundation/base/mini.vue'
+import MiniPlayer from '~/business/player/mini.vue'
 
 @Component({
   components: {

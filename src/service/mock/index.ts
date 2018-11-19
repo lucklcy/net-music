@@ -4,7 +4,8 @@ Mock.setup({
   timeout: 1000
 })
 
-Mock.mock(/^\/api\/***$/, ({ url, type, body }) => {
+Mock.mock(/^\/api\/***$/, (config: { [propName: string]: any }) => {
+  const { url, type, body } = config
   console.log(`'${url}' by '${type}'\t\tparams is:${body}`)
   return {
     result: 0,

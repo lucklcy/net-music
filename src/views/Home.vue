@@ -8,17 +8,11 @@
       </div>
       <div class="under-tag"></div>
     </div>
-    <Slide ref="slide"
-           :autoPlay="isAutoPlay"
-           :loop="isLoop"
-           :showDot="isShowDot"
-           :interval="interval"
-           :threshold="threshold"
-           :speed="speed">
-      <div v-for="(item,index) in data"
-           :key="index">
+    <Slide ref="slide" :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot" :interval="interval"
+      :threshold="threshold" :speed="speed" v-if="data && data.length>0">
+      <div v-for="(item,index) in data" :key="index">
         <a :href="item.linkUrl">
-          <img :src="item.picUrl">
+          <img :src="item.imageUrl">
         </a>
       </div>
     </Slide>
@@ -29,6 +23,12 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Search from '~/foundation/base/search.vue'
 import Slide from '~/foundation/base/slide.vue'
+import service from '@/service'
+
+interface IBannerDataList {
+  imageUrl: string
+  [propName: string]: any
+}
 
 @Component({
   components: {
@@ -37,24 +37,27 @@ import Slide from '~/foundation/base/slide.vue'
   }
 })
 export default class Home extends Vue {
-  private data = [
-      {
-        linkUrl: 'http://y.qq.com/w/album.html?albummid=0044K2vN1sT5mE',
-        picUrl: 'http://y.gtimg.cn/music/photo_new/T003R720x288M000001YCZlY3aBifi.jpg',
-        id: 11351
-      },
-      {
-        linkUrl: 'https://y.qq.com/m/digitalbum/gold/index.html?_video=true&id=2197820&g_f=shoujijiaodian',
-        picUrl: 'http://y.gtimg.cn/music/photo_new/T003R720x288M000004ckGfg3zaho0.jpg',
-        id: 11372
-      }
-    ]
-    private isAutoPlay:boolean = true
-    private isLoop:boolean = true
-    private isShowDot:boolean = true
-    private interval:number = 1500
-    private threshold:number = 0.5
-    private speed:number = 500
+  private data: IBannerDataList[] = []
+  private isAutoPlay: boolean = true
+  private isLoop: boolean = true
+  private isShowDot: boolean = true
+  private interval: number = 1500
+  private threshold: number = 0.5
+  private speed: number = 600
+
+  async created() {
+    let resultLogin = await service.login({ phone: 15618334565, password: 'forget416' })
+    service
+      .getBanner({})
+      .then((resultBanner: { banners: IBannerDataList[] }) => {
+        let data = resultBanner && resultBanner['banners']
+        console.log({ data })
+        this.data = data
+      })
+      .catch((err: Error) => {
+        console.log(err)
+      })
+  }
 }
 </script>
 <style lang="scss" scoped>

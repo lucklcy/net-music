@@ -1,5 +1,5 @@
 // common方法定义在这里
-const urlRegExp = /^((https?:)?\/\/)/
+const urlRegExp: RegExp = /^((https?:)?\/\/)/
 
 /**
  * 生成uuid，以作临时id用
@@ -7,61 +7,39 @@ const urlRegExp = /^((https?:)?\/\/)/
  * @param {随机的字符范围}} radix
  * @returns 返回uuid字符串
  */
-export const uuid = (len, radix) => {
-  let chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
-  let uuid = []
+export const uuid = (len: number, radix: number) => {
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
+  const result = []
   let i = 0
   let r = 0
   radix = radix || chars.length
   if (len) {
     for (i = 0; i < len; i++) {
-      uuid[i] = chars[0 | (Math.random() * radix)]
+      result[i] = chars[0 | (Math.random() * radix)]
     }
   } else {
-    uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'
-    uuid[14] = '4'
+    result[8] = result[13] = result[18] = result[23] = '-'
+    result[14] = '4'
     for (i = 0; i < 36; i++) {
-      if (!uuid[i]) {
+      if (!result[i]) {
         r = 0 | (Math.random() * 16)
-        uuid[i] = chars[i === 19 ? (r & 0x3) | 0x8 : r]
+        result[i] = chars[i === 19 ? (r & 0x3) | 0x8 : r]
       }
     }
   }
-  return uuid.join('')
-}
-/**
- * 深拷贝数组
- * @param {原对象} source
- * @returns 新的深度拷贝对象
- */
-export const deepClone = source => {
-  if (!source && typeof source !== 'object') {
-    throw new Error('error arguments', 'shallowClone')
-  }
-  const targetObj = source.constructor === Array ? [] : {}
-  for (const keys in source) {
-    if (source.hasOwnProperty(keys)) {
-      if (source[keys] && typeof source[keys] === 'object') {
-        targetObj[keys] = source[keys].constructor === Array ? [] : {}
-        targetObj[keys] = deepClone(source[keys])
-      } else {
-        targetObj[keys] = source[keys]
-      }
-    }
-  }
-  return targetObj
+  return result.join('')
 }
 
 /**
  * merge对象
  * @param {*} target
  */
-export const merge = target => {
+export const merge = (target: { [propNmae: string]: any }) => {
   for (let i = 1, j = arguments.length; i < j; i++) {
     const source = arguments[i] || {}
-    for (var prop in source) {
+    for (const prop in source) {
       if (source.hasOwnProperty(prop)) {
-        var value = source[prop]
+        const value = source[prop]
         if (value !== undefined) {
           target[prop] = value
         }
@@ -76,9 +54,9 @@ export const merge = target => {
  * @param {加载图片的url地址} url
  * @returns 返回promise对象
  */
-export const preloadImg = url => {
+export const preloadImg = (url: string) => {
   return new Promise(resolve => {
-    let img = new Image()
+    const img = new Image()
     img.src = url
     img.onload = () => {
       resolve()
@@ -94,12 +72,12 @@ export const getUrlParams = () => {
   if (location.hash.split('?')[1]) {
     query = location.hash.split('?')[1]
   }
-  let queryObj = {}
+  const queryObj: { [propName: string]: string } = {}
   if (query) {
-    let splitArr = query.split('&')
+    const splitArr = query.split('&')
     if (splitArr.length) {
-      for (let queryStr of splitArr) {
-        let strArr = queryStr.split('=')
+      for (const queryStr of splitArr) {
+        const strArr = queryStr.split('=')
         if (strArr[0] !== undefined && strArr[0] !== null) {
           queryObj[strArr[0]] = strArr[1] || ''
         }
@@ -112,13 +90,13 @@ export const getUrlParams = () => {
  * 将对象转换为queryString
  * @param {要转换为queryString的对象} obj
  */
-export const createSearch = obj => {
+export const createSearch = (obj: { [propName: string]: any }) => {
   let search = ''
   if (typeof obj === 'object' && !(obj instanceof Array)) {
-    let array = []
-    for (let key of Object.keys(obj)) {
+    const array = []
+    for (const key of Object.keys(obj)) {
       array.push({
-        key: key,
+        key,
         value: obj[key]
       })
     }
@@ -126,7 +104,7 @@ export const createSearch = obj => {
       return search
     }
     for (let i = 0; i < array.length; i++) {
-      let str = i === 0 ? '?' : '&'
+      const str = i === 0 ? '?' : '&'
       search += str + array[i].key + '=' + array[i].value
     }
   }
@@ -139,7 +117,7 @@ export const createSearch = obj => {
  * @param {0是否为空}} isZeroNull
  * @returns Boolean
  */
-export const isEmpty = (val, isZeroNull = false) => {
+export const isEmpty = (val: any, isZeroNull: boolean = false) => {
   return val === '' || val === null || val === undefined || (isZeroNull && val === 0)
 }
 /**
@@ -147,7 +125,7 @@ export const isEmpty = (val, isZeroNull = false) => {
  * @param {要判断的值} val
  * @param {0是否为空} isZeroNull
  */
-export const isNotEmpty = (val, isZeroNull = false) => {
+export const isNotEmpty = (val: any, isZeroNull: boolean = false) => {
   return !isEmpty(val, isZeroNull)
 }
 
@@ -155,7 +133,7 @@ export const isNotEmpty = (val, isZeroNull = false) => {
  * 判断传入的所有值是否全为假
  * @param  {...any} args 参数列表
  */
-export const isAllFalse = (...args) => {
+export const isAllFalse = (...args: any) => {
   for (let i = 0; i < args.length; i++) {
     if (args[i]) {
       return false
@@ -168,7 +146,7 @@ export const isAllFalse = (...args) => {
  * 判断传入的所有值是否全为真
  * @param  {...any} args 参数列表
  */
-export const isAllTrue = (...args) => {
+export const isAllTrue = (...args: any) => {
   for (let i = 0; i < args.length; i++) {
     if (!args[i]) {
       return false
@@ -181,7 +159,7 @@ export const isAllTrue = (...args) => {
  * 判断传入的所有值是否全为空值
  * @param  {...any} args 参数列表
  */
-export const isAllEmpty = (...args) => {
+export const isAllEmpty = (...args: any) => {
   for (let i = 0; i < args.length; i++) {
     if (!isEmpty(args[i])) {
       return false
@@ -194,7 +172,7 @@ export const isAllEmpty = (...args) => {
  * 判断传入的所有值是否全不为空值
  * @param  {...any} args 参数列表
  */
-export const isAllNotEmpty = (...args) => {
+export const isAllNotEmpty = (...args: any) => {
   for (let i = 0; i < args.length; i++) {
     if (isEmpty(args[i])) {
       return false
@@ -207,13 +185,13 @@ export const isAllNotEmpty = (...args) => {
  * 获取字符数，1个中文=2个英文字符，标点为一个英文字符
  * @param {传入的字符串} str
  */
-export const getStrLength = str => {
-  let value = str
+export const getStrLength = (str: string) => {
+  const value = str
   let length = value.length
   if (length > 0) {
     for (let i = 0; i < length; i++) {
-      let valueSubstr = value.substr(i, 1) // 截取字符串
-      let valueEscape = escape(valueSubstr) // 编码
+      const valueSubstr = value.substr(i, 1) // 截取字符串
+      const valueEscape = escape(valueSubstr) // 编码
       if (valueEscape.indexOf('%u') > -1) {
         length++
       } // 是否搜索到指定字符串
@@ -228,7 +206,7 @@ export const getStrLength = str => {
  * @param date         Date 日期对象
  * @return Date        返回日期对象
  */
-export const dateAdd = (strInterval, num, date) => {
+export const dateAdd = (strInterval: string, num: number, date: Date) => {
   date = arguments[2] || new Date()
   switch (strInterval) {
     case 's':
@@ -266,21 +244,25 @@ export const dateAdd = (strInterval, num, date) => {
  * 字符串fmt【格式】：yyyy-MM-dd HH:mm:ss 或 yyyy-MM-dd 或者 yyyy-MM-dd HH:mm:ss.ms
  * @param {日期字符串}} str
  */
-export const parseDate = str => {
+export const parseDate = (str: string) => {
   if (typeof str === 'string') {
     let results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) *$/)
     if (results && results.length > 3) {
-      return new Date(parseInt(results[1]), parseInt(results[2]) - 1, parseInt(results[3]))
+      return new Date(
+        parseInt(results[1], 10),
+        parseInt(results[2], 10) - 1,
+        parseInt(results[3], 10)
+      )
     }
     results = str.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}):(\d{1,2}) *$/)
     if (results && results.length > 6) {
       return new Date(
-        parseInt(results[1]),
-        parseInt(results[2]) - 1,
-        parseInt(results[3]),
-        parseInt(results[4]),
-        parseInt(results[5]),
-        parseInt(results[6])
+        parseInt(results[1], 10),
+        parseInt(results[2], 10) - 1,
+        parseInt(results[3], 10),
+        parseInt(results[4], 10),
+        parseInt(results[5], 10),
+        parseInt(results[6], 10)
       )
     }
     results = str.match(
@@ -288,13 +270,13 @@ export const parseDate = str => {
     )
     if (results && results.length > 7) {
       return new Date(
-        parseInt(results[1]),
-        parseInt(results[2]) - 1,
-        parseInt(results[3]),
-        parseInt(results[4]),
-        parseInt(results[5]),
-        parseInt(results[6]),
-        parseInt(results[7])
+        parseInt(results[1], 10),
+        parseInt(results[2], 10) - 1,
+        parseInt(results[3], 10),
+        parseInt(results[4], 10),
+        parseInt(results[5], 10),
+        parseInt(results[6], 10),
+        parseInt(results[7], 10)
       )
     }
   }
@@ -305,8 +287,8 @@ export const parseDate = str => {
  * @param {日期对象} date
  * @param {格式符} fmt
  */
-export const fomatDate = (date, fmt = 'yyyy-MM-dd') => {
-  let addZero = function (num) {
+export const fomatDate = (date: Date, fmt = 'yyyy-MM-dd') => {
+  const addZero = (num: number | string) => {
     if (typeof num === 'number') {
       if (num < 10) {
         return '0' + num
@@ -316,28 +298,30 @@ export const fomatDate = (date, fmt = 'yyyy-MM-dd') => {
       return null
     }
   }
-  let yyyy = date.getFullYear()
-  let MM = date.getMonth()
-  let dd = date.getDate()
-  let HH = date.getHours()
-  let mm = date.getMinutes()
-  let ss = date.getSeconds()
-  let hh = HH > 12 ? HH - 12 : HH
-  let dateStr = fmt
-    .replace('yyyy', yyyy)
-    .replace('MM', addZero(MM + 1))
-    .replace('dd', addZero(dd))
-    .replace('HH', addZero(HH))
-    .replace('mm', addZero(mm))
-    .replace('ss', addZero(ss))
-    .replace('hh', addZero(hh))
+  const [yyyy, MM, dd, HH, mm, ss] = [
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds()
+  ]
+  const hh = HH > 12 ? HH - 12 : HH
+  const dateStr = fmt
+    .replace('yyyy', yyyy + '')
+    .replace('MM', addZero(MM + 1) as string)
+    .replace('dd', addZero(dd) as string)
+    .replace('HH', addZero(HH) as string)
+    .replace('mm', addZero(mm) as string)
+    .replace('ss', addZero(ss) as string)
+    .replace('hh', addZero(hh) as string)
   return dateStr
 }
 /**
  * 获取日期对象的日期所在月的第一天的日期对象
  * @param {日期对象} date
  */
-export const getMonthFirstDay = date => {
+export const getMonthFirstDay = (date: Date) => {
   date = arguments[0] || new Date()
   date.setDate(1)
   return date
@@ -346,42 +330,42 @@ export const getMonthFirstDay = date => {
  * 获取日期对象的日期所在月的最后一天的日期对象
  * @param {日期对象} date
  */
-export const getMonthLast = date => {
+export const getMonthLast = (date: Date) => {
   date = arguments[0] || new Date()
   let currentMonth = date.getMonth()
   let nextMonth = ++currentMonth
   if (nextMonth === 12) {
     nextMonth = 0
-    let nextMonthFirstDay = new Date(date.getFullYear() + 1, nextMonth, 1)
-    let oneDay = 1000 * 60 * 60 * 24
-    return new Date(nextMonthFirstDay - oneDay)
+    const nextMonthFirstDay = new Date(date.getFullYear() + 1, nextMonth, 1)
+    const oneDay = 1000 * 60 * 60 * 24
+    return new Date(nextMonthFirstDay.getTime() - oneDay)
   } else {
-    let nextMonthFirstDay = new Date(date.getFullYear(), nextMonth, 1)
-    let oneDay = 1000 * 60 * 60 * 24
-    return new Date(nextMonthFirstDay - oneDay)
+    const nextMonthFirstDay = new Date(date.getFullYear(), nextMonth, 1)
+    const oneDay = 1000 * 60 * 60 * 24
+    return new Date(nextMonthFirstDay.getTime() - oneDay)
   }
 }
 
 // 字符串repeat
-export const stringRepeat = (sourceString, count) => {
+export const stringRepeat = (sourceString: string, count: number) => {
   /* eslint-disable */
   'use strict'
   if (sourceString == null) {
-    throw new TypeError("can't convert " + sourceString + ' to object')
+    throw new TypeError(`can't convert  + ${sourceString} +  to object`)
   }
-  var str = '' + sourceString
+  let str = '' + sourceString
   count = +count
-  if (count != count) {
+  if (count !== count) {
     count = 0
   }
   if (count < 0) {
     throw new RangeError('repeat count must be non-negative')
   }
-  if (count == Infinity) {
+  if (count === Infinity) {
     throw new RangeError('repeat count must be less than infinity')
   }
   count = Math.floor(count)
-  if (str.length == 0 || count == 0) {
+  if (str.length === 0 || count === 0) {
     return ''
   }
   // 确保 count 是一个 31 位的整数。这样我们就可以使用如下优化的算法。
@@ -389,13 +373,13 @@ export const stringRepeat = (sourceString, count) => {
   if (str.length * count >= 1 << 28) {
     throw new RangeError('repeat count must not overflow maximum string size')
   }
-  var rpt = ''
-  for (; ;) {
-    if ((count & 1) == 1) {
+  let rpt = ''
+  for (;;) {
+    if ((count & 1) === 1) {
       rpt += str
     }
     count >>>= 1
-    if (count == 0) {
+    if (count === 0) {
       break
     }
     str += str
@@ -404,7 +388,7 @@ export const stringRepeat = (sourceString, count) => {
   /* eslint-enable */
 }
 
-export const padStart = (sourceString, targetLength, padString = ' ') => {
+export const padStart = (sourceString: string, targetLength: number, padString = ' ') => {
   padString = typeof padString === 'string' ? padString : String(padString)
   targetLength = targetLength >> 0
   if (sourceString.length > targetLength) {
@@ -418,7 +402,7 @@ export const padStart = (sourceString, targetLength, padString = ' ') => {
   }
 }
 
-export const padEnd = (sourceString, targetLength, padString = ' ') => {
+export const padEnd = (sourceString: string, targetLength: number, padString = ' ') => {
   padString = typeof padString === 'string' ? padString : String(padString)
   targetLength = targetLength >> 0
   if (sourceString.length > targetLength) {
@@ -437,22 +421,22 @@ export const padEnd = (sourceString, targetLength, padString = ' ') => {
  * @param {要保留位数的值，可以为数字或者数字字符串} val
  * @param {要保留的小数位数，整型} digits
  */
-export const cutNumber = (val, digits) => {
+export const cutNumber = (val: number | string, digits: number) => {
   if (isEmpty(val)) {
     return 0
   } else {
-    if (Number.isInteger(val)) {
-      return val.toFixed(digits)
+    if (Number.isInteger(val as number)) {
+      return (val as number).toFixed(digits)
     }
-    let strVal = String(val)
-    let strArr = strVal.split('.')
+    const strVal = String(val)
+    const strArr = strVal.split('.')
     if (strArr.length === 1) {
-      strArr[1] = padEnd('', digits, 0)
+      strArr[1] = padEnd('', digits, '0')
     } else {
       if (strArr[1].length > digits) {
         strArr[1] = strArr[1].substr(0, digits)
       } else {
-        strArr[1] = padEnd(strArr[1], digits, 0)
+        strArr[1] = padEnd(strArr[1], digits, '0')
       }
     }
     return strArr.join('.')
@@ -462,21 +446,23 @@ export const cutNumber = (val, digits) => {
  * 数字格式化
  * @param {要格式话的数字} amount
  */
-export const formatNumber = amount => {
-  if (!amount) return 0
-  let isNegative = String(amount).indexOf('-') === 0
-  amount = isNegative ? amount.substring(1, amount.length) : amount
-  let iAmount = String(amount).split('.')[0]
-  let dAmount = String(amount).split('.')[1]
-  let reversedAmount = iAmount.split('').reverse()
-  let computedArr = []
+export const formatNumber = (amount: number | string) => {
+  if (!amount) {
+    return 0
+  }
+  const isNegative = String(amount).indexOf('-') === 0
+  amount = isNegative ? String(amount).substring(1, String(amount).length) : amount
+  const iAmount = String(amount).split('.')[0]
+  const dAmount = String(amount).split('.')[1]
+  const reversedAmount = iAmount.split('').reverse()
+  const computedArr = []
   for (let i = 0; i < reversedAmount.length; i++) {
     computedArr.unshift(reversedAmount[i])
     if (i % 3 === 2 && i !== reversedAmount.length - 1) {
       computedArr.unshift(',')
     }
   }
-  let returnStr = computedArr.join('') + (dAmount ? '.' + dAmount : '')
+  const returnStr = computedArr.join('') + (dAmount ? '.' + dAmount : '')
   return isNegative ? '-' + returnStr : returnStr
 }
 
@@ -484,7 +470,7 @@ export const formatNumber = amount => {
  * 判断变量是否为对象
  * @param {变量} val
  */
-export const isObject = val => {
+export const isObject = (val: any) => {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
 
@@ -492,7 +478,7 @@ export const isObject = val => {
  * 判断变量是否为数组
  * @param {变量} val
  */
-export const isArray = val => {
+export const isArray = (val: any) => {
   return Object.prototype.toString.call(val) === '[object Array]'
 }
 
@@ -500,7 +486,7 @@ export const isArray = val => {
  * 判断变量是否为数字
  * @param {变量} val
  */
-export const isNumber = val => {
+export const isNumber = (val: any) => {
   return Object.prototype.toString.call(val) === '[object Number]'
 }
 
@@ -508,7 +494,7 @@ export const isNumber = val => {
  * 判断变量是否为undefined
  * @param {变量} val
  */
-export const isUndefined = val => {
+export const isUndefined = (val: any) => {
   return Object.prototype.toString.call(val) === '[object Undefined]'
 }
 
@@ -516,7 +502,7 @@ export const isUndefined = val => {
  * 判断变量是否为字符串
  * @param {变量} val
  */
-export const isString = val => {
+export const isString = (val: any) => {
   return Object.prototype.toString.call(val) === '[object String]'
 }
 
@@ -524,7 +510,7 @@ export const isString = val => {
  * 判断变量是否为函数
  * @param {变量} val
  */
-export const isFunction = val => {
+export const isFunction = (val: any) => {
   return Object.prototype.toString.call(val) === '[object Function]'
 }
 
@@ -532,7 +518,7 @@ export const isFunction = val => {
  * 判断变量是否为正则表达式
  * @param {变量} val
  */
-export const isRegExp = val => {
+export const isRegExp = (val: any) => {
   return Object.prototype.toString.call(val) === '[object RegExp]'
 }
 
@@ -540,7 +526,7 @@ export const isRegExp = val => {
  * 判断变量是否为boolean类型
  * @param {变量} val
  */
-export const isBoolean = val => {
+export const isBoolean = (val: any) => {
   return Object.prototype.toString.call(val) === '[object Boolean]'
 }
 
@@ -548,7 +534,7 @@ export const isBoolean = val => {
  * 判断字符串是否为合法的url
  * @param {url字符串} str
  */
-export const isValidUrl = str => {
+export const isValidUrl = (str: string) => {
   return urlRegExp.test(str)
 }
 
@@ -556,7 +542,7 @@ export const isValidUrl = str => {
  * 判断字符串是否为路由path
  * @param {变量} str
  */
-export const isUrlPath = str => {
+export const isUrlPath = (str: string) => {
   return !isValidUrl(str) && str.indexOf('/') === 0
 }
 
@@ -564,12 +550,8 @@ export const isUrlPath = str => {
  * 判断对象是否为空对象
  * @param {对象} e
  */
-export const isEmptyObject = e => {
-  let t
-  for (t in e) {
-    return false
-  }
-  return true
+export const isEmptyObject = (e: { [propName: string]: any }) => {
+  return Object.keys(e).length === 0
 }
 
 /**
@@ -585,19 +567,16 @@ export const getCurrentPath = () => {
  * @param {目标dom元素} tobj
  * @param {位置值} spos
  */
-export const loactionInput = (tobj, spos) => {
-  if (spos < 0) spos = tobj.value.length
+export const loactionInput = (tobj: HTMLInputElement, spos: number) => {
+  if (spos < 0) {
+    spos = tobj.value.length
+  }
   if (tobj.setSelectionRange) {
     // 兼容火狐,谷歌
-    setTimeout(function () {
+    setTimeout(() => {
       tobj.setSelectionRange(spos, spos)
       tobj.focus()
     }, 0)
-  } else if (tobj.createTextRange) {
-    // 兼容IE
-    let rng = tobj.createTextRange()
-    rng.move('character', spos)
-    rng.select()
   }
 }
 
@@ -607,11 +586,11 @@ export const loactionInput = (tobj, spos) => {
  * @param {key值} key
  * @param {value值} val
  */
-export const findFirstInArray = (list, key, val) => {
+export const findFirstInArray = (list: any[], key: string, val: any) => {
   let returnObj = null
   if (list && list.length > 0) {
     for (let i = 0; i < list.length; i++) {
-      let item = list[i]
+      const item = list[i]
       if (item[key] === val || (key === null && item === val)) {
         returnObj = item
         break
@@ -621,10 +600,10 @@ export const findFirstInArray = (list, key, val) => {
   return returnObj
 }
 
-export const formatAndRetainTwoDecimal = amount => {
+export const formatAndRetainTwoDecimal = (amount: string | number) => {
   if (isEmpty(amount)) {
     return 0
   }
-  let cuttedNumber = cutNumber(amount, 2)
+  const cuttedNumber = cutNumber(amount, 2)
   return formatNumber(cuttedNumber)
 }

@@ -26,32 +26,32 @@ export default class Scroll extends Vue {
    * 是否开启横向滚动
    */
   @Prop({ default: false })
-  private scrollX: boolean 
+  private scrollX: boolean
   /**
    * 是否派发滚动事件
    */
   @Prop({ default: false })
-  private listenScroll: boolean 
+  private listenScroll: boolean
   /**
    * 列表的数据
    */
   @Prop({ default: [] })
-  private dataList: Array<any> 
+  private dataList: Array<any>
   /**
    * 是否派发滚动到底部的事件，用于上拉加载
    */
   @Prop({ default: false })
-  private pullup: boolean 
+  private pullup: boolean
   /**
    * 是否派发顶部下拉的事件，用于下拉刷新
    */
   @Prop({ default: false })
-  private pulldown: boolean 
+  private pulldown: boolean
   /**
    * 是否派发列表滚动开始的事件
    */
   @Prop(Boolean)
-  private beforeScroll: boolean 
+  private beforeScroll: boolean
   /**
    * 当数据更新后，刷新scroll的延时。
    */
