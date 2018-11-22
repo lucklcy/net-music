@@ -1,7 +1,9 @@
-import { AxiosPromise, default as axios } from 'axios'
+import axios from 'axios'
 import { SUCCESS_STATUS_CODE } from '@/common/const'
 import { REQUEST_METHOD_MAP } from '../common/const'
 import basic from './procedure/basic'
+
+const services = [...basic]
 
 const defaultConfig = {
   baseURL: '/api',
@@ -47,11 +49,11 @@ innerHttp.interceptors.response.use(
   }
 )
 
-const services = [...basic]
-const apis: {
+export interface HttpService {
   [propName: string]: (params: { [propName: string]: any } | {}) => { [key: string]: any } // Add index signature
-} = {}
+}
 
+const apis: HttpService = {}
 services.forEach(item => {
   const { subUrl, name, method } = item
   apis[name] = (params: { [propName: string]: any } | {}) => {

@@ -20,10 +20,12 @@
 </template>
 
 <script lang="ts">
+import { mixins } from 'vue-class-component'
 import { Component, Vue } from 'vue-property-decorator'
 import Search from '~/foundation/base/search.vue'
 import Slide from '~/foundation/base/slide.vue'
 import service from '@/service'
+import CommonMixin from '@/mixins/comMix.ts'
 
 interface IBannerDataList {
   imageUrl: string
@@ -36,7 +38,7 @@ interface IBannerDataList {
     Slide
   }
 })
-export default class Home extends Vue {
+export default class Home extends mixins(CommonMixin) {
   private data: IBannerDataList[] = []
   private isAutoPlay: boolean = true
   private isLoop: boolean = true
@@ -46,8 +48,8 @@ export default class Home extends Vue {
   private speed: number = 600
 
   async created() {
-    let resultLogin = await service.login({ phone: 15618334565, password: 'forget416' })
-    service
+    let resultLogin = await this.service.login({ phone: 15618334565, password: 'forget416' })
+    this.service
       .getBanner({})
       .then((resultBanner: { banners: IBannerDataList[] }) => {
         let data = resultBanner && resultBanner['banners']

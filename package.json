@@ -10,20 +10,23 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/better-scroll": "^1.12.1",
+    "@types/datejs": "0.0.30",
     "@types/fastclick": "^1.0.28",
     "@types/js-cookie": "^2.2.0",
     "axios": "^0.18.0",
     "better-scroll": "^1.12.6",
+    "datejs": "^1.0.0-rc3",
     "fastclick": "^1.0.6",
     "js-cookie": "^2.2.0",
     "normalize.css": "^8.0.1",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
-    "vue-class-component": "^6.0.0",
+    "vue-class-component": "^6.3.2",
     "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1",
     "vue-skeleton-loading": "^1.0.2",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-class": "^0.3.1"
   },
   "devDependencies": {
     "@types/mockjs": "^1.0.1",
