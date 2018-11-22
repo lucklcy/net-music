@@ -45,7 +45,7 @@ export default class Home extends mixins(CommonMixin) {
   private isLoop: boolean = true
   private isShowDot: boolean = true
   private interval: number = 1500
-  private threshold: number = 0.5
+  private threshold: number = 0.1
   private speed: number = 600
 
   async created() {

@@ -18,25 +18,26 @@ export default class Mini extends Vue {}
 .palyer-mini {
   @include setSize(64px, 88px);
   display: flex;
-  padding-top: 10px;
+  padding-top: 14px;
   justify-content: flex-start;
   .mini-item {
     display: inline-block;
-    width: 13px;
+    width: 12px;
     background-color: #adadad;
     border: none;
     border-radius: 10px;
     &.mini-first {
-      height: 94%;
+      height: 86%;
       margin-right: 10px;
     }
     &.mini-second {
-      width: 14px;
+      width: 11px;
       height: 66%;
       margin-right: 10px;
     }
     &.mini-third {
-      height: 40%;
+      width: 11px;
+      height: 42%;
     }
   }
 }

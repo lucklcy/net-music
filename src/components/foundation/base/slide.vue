@@ -181,26 +181,6 @@ export default class Slide extends Vue {
     this.slide.disable()
     clearTimeout(this.timer)
   }
-
-  @Watch('loop', { immediate: true })
-  onLoopChange(val: boolean, oldVal: boolean) {
-    this.update()
-  }
-
-  @Watch('autoPlay', { immediate: true, deep: true })
-  onAutoPlayChange(val: boolean, oldVal: boolean) {
-    this.update()
-  }
-
-  @Watch('speed', { immediate: true, deep: true })
-  onSpeedChange(val: number, oldVal: number) {
-    this.update()
-  }
-
-  @Watch('threshold', { immediate: true, deep: true })
-  onThresholdChange(val: number, oldVal: number) {
-    this.update()
-  }
 }
 </script>
 
