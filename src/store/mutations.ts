@@ -1,5 +1,5 @@
 import { State } from './state'
-import { isBoolean, isObject } from '@/utils'
+import { isBoolean, isObject } from 'lodash'
 
 export interface IkeyVal {
   key: string

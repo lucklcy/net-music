@@ -5,6 +5,7 @@ import store from '@/store'
 import 'normalize.css'
 import '@/assets/scss/common.scss'
 import FastClick from 'fastclick'
+import '@/filters'
 
 // 兼容毒瘤ios的300ms延迟问题
 if ('addEventListener' in document) {

@@ -2,7 +2,8 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import { Mutation } from 'vuex-class'
 import { HttpService, default as service } from '@/service'
-import { isEmpty, isFunction, isValidUrl } from '@/utils'
+import { isValidUrl } from '@/utils'
+import { isEmpty, isFunction } from 'lodash'
 import { Indicator } from '@/store/state'
 
 @Component

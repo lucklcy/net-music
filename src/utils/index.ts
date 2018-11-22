@@ -1,3 +1,4 @@
+import _ from 'lodash'
 // common方法定义在这里
 const urlRegExp: RegExp = /^((https?:)?\/\/)/
 
@@ -28,25 +29,6 @@ export const uuid = (len: number, radix: number) => {
     }
   }
   return result.join('')
-}
-
-/**
- * merge对象
- * @param {*} target
- */
-export const merge = (target: { [propNmae: string]: any }) => {
-  for (let i = 1, j = arguments.length; i < j; i++) {
-    const source = arguments[i] || {}
-    for (const prop in source) {
-      if (source.hasOwnProperty(prop)) {
-        const value = source[prop]
-        if (value !== undefined) {
-          target[prop] = value
-        }
-      }
-    }
-  }
-  return target
 }
 
 /**
@@ -130,147 +112,6 @@ export const isNotEmpty = (val: any, isZeroNull: boolean = false) => {
 }
 
 /**
- * 判断传入的所有值是否全为假
- * @param  {...any} args 参数列表
- */
-export const isAllFalse = (...args: any) => {
-  for (let i = 0; i < args.length; i++) {
-    if (args[i]) {
-      return false
-    }
-  }
-  return true
-}
-
-/**
- * 判断传入的所有值是否全为真
- * @param  {...any} args 参数列表
- */
-export const isAllTrue = (...args: any) => {
-  for (let i = 0; i < args.length; i++) {
-    if (!args[i]) {
-      return false
-    }
-  }
-  return true
-}
-
-/**
- * 判断传入的所有值是否全为空值
- * @param  {...any} args 参数列表
- */
-export const isAllEmpty = (...args: any) => {
-  for (let i = 0; i < args.length; i++) {
-    if (!isEmpty(args[i])) {
-      return false
-    }
-  }
-  return true
-}
-
-/**
- * 判断传入的所有值是否全不为空值
- * @param  {...any} args 参数列表
- */
-export const isAllNotEmpty = (...args: any) => {
-  for (let i = 0; i < args.length; i++) {
-    if (isEmpty(args[i])) {
-      return false
-    }
-  }
-  return true
-}
-
-/**
- * 获取字符数，1个中文=2个英文字符，标点为一个英文字符
- * @param {传入的字符串} str
- */
-export const getStrLength = (str: string) => {
-  const value = str
-  let length = value.length
-  if (length > 0) {
-    for (let i = 0; i < length; i++) {
-      const valueSubstr = value.substr(i, 1) // 截取字符串
-      const valueEscape = escape(valueSubstr) // 编码
-      if (valueEscape.indexOf('%u') > -1) {
-        length++
-      } // 是否搜索到指定字符串
-    }
-  }
-  return length
-}
-
-// 字符串repeat
-export const stringRepeat = (sourceString: string, count: number) => {
-  /* eslint-disable */
-  'use strict'
-  if (sourceString == null) {
-    throw new TypeError(`can't convert  + ${sourceString} +  to object`)
-  }
-  let str = '' + sourceString
-  count = +count
-  if (count !== count) {
-    count = 0
-  }
-  if (count < 0) {
-    throw new RangeError('repeat count must be non-negative')
-  }
-  if (count === Infinity) {
-    throw new RangeError('repeat count must be less than infinity')
-  }
-  count = Math.floor(count)
-  if (str.length === 0 || count === 0) {
-    return ''
-  }
-  // 确保 count 是一个 31 位的整数。这样我们就可以使用如下优化的算法。
-  // 当前（2014年8月），绝大多数浏览器都不能支持 1 << 28 长的字符串，所以：
-  if (str.length * count >= 1 << 28) {
-    throw new RangeError('repeat count must not overflow maximum string size')
-  }
-  let rpt = ''
-  for (;;) {
-    if ((count & 1) === 1) {
-      rpt += str
-    }
-    count >>>= 1
-    if (count === 0) {
-      break
-    }
-    str += str
-  }
-  return rpt
-  /* eslint-enable */
-}
-
-export const padStart = (sourceString: string, targetLength: number, padString = ' ') => {
-  padString = typeof padString === 'string' ? padString : String(padString)
-  targetLength = targetLength >> 0
-  if (sourceString.length > targetLength) {
-    return sourceString
-  } else {
-    targetLength = targetLength - sourceString.length
-    if (targetLength > padString.length) {
-      padString += stringRepeat(padString, targetLength / padString.length)
-    }
-    return padString.slice(0, targetLength) + sourceString
-  }
-}
-
-export const padEnd = (sourceString: string, targetLength: number, padString = ' ') => {
-  padString = typeof padString === 'string' ? padString : String(padString)
-  targetLength = targetLength >> 0
-  if (sourceString.length > targetLength) {
-    return sourceString
-  } else {
-    targetLength = targetLength - sourceString.length
-    if (targetLength > padString.length) {
-      padString += stringRepeat(padString, targetLength / padString.length)
-    }
-    return sourceString + padString.slice(0, targetLength)
-  }
-}
-
-/**
  * 数字保留*位小数，返回相应位数小数的字符串
  * @param {要保留位数的值，可以为数字或者数字字符串} val
  * @param {要保留的小数位数，整型} digits
@@ -285,12 +126,12 @@ export const cutNumber = (val: number | string, digits: number) => {
     const strVal = String(val)
     const strArr = strVal.split('.')
     if (strArr.length === 1) {
-      strArr[1] = padEnd('', digits, '0')
+      strArr[1] = _.padEnd('', digits, '0')
     } else {
       if (strArr[1].length > digits) {
         strArr[1] = strArr[1].substr(0, digits)
       } else {
-        strArr[1] = padEnd(strArr[1], digits, '0')
+        strArr[1] = _.padEnd(strArr[1], digits, '0')
       }
     }
     return strArr.join('.')
@@ -321,70 +162,6 @@ export const formatNumber = (amount: number | string) => {
 }
 
 /**
- * 判断变量是否为对象
- * @param {变量} val
- */
-export const isObject = (val: any) => {
-  return Object.prototype.toString.call(val) === '[object Object]'
-}
-
-/**
- * 判断变量是否为数组
- * @param {变量} val
- */
-export const isArray = (val: any) => {
-  return Object.prototype.toString.call(val) === '[object Array]'
-}
-
-/**
- * 判断变量是否为数字
- * @param {变量} val
- */
-export const isNumber = (val: any) => {
-  return Object.prototype.toString.call(val) === '[object Number]'
-}
-
-/**
- * 判断变量是否为undefined
- * @param {变量} val
- */
-export const isUndefined = (val: any) => {
-  return Object.prototype.toString.call(val) === '[object Undefined]'
-}
-
-/**
- * 判断变量是否为字符串
- * @param {变量} val
- */
-export const isString = (val: any) => {
-  return Object.prototype.toString.call(val) === '[object String]'
-}
-
-/**
- * 判断变量是否为函数
- * @param {变量} val
- */
-export const isFunction = (val: any) => {
-  return Object.prototype.toString.call(val) === '[object Function]'
-}
-
-/**
- * 判断变量是否为正则表达式
- * @param {变量} val
- */
-export const isRegExp = (val: any) => {
-  return Object.prototype.toString.call(val) === '[object RegExp]'
-}
-
-/**
- * 判断变量是否为boolean类型
- * @param {变量} val
- */
-export const isBoolean = (val: any) => {
-  return Object.prototype.toString.call(val) === '[object Boolean]'
-}
-
-/**
  * 判断字符串是否为合法的url
  * @param {url字符串} str
  */
@@ -409,14 +186,6 @@ export const isEmptyObject = (e: { [propName: string]: any }) => {
 }
 
 /**
- * 获取当前url【不含hash】
- */
-export const getCurrentPath = () => {
-  const idx = location.href.indexOf('#/')
-  return idx > 0 ? location.href.substring(0, idx) : location.href
-}
-
-/**
  * 用来定位输入框中光标的位置
  * @param {目标dom元素} tobj
  * @param {位置值} spos
@@ -432,26 +201,6 @@ export const loactionInput = (tobj: HTMLInputElement, spos: number) => {
       tobj.focus()
     }, 0)
   }
-}
-
-/**
- * 在array中查找元素，找到这返回该元素，否则返回null
- * @param {列表数组} list
- * @param {key值} key
- * @param {value值} val
- */
-export const findFirstInArray = (list: any[], key: string, val: any) => {
-  let returnObj = null
-  if (list && list.length > 0) {
-    for (let i = 0; i < list.length; i++) {
-      const item = list[i]
-      if (item[key] === val || (key === null && item === val)) {
-        returnObj = item
-        break
-      }
-    }
-  }
-  return returnObj
 }
 
 export const formatAndRetainTwoDecimal = (amount: string | number) => {

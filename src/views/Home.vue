@@ -11,7 +11,7 @@
     <Slide ref="slide" :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot" :interval="interval"
       :threshold="threshold" :speed="speed" v-if="data && data.length>0">
       <div v-for="(item,index) in data" :key="index">
-        <a :href="item.linkUrl">
+        <a :href="item.url">
           <img :src="item.imageUrl">
         </a>
       </div>
@@ -29,6 +29,7 @@ import CommonMixin from '@/mixins/comMix.ts'
 
 interface IBannerDataList {
   imageUrl: string
+  url: string | null
   [propName: string]: any
 }
 
@@ -52,9 +53,7 @@ export default class Home extends mixins(CommonMixin) {
     this.service
       .getBanner({})
       .then((resultBanner: { banners: IBannerDataList[] }) => {
-        let data = resultBanner && resultBanner['banners']
-        console.log({ data })
-        this.data = data
+        this.data = resultBanner && resultBanner['banners']
       })
       .catch((err: Error) => {
         console.log(err)
