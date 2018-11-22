@@ -75,9 +75,10 @@
   overflow: hidden;
 }
 
-@mixin setFlexPos($xPos, $yPos) {
+@mixin setFlexPos($direction, $xPos, $yPos) {
   display: -webkit-flex;
   display: flex;
+  flex-direction: $direction;
   justify-content: $xPos;
   -webkit-justify-content: $xPos;
   align-items: $yPos;
@@ -104,29 +105,5 @@
   &:after {
     top: $top2;
     border-color: $fillColor transparent transparent transparent;
-  }
-}
-
-@mixin setElWidth($width, $left) {
-  width: $width;
-  &.el-input {
-    width: $width;
-    &.el-date-editor {
-      width: $width;
-    }
-  }
-  &.common-select {
-    .popper__arrow {
-      left: $left !important;
-    }
-  }
-}
-
-@mixin setSpanWidth($width) {
-  display: inline-block;
-  width: $width;
-  text-align: right;
-  &.left {
-    text-align: left;
   }
 }

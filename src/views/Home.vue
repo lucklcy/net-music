@@ -8,7 +8,7 @@
       </div>
       <div class="under-tag"></div>
     </div>
-    <Slide ref="slide" :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot" :interval="interval"
+    <Slide :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot" :interval="interval"
       :threshold="threshold" :speed="speed" v-if="data && data.length>0">
       <div v-for="(item,index) in data" :key="index">
         <a :href="item.url">
@@ -16,6 +16,39 @@
         </a>
       </div>
     </Slide>
+    <div class="tab border-1px">
+      <ul class="container">
+        <li class="item">
+          <div class="pic fm-img">FM</div>
+          <span>私人FM</span>
+        </li>
+        <li class="item">
+          <div class="pic recommand-img">推荐</div>
+          <span>每日推荐</span>
+        </li>
+        <li class="item">
+          <div class="pic song-list-img">歌单</div>
+          <span>歌单</span>
+        </li>
+        <li class="item">
+          <div class="pic ranking-list-img">排行</div>
+          <span>排行榜</span>
+        </li>
+      </ul>
+    </div>
+    <section class="recommand">
+      <p class="title">推荐歌单</p>
+      <div class="recommand-container">
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -58,41 +91,16 @@ export default class Home extends mixins(CommonMixin) {
       .catch((err: Error) => {
         console.log(err)
       })
+    this.service
+      .getRecommendList({})
+      .then((resultRecommendList: { banners: IBannerDataList[] }) => {
+        console.log({ resultRecommendList })
+      })
+      .catch((err: Error) => {
+        console.log(err)
+      })
   }
 }
 </script>
-<style lang="scss" scoped>
-.home {
-  width: 100%;
-  .panel-container {
-    @include setSize(100%, 100px);
-    display: flex;
-    margin-bottom: 14px;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    .panel-list {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .panel-item {
-        font-size: 0.4rem;
-        color: #424242;
-        &.recommend {
-          margin-right: 220px;
-        }
-      }
-    }
-    .under-tag {
-      display: inline-block;
-      position: relative;
-      @include setSize(132px, 10px);
-      left: -194px;
-      border-radius: 50px;
-      border: none;
-      background-color: #adadad;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped src="./Home.scss"></style>
 

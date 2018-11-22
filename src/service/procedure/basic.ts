@@ -9,5 +9,10 @@ export default [
     subUrl: '/banner',
     name: 'getBanner',
     method: REQUEST_METHOD_MAP.GET
+  },
+  {
+    subUrl: '/recommend/resource',
+    name: 'getRecommendList',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]
