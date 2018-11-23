@@ -6,6 +6,7 @@ import 'normalize.css'
 import '@/assets/scss/common.scss'
 import FastClick from 'fastclick'
 import '@/filters'
+import initPromise from '@/common/initLogin'
 
 // 兼容毒瘤ios的300ms延迟问题
 if ('addEventListener' in document) {
@@ -18,8 +19,10 @@ if ('addEventListener' in document) {
 
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+initPromise.then(() => {
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+})

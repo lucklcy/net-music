@@ -1,0 +1,51 @@
+$baseAssets: '../../../assets';
+.song-list {
+  .title {
+    padding: 28px 0 28px 50px;
+    font-size: 0.42rem;
+    font-weight: bold;
+    color: #444;
+  }
+  .recommand-container {
+    margin: 0 20px;
+    .recommand-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .recommand-item {
+        @include setSize(30%, 460px);
+        margin: 0 0 20px 0;
+        .back-img {
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          @include setSize(100%, 76%);
+          background-position: center center;
+          background-size: cover;
+          .heared {
+            float: right;
+            padding: 10px 10px 0 0;
+            img {
+              @include setSize(42px, 42px);
+              vertical-align: middle;
+            }
+            span {
+              margin: 0 0 0 8px;
+              color: #fff;
+              font-size: 0.32rem;
+            }
+          }
+        }
+        .content {
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 10px;
+          @include setSize(100%, 24%);
+          color: #fff;
+          background-color: rgb(248, 120, 120);
+          font-size: 0.28rem;
+          padding: 0 16px;
+          @include setFlexPos(column, space-around, flex-start);
+        }
+      }
+    }
+  }
+}

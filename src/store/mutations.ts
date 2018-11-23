@@ -1,5 +1,6 @@
 import { State } from './state'
 import { isBoolean, isObject } from 'lodash'
+import { UserInfo } from './state'
 
 export interface IkeyVal {
   key: string
@@ -13,5 +14,8 @@ export default {
     } else if (isObject(val)) {
       Object.assign(state.indicator, val)
     }
+  },
+  setUserInfo(state: State, val: UserInfo) {
+    Object.assign(state.userInfo, val)
   }
 }

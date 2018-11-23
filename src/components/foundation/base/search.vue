@@ -35,14 +35,14 @@ $baseAssets: '../../../assets';
     font-size: 0.555556rem;
     padding: 8px 0 8px 420px;
     &::-webkit-input-placeholder {
-      font-size: 0.45rem;
+      font-size: 0.42rem;
       font-weight: normal;
       color: #b7b7b7;
     }
     background-image: url('#{$baseAssets}/img/search.png');
     background-repeat: no-repeat;
     background-size: 42px;
-    background-position: 346px 32px;
+    background-position: 346px 28px;
   }
 }
 </style>

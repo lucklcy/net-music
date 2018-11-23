@@ -94,6 +94,25 @@ export const createSearch = (obj: { [propName: string]: any }) => {
 }
 
 /**
+ * 获取字符数，1个中文=2个英文字符，标点为一个英文字符
+ * @param {传入的字符串} str
+ */
+export const getStrLength = (str: string) => {
+  const value = str
+  let length = value.length
+  if (length > 0) {
+    for (let i = 0; i < length; i++) {
+      const valueSubstr = value.substr(i, 1) // 截取字符串
+      const valueEscape = escape(valueSubstr) // 编码
+      if (valueEscape.indexOf('%u') > -1) {
+        length++
+      } // 是否搜索到指定字符串
+    }
+  }
+  return length
+}
+
+/**
  * 判断值是否为空
  * @param {要判断的值} val
  * @param {0是否为空}} isZeroNull
