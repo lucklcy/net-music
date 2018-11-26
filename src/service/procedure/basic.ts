@@ -38,5 +38,17 @@ export default [
     subUrl: '/user/record',
     name: 'getUserPlayRecord',
     method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口 , 可获取推荐电台
+  {
+    subUrl: '/personalized/djprogram',
+    name: 'getDjprogram',
+    method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口 , 可获取推荐电台
+  {
+    subUrl: '/program/recommend',
+    name: 'getProgramRecommend',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]

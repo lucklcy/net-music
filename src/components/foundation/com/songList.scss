@@ -16,6 +16,7 @@ $baseAssets: '../../../assets';
         @include setSize(30%, 460px);
         margin: 0 0 20px 0;
         .back-img {
+          position: relative;
           border-top-left-radius: 10px;
           border-top-right-radius: 10px;
           @include setSize(100%, 76%);
@@ -34,13 +35,30 @@ $baseAssets: '../../../assets';
               font-size: 0.32rem;
             }
           }
+          .description {
+            position: absolute;
+            font-size: 0.37rem;
+            color: #fff;
+            bottom: 12px;
+            left: 8px;
+            @include setFlexPos(row, flex-start, center);
+            .avatar {
+              @include setSize(56px, 56px);
+              background-position: center center;
+              background-size: cover;
+            }
+            span {
+              margin-left: 16px;
+              font-size: 0.2rem;
+            }
+          }
         }
         .content {
           border-bottom-left-radius: 10px;
           border-bottom-right-radius: 10px;
           @include setSize(100%, 24%);
           color: #fff;
-          background-color: rgb(248, 120, 120);
+          background-color: rgba(248, 120, 120, 0.9);
           font-size: 0.28rem;
           padding: 0 16px;
           @include setFlexPos(column, space-around, flex-start);

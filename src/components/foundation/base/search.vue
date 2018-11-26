@@ -1,6 +1,8 @@
 <template>
   <div class="search">
-    <input type="text" placeholder="搜索" class="search-bar" />
+    <div class="search-bar">
+      <span>搜索</span>
+    </div>
     <MiniPlayer></MiniPlayer>
   </div>
 </template>
@@ -21,28 +23,27 @@ $baseAssets: '../../../assets';
 .search {
   @include setSize(100%, 150px);
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  @include setFlexPos(row, space-around, center);
   .search-bar {
     border: none;
-    border-radius: 50px;
+    border-radius: 48px;
     outline: none;
-    color: #a0a0a0;
-    font-size: 0.38rem;
-    @include setSize(80%, 92px);
+    color: #b7b7b7;
+    font-size: 0.36rem;
+    text-align: center;
+    @include setSize(76%, 92px);
     background-color: #f1f1f1;
-    font-size: 0.555556rem;
-    padding: 8px 0 8px 420px;
-    &::-webkit-input-placeholder {
-      font-size: 0.42rem;
-      font-weight: normal;
-      color: #b7b7b7;
+    font-size: 0.42rem;
+    line-height: 92px;
+    span {
+      position: relative;
+      display: inline-block;
+      background-image: url('#{$baseAssets}/img/search.png');
+      background-size: 40px;
+      background-position: left center;
+      background-repeat: no-repeat;
+      padding: 0 0 0 58px;
     }
-    background-image: url('#{$baseAssets}/img/search.png');
-    background-repeat: no-repeat;
-    background-size: 42px;
-    background-position: 346px 28px;
   }
 }
 </style>

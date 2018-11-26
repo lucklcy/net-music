@@ -9,7 +9,10 @@
               <img :src="earPodImg" alt="听过">
               <span>{{item.playcount|dealWithPlayCount}}</span>
             </div>
-
+            <div class="description">
+              <div class="avatar" :style="{backgroundImage:'url('+item.creator.avatarUrl+')'}"></div>
+              <span>{{item.creator.nickname | limitIn(7)}}</span>
+            </div>
           </div>
           <div class="content">{{item.name | limitIn(16)}}</div>
         </li>

@@ -20,9 +20,11 @@ Vue.filter('limitIn', (val: any, limit: number) => {
 
 // 处理歌曲收听人数
 Vue.filter('dealWithPlayCount', (val: number) => {
-  if (val < 99999) {
+  if (val < 9999) {
     return val
-  } else {
+  } else if (val < 9999999) {
     return `${Math.floor(val / 10000)}万`
+  } else {
+    return `${Math.floor(val / 10000000)}千万`
   }
 })

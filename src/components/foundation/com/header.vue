@@ -1,12 +1,12 @@
 <template>
   <div class="header">
     <Search></Search>
-    <div class="panel-container">
+    <div :class="{'panel-container':true}">
       <div class="panel-list">
-        <span class="panel-item recommend">个性推荐</span>
-        <span class="panel-item broadcaster">主播电台</span>
+        <router-link class="panel-item" :to="{name:'r_home_recommand'}">个性推荐</router-link>
+        <router-link class="panel-item" :to="{name:'r_home_broadcast'}">主播电台</router-link>
       </div>
-      <div class="under-tag"></div>
+      <div :class="{'under-tag':true,'to-first':$route.name==='r_home_recommand','to-second':$route.name==='r_home_broadcast'}"></div>
     </div>
   </div>
 </template>
@@ -29,31 +29,38 @@ $baseAssets: '../../../assets';
 .header {
   .panel-container {
     @include setSize(100%, 100px);
-    display: flex;
+    @include setFlexPos(column, space-around, center);
     margin-bottom: 14px;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
     .panel-list {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       .panel-item {
+        display: inline-block;
         font-size: 0.4rem;
         color: #424242;
-        &.recommend {
-          margin-right: 220px;
-        }
+        text-decoration: none;
+        padding: 10px 112px;
+        // 取消移动端点击的蓝色背景色
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        -webkit-user-select: none;
+        -moz-user-focus: none;
+        -moz-user-select: none;
       }
     }
     .under-tag {
       display: inline-block;
       position: relative;
       @include setSize(100px, 6px);
-      left: -194px;
       border-radius: 50px;
       border: none;
       background-color: #adadad;
+      transition: left linear 0.2s;
+      &.to-first {
+        left: -198px;
+        // transform: translateX(-198px);
+      }
+      &.to-second {
+        left: 195px;
+        // transform: translateX(195px);
+      }
     }
   }
 }

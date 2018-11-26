@@ -3,6 +3,7 @@
     <span class="mini-item mini-first"></span>
     <span class="mini-item mini-second"></span>
     <span class="mini-item mini-third"></span>
+    <span class="mini-item mini-fourth"></span>
   </div>
 </template>
 
@@ -16,28 +17,25 @@ export default class Mini extends Vue {}
 </script>
 <style lang="scss" scoped>
 .palyer-mini {
-  @include setSize(64px, 88px);
-  display: flex;
-  padding-top: 14px;
-  justify-content: flex-start;
+  @include setSize(60px, 68px);
+  @include setFlexPos(row, space-between, flex-end);
   .mini-item {
     display: inline-block;
-    width: 12px;
+    width: 2px;
     background-color: #adadad;
     border: none;
     border-radius: 10px;
     &.mini-first {
-      height: 86%;
-      margin-right: 10px;
+      height: 50%;
     }
     &.mini-second {
-      width: 11px;
-      height: 66%;
-      margin-right: 10px;
+      height: 90%;
     }
     &.mini-third {
-      width: 11px;
-      height: 42%;
+      height: 60%;
+    }
+    &.mini-fourth {
+      height: 80%;
     }
   }
 }
