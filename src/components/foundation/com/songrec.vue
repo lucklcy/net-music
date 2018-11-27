@@ -3,7 +3,7 @@
     <p class="title">{{songListTitle}}</p>
     <div class="recommand-container">
       <ul class="recommand-list">
-        <li v-for="(item,index) in SongList" :key="index" class="recommand-item">
+        <li v-for="(item,index) in SongList" :key="index" class="recommand-item" @click='onSongRecommandClick(item.id)'>
           <div class="back-img" :style="{backgroundImage:'url('+item.picUrl+')'}">
             <div class="heared">
               <img :src="earPodImg" alt="听过">
@@ -27,7 +27,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State } from 'vuex-class'
 
-interface ISongDataList {
+interface ISongRecommandList {
   id: number
   picUrl: string
   copywriter: string
@@ -35,7 +35,7 @@ interface ISongDataList {
   [propName: string]: any
 }
 
-const enum SongType {
+const enum SongRecType {
   RECOMMAND = 'recommand'
 }
 
@@ -43,18 +43,22 @@ const enum SongType {
   components: {}
 })
 export default class Header extends mixins(CommonMixin) {
-  private SongList: ISongDataList[] = []
+  private SongList: ISongRecommandList[] = []
   private earPodImg: string | ImageData = require('@/assets/img/earPod.png')
-  @Prop({ default: SongType.RECOMMAND })
+  @Prop({ default: SongRecType.RECOMMAND })
   private type: string
 
   @State(state => state.userInfo.userId)
   private userId: number
 
+  private onSongRecommandClick(id: string) {
+    this.$router.push({ name: 'r_song_list', query: { id } })
+  }
+
   get songListTitle() {
     let title: string
     switch (this.type) {
-      case SongType.RECOMMAND:
+      case SongRecType.RECOMMAND:
         title = '推荐歌单'
         break
       default:
@@ -64,10 +68,10 @@ export default class Header extends mixins(CommonMixin) {
     return title
   }
   created() {
-    if (this.type === SongType.RECOMMAND) {
+    if (this.type === SongRecType.RECOMMAND) {
       this.service
         .getRecommendList({})
-        .then((resultRecommendList: { recommend: ISongDataList[] }) => {
+        .then((resultRecommendList: { recommend: ISongRecommandList[] }) => {
           this.SongList = resultRecommendList && resultRecommendList['recommend']
         })
         .catch((err: Error) => {
@@ -77,4 +81,4 @@ export default class Header extends mixins(CommonMixin) {
   }
 }
 </script>
-<style lang="scss" scoped src='./songList.scss'></style>
+<style lang="scss" scoped src='./songrec.scss'></style>

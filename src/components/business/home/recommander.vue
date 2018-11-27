@@ -9,14 +9,14 @@
       </div>
     </Slide>
     <TabContainer></TabContainer>
-    <SongList></SongList>
+    <Songrec></Songrec>
   </div>
 </template>
 <script lang="ts">
 import { mixins } from 'vue-class-component'
 import { Component, Vue } from 'vue-property-decorator'
 import Slide from '~/foundation/base/slide.vue'
-import SongList from '~/foundation/com/songList.vue'
+import Songrec from '~/foundation/com/songrec.vue'
 import TabContainer from '~/business/home/tabContainer.vue'
 import CommonMixin from '@/mixins/comMix'
 
@@ -29,7 +29,7 @@ interface IBannerDataList {
 @Component({
   components: {
     Slide,
-    SongList,
+    Songrec,
     TabContainer
   }
 })

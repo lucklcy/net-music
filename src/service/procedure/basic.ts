@@ -50,5 +50,11 @@ export default [
     subUrl: '/program/recommend',
     name: 'getProgramRecommend',
     method: REQUEST_METHOD_MAP.GET
+  },
+  // 说明 : 歌单能看到歌单名字 , 但看不到具体歌单内容 , 调用此接口 , 传入歌单 id, 可 以获取对应歌单内的所有的音乐
+  {
+    subUrl: '/playlist/detail',
+    name: 'getPlayListDetail',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]
