@@ -1,0 +1,84 @@
+$baseAssets: '../../../assets';
+.song-list {
+  z-index: 0;
+  .header {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    box-sizing: border-box;
+    z-index: 1;
+    &::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: inherit;
+      filter: blur(10px) sepia(50%);
+      z-index: 2;
+    }
+    .title-bar {
+      @include setFlexPos(row, space-between, center);
+      height: 100px;
+      padding: 0 40px;
+      .backup {
+        z-index: 11;
+        display: inline-block;
+        @include setSize(50px, 50px);
+        background-image: url('#{$baseAssets}/img/back.png');
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .title {
+        z-index: 11;
+        color: #fff;
+      }
+      .palyer-mini {
+        z-index: 11;
+      }
+    }
+    .content {
+      z-index: 11;
+      @include setFlexPos(row, flex-start, flex-start);
+      padding: 28px 40px 0 40px;
+      .pic {
+        z-index: 11;
+        @include setSize(300px, 300px);
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        margin-right: 40px;
+        border-radius: 16px;
+      }
+      .label {
+        height: 200px;
+        z-index: 11;
+        @include setFlexPos(column, space-around, space-around);
+        .title {
+          z-index: 11;
+          font-size: 0.41rem;
+          color: #fff;
+        }
+        .author {
+          z-index: 11;
+          @include setFlexPos(row, flex-start, center);
+          .author-pic {
+            z-index: 11;
+            display: inline-block;
+            @include setSize(80px, 80px);
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            margin-right: 18px;
+          }
+          font-size: 0.21rem;
+          color: #ebebeb;
+        }
+      }
+    }
+  }
+}

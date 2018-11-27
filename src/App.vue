@@ -7,5 +7,6 @@
 <style lang="scss">
 #app {
   height: 100%;
+  z-index: 0;
 }
 </style>
