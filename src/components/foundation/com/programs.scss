@@ -1,0 +1,53 @@
+$baseAssets: '../../../assets';
+.programs {
+  .title {
+    padding: 28px 0 28px 50px;
+    font-size: 0.42rem;
+    font-weight: bold;
+    color: #444;
+  }
+  .program-container {
+    .program-list {
+      padding: 0 50px;
+      li {
+        margin-bottom: 20px;
+      }
+      .program-item {
+        @include setFlexPos(row, flex-start, center);
+        .pic {
+          border-radius: 12px;
+          @include setSize(200px, 200px);
+          background-position: center center;
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+        .content {
+          margin-left: 20px;
+          @include setFlexPos(column, space-around, flex-start);
+          @include setSize(76%, 200px);
+          font-size: 0.222222rem;
+          .name {
+            font-size: 0.351852rem;
+            color: #555;
+          }
+          .count {
+            font-size: 0.22rem;
+            color: #666;
+            img {
+              @include setSize(42px, 42px);
+              vertical-align: middle;
+              margin-right: 12px;
+            }
+            span {
+              position: relative;
+              top: 2px;
+            }
+          }
+          .desc {
+            color: #999;
+          }
+        }
+      }
+    }
+  }
+}

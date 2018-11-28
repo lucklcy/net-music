@@ -1,0 +1,196 @@
+$baseAssets: '../../../assets';
+.song-list {
+  z-index: 0;
+  @include setSize(100%, 100%);
+  @include setFlexPos(column, flex-start, flex-start);
+  .header {
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    box-sizing: border-box;
+    z-index: 1;
+    padding: 0 0 32px 0;
+    &::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: inherit;
+      filter: blur(10px);
+      z-index: 2;
+    }
+    .title-bar {
+      @include setFlexPos(row, space-between, center);
+      height: 100px;
+      padding: 0 40px;
+      .backup {
+        z-index: 11;
+        display: inline-block;
+        @include setSize(50px, 50px);
+        background-image: url('#{$baseAssets}/img/back.png');
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .title {
+        z-index: 11;
+        display: inline-block;
+        padding: 8px;
+        background-color: rgba(180, 179, 179, 0.171);
+        border-radius: 8px;
+        color: #fff;
+      }
+      .palyer-mini {
+        z-index: 11;
+      }
+    }
+    .content {
+      z-index: 11;
+      @include setFlexPos(row, flex-start, flex-start);
+      padding: 28px 40px 0 40px;
+      .pic {
+        z-index: 11;
+        @include setSize(300px, 300px);
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        margin-right: 40px;
+        border-radius: 16px;
+        .heared {
+          padding: 16px;
+          width: 100%;
+          @include setFlexPos(row, flex-end, center);
+          .heared-pic {
+            display: inline-block;
+            @include setSize(42px, 42px);
+            background-image: url('#{$baseAssets}/img/earPod.png');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          .data {
+            font-size: 0.28rem;
+            color: #fff;
+            margin-left: 18px;
+          }
+        }
+      }
+      .label {
+        height: 300px;
+        z-index: 11;
+        @include setFlexPos(column, space-around, space-around);
+        .title {
+          display: inline-block;
+          padding: 8px;
+          background-color: rgba(180, 179, 179, 0.171);
+          border-radius: 8px;
+          z-index: 11;
+          font-size: 0.41rem;
+          color: #fff;
+        }
+        .author {
+          z-index: 11;
+          @include setFlexPos(row, flex-start, center);
+          .author-pic {
+            z-index: 11;
+            display: inline-block;
+            @include setSize(80px, 80px);
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            margin-right: 18px;
+          }
+          .author-name {
+            display: inline-block;
+            padding: 8px;
+            border-radius: 8px;
+            background-color: rgba(180, 179, 179, 0.171);
+            font-size: 0.21rem;
+            color: #fff;
+          }
+        }
+        .info {
+          @include setFlexPos(row, flex-start, center);
+          .comment-pic {
+            display: inline-block;
+            @include setSize(60px, 60px);
+            background-image: url('#{$baseAssets}/img/comment.png');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          .share-pic {
+            margin: 0 0 0 108px;
+            display: inline-block;
+            @include setSize(46px, 46px);
+            background-image: url('#{$baseAssets}/img/share.png');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          .comment-data,
+          .share-data {
+            padding: 8px;
+            border-radius: 8px;
+            background-color: rgba(180, 179, 179, 0.171);
+            font-size: 0.22rem;
+            color: #fff;
+            margin-left: 20px;
+          }
+        }
+      }
+    }
+  }
+  .list-container {
+    flex: 1;
+    width: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    ul {
+      li {
+        @include setFlexPos(row, flex-start, center);
+        .index {
+          font-size: 0.4rem;
+          color: #999;
+          width: 90px;
+          text-align: center;
+        }
+        .song-content {
+          flex: 1;
+          padding: 26px 60px 26px 0;
+          &.border-1px {
+            @include border-1px(bottom, $border-color);
+          }
+          @include setFlexPos(row, space-between, center);
+          .label {
+            @include setFlexPos(column, space-between, flex-start);
+            .name {
+              font-size: 0.46rem;
+              color: #333;
+              padding: 0 0 16px 0;
+            }
+            .author {
+              font-size: 0.26rem;
+              color: #888;
+            }
+          }
+          .oper {
+            .play {
+              display: inline-block;
+              @include setSize(50px, 50px);
+              background-image: url('#{$baseAssets}/img/Play.png');
+              background-position: center center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
+          }
+        }
+      }
+    }
+  }
+}

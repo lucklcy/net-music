@@ -1,8 +1,8 @@
-import { cutNumber } from './'
+import { cutNumber } from '.'
 /*
  * 判断obj是否为一个整数
  */
-function isInteger(obj) {
+const isInteger = (obj: number) => {
   return Math.floor(obj) === obj
 }
 
@@ -12,21 +12,21 @@ function isInteger(obj) {
  * @return {object}
  *   {times:100, num: 314}
  */
-function toInteger(floatNum) {
-  var ret = {
+function toInteger(floatNum: number) {
+  const ret = {
     times: 1,
     num: 0
   }
-  var isNegative = floatNum < 0
+  const isNegative = floatNum < 0
   if (isInteger(floatNum)) {
     ret.num = floatNum
     return ret
   }
-  var strfi = floatNum + ''
-  var dotPos = strfi.indexOf('.')
-  var len = strfi.substr(dotPos + 1).length
-  var times = Math.pow(10, len)
-  var intNum = parseInt(Math.abs(floatNum) * times + 0.5, 10)
+  const strfi = floatNum + ''
+  const dotPos = strfi.indexOf('.')
+  const len = strfi.substr(dotPos + 1).length
+  const times = Math.pow(10, len)
+  let intNum = parseInt(String(Math.abs(floatNum) * times + 0.5), 10)
   ret.times = times
   if (isNegative) {
     intNum = -intNum
@@ -45,15 +45,15 @@ function toInteger(floatNum) {
  * @param op {string} 运算类型，有加减乘除（add/subtract/multiply/divide）
  *
  */
-function operation(a, b, digits, op) {
-  var o1 = toInteger(a)
-  var o2 = toInteger(b)
-  var n1 = o1.num
-  var n2 = o2.num
-  var t1 = o1.times
-  var t2 = o2.times
-  var max = t1 > t2 ? t1 : t2
-  var result = null
+function operation(a: number, b: number, digits: number, op: string) {
+  const o1 = toInteger(a)
+  const o2 = toInteger(b)
+  const n1 = o1.num
+  const n2 = o2.num
+  const t1 = o1.times
+  const t2 = o2.times
+  const max = t1 > t2 ? t1 : t2
+  let result = null
   switch (op) {
     case 'add':
       if (t1 === t2) {
@@ -86,26 +86,26 @@ function operation(a, b, digits, op) {
 }
 
 // 加减乘除的四个接口
-function add(a, b, digits) {
+const add = (a: number, b: number, digits: number) => {
   return operation(a, b, digits, 'add')
 }
 
-function subtract(a, b, digits) {
+const subtract = (a: number, b: number, digits: number) => {
   return operation(a, b, digits, 'subtract')
 }
 
-function multiply(a, b, digits) {
+const multiply = (a: number, b: number, digits: number) => {
   return operation(a, b, digits, 'multiply')
 }
 
-function divide(a, b, digits) {
+const divide = (a: number, b: number, digits: number) => {
   return operation(a, b, digits, 'divide')
 }
 
 // exports
 export default {
-  add: add,
-  subtract: subtract,
-  multiply: multiply,
-  divide: divide
+  add,
+  subtract,
+  multiply,
+  divide
 }

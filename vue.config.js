@@ -46,14 +46,14 @@ module.exports = {
     disableHostCheck: true,
     inline: true,
     proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8000',
+      '/api/*': {
+        target: 'http://127.0.0.1:3000',
         changeOrigin: true,
         logLevel: 'debug',
-        pathRewrite: {},
-        onProxyReq: function(proxyReq, req, res) {
-          proxyReq.setHeader('cookie', 'token=******; path=/; domain=127.0.0.1;')
-        }
+        pathRewrite: {
+          '^/api': ''
+        },
+        onProxyReq: function(proxyReq, req, res) {}
       }
     }
   },

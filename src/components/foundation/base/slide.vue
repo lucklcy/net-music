@@ -1,13 +1,10 @@
 <template>
-  <div class="slide"
-       ref="slide">
-    <div class="slide-group"
-         ref="slideGroup">
+  <div class="slide" ref="slide">
+    <div class="slide-group" ref="slideGroup">
       <slot>
       </slot>
     </div>
-    <div v-if="showDot"
-         class="dots">
+    <div v-if="showDot" class="dots">
       <span class="dot"
             :key="index"
             :class="{active: currentPageIndex === index }"
@@ -24,31 +21,31 @@ import { addClass } from '@/utils/dom'
 @Component({})
 export default class Slide extends Vue {
   private dots: any[] = []
-  private resizeTimer:number
-  private timer:number
-  private currentPageIndex:number = 0
-  private slide:BScroll 
-  private children:HTMLCollection
-  @Prop({default:true})
-  private loop:boolean
+  private resizeTimer: number
+  private timer: number
+  private currentPageIndex: number = 0
+  private slide: BScroll
+  private children: HTMLCollection
+  @Prop({ default: true })
+  private loop: boolean
 
-  @Prop({default:true})
-  private autoPlay:boolean
+  @Prop({ default: true })
+  private autoPlay: boolean
 
-  @Prop({default:4000})
-  private interval:number
+  @Prop({ default: 4000 })
+  private interval: number
 
-  @Prop({default:true})
-  private showDot:boolean
+  @Prop({ default: true })
+  private showDot: boolean
 
-  @Prop({default:true})
-  private click:boolean
+  @Prop({ default: true })
+  private click: boolean
 
-  @Prop({default:0.3})
-  private threshold:number
+  @Prop({ default: 0.3 })
+  private threshold: number
 
-  @Prop({default:400})
-  private speed:number
+  @Prop({ default: 400 })
+  private speed: number
 
   private update() {
     if (this.slide) {
@@ -61,7 +58,7 @@ export default class Slide extends Vue {
   private refresh() {
     this._setSlideWidth(true)
     this.slide.refresh()
-  } 
+  }
   private prev() {
     this.slide.prev()
   }
@@ -81,7 +78,7 @@ export default class Slide extends Vue {
       this._play()
     }
   }
-  private _setSlideWidth(isResize:boolean = false) {
+  private _setSlideWidth(isResize: boolean = false) {
     this.children = (this.$refs.slideGroup as HTMLElement).children
     let width = 0
     let slideWidth = (this.$refs.slide as HTMLElement).clientWidth
@@ -94,7 +91,8 @@ export default class Slide extends Vue {
     if (this.loop && !isResize) {
       width += 2 * slideWidth
     }
-    (this.$refs.slideGroup as HTMLElement).style.width = width + 'px'
+    let slideGroup = this.$refs.slideGroup as HTMLElement
+    slideGroup.style.width = width + 'px'
   }
   private _initSlide() {
     this.slide = new BScroll(this.$refs.slide as HTMLElement, {
@@ -182,26 +180,6 @@ export default class Slide extends Vue {
   beforeDestroy() {
     this.slide.disable()
     clearTimeout(this.timer)
-  }
-
-  @Watch('loop', { immediate: true })
-  onLoopChange(val: boolean, oldVal: boolean){
-    this.update()
-  }
-
-  @Watch('autoPlay', { immediate: true, deep: true })
-  onAutoPlayChange(val: boolean, oldVal: boolean){
-    this.update()
-  }
-
-  @Watch('speed', { immediate: true, deep: true })
-  onSpeedChange(val: number, oldVal: number){
-    this.update()
-  }
-
-  @Watch('threshold', { immediate: true, deep: true })
-  onThresholdChange(val: number, oldVal: number){
-    this.update()
   }
 }
 </script>
