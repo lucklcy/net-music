@@ -6,7 +6,7 @@
 
 <style lang="scss">
 #app {
-  height: 100%;
+  @include setSize(100%, 100%);
   z-index: 0;
 }
 </style>
