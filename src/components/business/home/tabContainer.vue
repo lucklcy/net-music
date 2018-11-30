@@ -2,19 +2,27 @@
   <div class="tab border-1px">
     <ul class="container" v-if="type === 'recommand'">
       <li class="item">
-        <div class="pic fm-img">FM</div>
+        <div class="pic fm-img">
+          <i class="iconfont icon-FM"></i>
+        </div>
         <span>私人FM</span>
       </li>
       <li class="item">
-        <div class="pic recommand-img">推荐</div>
+        <div class="pic recommand-img">
+          <i class="iconfont icon-rili-tianchong"></i>
+        </div>
         <span>每日推荐</span>
       </li>
       <li class="item">
-        <div class="pic song-list-img">歌单</div>
+        <div class="pic song-list-img">
+          <i class="iconfont icon-yinleliebiao"></i>
+        </div>
         <span>歌单</span>
       </li>
       <li class="item">
-        <div class="pic ranking-list-img">排行</div>
+        <div class="pic ranking-list-img">
+          <i class="iconfont icon-icon_paihang-mian"></i>
+        </div>
         <span>排行榜</span>
       </li>
     </ul>
@@ -66,11 +74,22 @@ export default class TabContainer extends mixins(CommonMixin) {
       @include setFlexPos(column, space-around, center);
       .pic {
         @include setSize(200px, 200px);
-        background-color: rgba(248, 120, 120, 0.9);
+        @include setFlexPos(row, center, center);
+        background-color: #e04136;
         border-radius: 50%;
-        text-align: center;
-        padding: 80px 0 0 0;
-        color: #555;
+        color: #fff;
+        &.fm-img .iconfont {
+          font-size: 1rem;
+        }
+        &.recommand-img .iconfont {
+          font-size: 0.9rem;
+        }
+        &.song-list-img .iconfont {
+          font-size: 0.8rem;
+        }
+        &.ranking-list-img .iconfont {
+          font-size: 0.95rem;
+        }
       }
       span {
         font-size: 0.36rem;

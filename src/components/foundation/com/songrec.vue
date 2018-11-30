@@ -6,15 +6,17 @@
         <li v-for="(item,index) in SongList" :key="index" class="recommand-item" @click='onSongRecommandClick(item.id)'>
           <div class="back-img" :style="{backgroundImage:'url('+item.picUrl+')'}">
             <div class="heared">
-              <img :src="earPodImg" alt="听过">
-              <span>{{item.playcount|dealWithPlayCount}}</span>
+              <span>
+                <i class="iconfont icon-erji"></i>
+                {{item.playcount|dealWithPlayCount}}
+              </span>
             </div>
             <div class="description">
               <div class="avatar" :style="{backgroundImage:'url('+item.creator.avatarUrl+')'}"></div>
               <span>{{item.creator.nickname | limitIn(7)}}</span>
             </div>
           </div>
-          <div class="content">{{item.name | limitIn(16)}}</div>
+          <div class="content">{{item.name | limitIn(15)}}</div>
         </li>
       </ul>
     </div>
@@ -42,9 +44,8 @@ const enum SongRecType {
 @Component({
   components: {}
 })
-export default class Header extends mixins(CommonMixin) {
+export default class SongRec extends mixins(CommonMixin) {
   private SongList: ISongRecommandList[] = []
-  private earPodImg: string | ImageData = require('@/assets/img/earPod.png')
   @Prop({ default: SongRecType.RECOMMAND })
   private type: string
 
