@@ -38,8 +38,8 @@
           <div class="index">{{index+1}}</div>
           <div class="song-content border-1px">
             <div class="label">
-              <span class="name">{{item.name}}</span>
-              <span class="author">{{getAuthorString(item)}}</span>
+              <span class="name">{{item.name | limitIn(30) }}</span>
+              <span class="author">{{getAuthorString(item) | limitIn(28)}}</span>
             </div>
             <div class="oper">
               <i class="play iconfont icon-paly-time"></i>

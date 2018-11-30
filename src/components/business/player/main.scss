@@ -1,0 +1,48 @@
+.main-player {
+  @include setSize(100%, 100%);
+  .normal-player {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 150;
+    background: #222;
+    .background {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.6;
+      filter: blur(20px);
+    }
+    .top {
+      position: relative;
+      height: 140px;
+      padding: 0 32px;
+      @include setFlexPos(row, space-between, center);
+      .song-header {
+        color: #fff;
+        @include setFlexPos(column, space-between, center);
+        .title {
+          font-size: 0.42rem;
+          font-weight: bold;
+        }
+        .subtitle {
+          margin-top: 12px;
+          font-size: 0.26rem;
+        }
+      }
+      .back {
+        color: #fff;
+        font-size: 0.62rem;
+      }
+      .about {
+        color: #fff;
+        font-size: 0.52rem;
+      }
+    }
+  }
+}
