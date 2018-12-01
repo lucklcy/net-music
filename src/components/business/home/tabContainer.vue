@@ -70,10 +70,10 @@ export default class TabContainer extends mixins(CommonMixin) {
     @include setSize(100%, 300px);
     @include setFlexPos(row, space-around, center);
     .item {
-      height: 280px;
+      height: 288px;
       @include setFlexPos(column, space-around, center);
       .pic {
-        @include setSize(200px, 200px);
+        @include setSize(180px, 180px);
         @include setFlexPos(row, center, center);
         background-color: #e04136;
         border-radius: 50%;

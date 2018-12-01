@@ -65,5 +65,13 @@ export default [
     subUrl: '/song/url',
     name: 'getSongUrl',
     method: REQUEST_METHOD_MAP.GET
+  },
+  // /lyric
+  // 调用此接口 , 传入音乐 id 可获得对应音乐的歌词 ( 不需要登录 )
+  // 调用例子 : /lyric?id=33894312
+  {
+    subUrl: '/lyric',
+    name: 'getSongLyric',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]

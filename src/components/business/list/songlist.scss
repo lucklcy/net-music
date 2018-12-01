@@ -117,43 +117,47 @@ $baseAssets: '../../../assets';
   .list-container {
     flex: 1;
     width: 100%;
+    background-color: #222;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     ul {
       li {
         @include setFlexPos(row, flex-start, center);
         .index {
-          font-size: 0.4rem;
-          color: #999;
+          font-size: 0.3rem;
+          color: hsla(0, 0%, 100%, 0.3);
           width: 112px;
           text-align: center;
         }
         .song-content {
           flex: 1;
-          padding: 26px 60px 26px 0;
-          &.border-1px {
-            @include border-1px(bottom, $border-color);
-          }
+          padding: 20px 80px 20px 0;
           @include setFlexPos(row, space-between, center);
           .label {
             @include setFlexPos(column, space-between, flex-start);
             .name {
-              font-size: 0.42rem;
-              color: #333;
+              font-size: 0.36rem;
+              color: #eee;
               padding: 0 0 16px 0;
             }
             .author {
               font-size: 0.26rem;
-              color: #888;
+              color: hsla(0, 0%, 100%, 0.3);
             }
           }
           .oper {
             .play {
               display: inline-block;
-              font-size: 0.56rem;
+              font-size: 0.46rem;
               color: rgb(204, 200, 200);
             }
           }
+        }
+        &.no-more {
+          height: 100px;
+          color: #999;
+          font-size: 0.38rem;
+          @include setFlexPos(row, center, center);
         }
       }
     }

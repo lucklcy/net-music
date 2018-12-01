@@ -26,6 +26,7 @@ export interface ITrack {
   id: number
   al: IAl
   ar: IArtist[]
+  dt: number
   name: string
 }
 
@@ -58,6 +59,7 @@ export interface IPlaySong {
   name: string
   picUrl: string
   songer: string
+  duration: number
 }
 
 export interface State {
@@ -65,6 +67,7 @@ export interface State {
   userInfo: UserInfo
   playList: IPlaySong[]
   currentSong: IPlaySong
+  playing: boolean
 }
 
 // 初始状态
@@ -77,7 +80,8 @@ const stateData: State = {
     backgroundUrl: ''
   },
   playList: [],
-  currentSong: { id: 0, name: '', picUrl: '', songer: '' }
+  currentSong: { id: 0, name: '', picUrl: '', songer: '', duration: 0 },
+  playing: false
 }
 
 export default stateData

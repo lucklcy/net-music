@@ -48,3 +48,22 @@ export function getRect(el: HTMLElement) {
     }
   }
 }
+
+const vendor = (() => {
+  const div = document.createElement('div')
+  const cssText =
+    '-webkit-transition:all .1s; -moz-transition:all .1s; -o-transition:all .1s; -ms-transition:all .1s; transition:all .1s;'
+  div.style.cssText = cssText
+  const style = div.style
+  if (style.webkitTransition) {
+    return 'webkit'
+  }
+  return 'standard'
+})()
+
+export function prefixStyle(style: string) {
+  if (vendor === 'standard') {
+    return style
+  }
+  return vendor + style.charAt(0).toUpperCase() + style.substr(1)
+}

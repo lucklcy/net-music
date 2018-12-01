@@ -53,14 +53,12 @@ $baseAssets: '../../../assets';
       border-radius: 50px;
       border: none;
       background-color: #fff;
-      transition: left linear 0.2s;
+      transition: left linear 0.1s;
       &.to-first {
         left: -198px;
-        // transform: translateX(-198px);
       }
       &.to-second {
         left: 195px;
-        // transform: translateX(195px);
       }
     }
   }

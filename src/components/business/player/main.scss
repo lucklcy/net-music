@@ -20,18 +20,18 @@
     }
     .top {
       position: relative;
-      height: 140px;
+      height: 160px;
       padding: 0 32px;
       @include setFlexPos(row, space-between, center);
       .song-header {
         color: #fff;
         @include setFlexPos(column, space-between, center);
         .title {
-          font-size: 0.42rem;
+          font-size: 0.46rem;
           font-weight: bold;
         }
         .subtitle {
-          margin-top: 12px;
+          margin-top: 28px;
           font-size: 0.26rem;
         }
       }
@@ -42,6 +42,138 @@
       .about {
         color: #fff;
         font-size: 0.52rem;
+      }
+    }
+    .middle {
+      position: fixed;
+      width: 100%;
+      top: 380px;
+      bottom: 400px;
+      white-space: nowrap;
+      font-size: 0;
+      .middle-l {
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-top: 80%;
+        .cd-wrapper {
+          position: absolute;
+          left: 10%;
+          top: 0;
+          width: 80%;
+          height: 100%;
+          .cd {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border: 10px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            &.play {
+              animation: rotate 20s linear infinite;
+            }
+            &.pause {
+              animation-play-state: paused;
+            }
+            .image {
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              height: 100%;
+              @include setBgImg('', center, center, cover, no-repeat);
+              border-radius: 50%;
+            }
+          }
+        }
+        .playing-lyric-wrapper {
+          width: 80%;
+          margin: 30px auto 0 auto;
+          overflow: hidden;
+          text-align: center;
+          .playing-lyric {
+            height: 20px;
+            line-height: 20px;
+            font-size: $font-size-medium;
+            color: $color-text-l;
+          }
+        }
+      }
+      .middle-r {
+        display: inline-block;
+        vertical-align: top;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        .lyric-wrapper {
+          width: 80%;
+          margin: 0 auto;
+          overflow: hidden;
+          text-align: center;
+          .text {
+            line-height: 32px;
+            color: $color-text-l;
+            font-size: $font-size-medium;
+            &.current {
+              color: $color-text;
+            }
+          }
+        }
+      }
+    }
+    .bottom {
+      position: absolute;
+      bottom: 180px;
+      width: 100%;
+      .dot-wrapper {
+        text-align: center;
+        font-size: 0;
+        .dot {
+          display: inline-block;
+          vertical-align: middle;
+          margin: 0 10px;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: $color-text-l;
+          &.active {
+            width: 60px;
+            border-radius: 28px;
+            background: $color-text-ll;
+          }
+        }
+      }
+      .progress-wrapper {
+        display: flex;
+        align-items: center;
+        width: 80%;
+        margin: 0px auto;
+        padding: 10px 0;
+        .time {
+          color: $color-text;
+          font-size: 0.34rem;
+          flex: 0 0 110px;
+          line-height: 30px;
+          width: 30px;
+          &.time-l {
+            text-align: left;
+          }
+          &.time-r {
+            text-align: right;
+          }
+        }
+        .progress-bar-wrapper {
+          flex: 1;
+        }
+      }
+      .operators {
+        padding: 28px 40px 0 40px;
+        @include setFlexPos(row, space-around, center);
+        .iconfont {
+          font-size: 0.56rem;
+          color: $color-theme;
+        }
       }
     }
   }

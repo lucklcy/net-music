@@ -4,7 +4,6 @@ import { UserInfo } from '@/store/state'
 import { srorageGet } from '@/utils'
 
 const initPromise: Promise<any> = new Promise((resolve, reject) => {
-  console.log({ currentSong: srorageGet('currentSong') })
   store.commit('setPlayList', srorageGet('playList'))
   store.commit('setCurrentSong', srorageGet('currentSong'))
   _http
