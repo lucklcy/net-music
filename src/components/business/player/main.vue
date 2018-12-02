@@ -3,7 +3,7 @@
     <transition name="normal">
       <div class="normal-player">
         <div class="background">
-          <img :src="currentSong.picUrl" alt="背景" width="100%" height="100%">
+          <div :style="{backgroundImage:'url('+currentSong.picUrl+')'}" class="inner"></div>
         </div>
         <div class="top">
           <i class="back iconfont icon-arrow-down-" @click="$router.go(-1)"></i>
@@ -15,7 +15,7 @@
         </div>
         <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove"
           @touchend="middleTouchEnd">
-          <div class="middle-l" ref="middleL">
+          <div class="middle-l" ref="middleL" :style="middleLStyle">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdCls">
                 <div class="image" :style="{backgroundImage:'url('+currentSong.picUrl+')'}"></div>
@@ -25,7 +25,8 @@
               <div class="playing-lyric">{{playingLyric}}</div>
             </div>
           </div>
-          <scroll class="middle-r" ref="lyricList" :data-list="currentLyric && currentLyric.lines">
+          <scroll class="middle-r" ref="lyricList" :data-list="currentLyric && currentLyric.lines"
+            :style="lyricListStyle">
             <div class="lyric-wrapper">
               <div v-if="currentLyric">
                 <p ref="lyricLine" class="text" :class="{'current': currentLineNum ===index}" v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
@@ -65,7 +66,7 @@
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { State } from 'vuex-class'
+import { State, Mutation } from 'vuex-class'
 import scroll from '~/foundation/base/scroll.vue'
 import ProgressBar from '~/foundation/base/progressBar.vue'
 import { prefixStyle } from '@/utils/dom'
@@ -102,6 +103,8 @@ const transitionDuration = prefixStyle('transitionDuration')
 })
 export default class SongMainPlayer extends mixins(CommonMixin) {
   private songId: string = ''
+  private middleLStyle: string = ''
+  private lyricListStyle: string = ''
   @State currentSong: IPlaySong
   @State playing: boolean
 
@@ -113,6 +116,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private songUrl: string = ''
   private autoPlayTimer: number
 
+  @Mutation changePlayingStatus: (flag: boolean) => void
   get cdCls() {
     return this.playing ? 'play' : 'play pause'
   }
@@ -154,12 +158,8 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
     const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX))
     this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
-    let lyricElement = this.$refs.lyricList as HTMLElement
-    let middleLElement = this.$refs.middleL as HTMLElement
-    let lyricElementStyleCssText = `${transform}:translate3d(${offsetWidth}px,0,0); ${transitionDuration}:0;`
-    let middleLElementStyleCssText = `opacity:${1 - this.touch.percent};${transitionDuration}:0;`
-    middleLElement.style.cssText = lyricElementStyleCssText
-    middleLElement.style.cssText = middleLElementStyleCssText
+    this.middleLStyle = `opacity:${1 - this.touch.percent};${transitionDuration}:0;`
+    this.lyricListStyle = `${transform}:translate3d(${offsetWidth}px,0,0); ${transitionDuration}:0;`
   }
   private middleTouchEnd() {
     if (!this.touch.moved) {
@@ -188,10 +188,8 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     }
     const time = 300
 
-    let lyricElement = this.$refs.lyricList as HTMLElement
-    let middleLElement = this.$refs.middleL as HTMLElement
-    middleLElement.style.cssText = `${transform}:translate3d(${offsetWidth}px,0,0); ${transitionDuration}:${time}ms;`
-    middleLElement.style.cssText = `opacity:${opacity};${transitionDuration}:${time}ms;`
+    this.lyricListStyle = `${transform}:translate3d(${offsetWidth}px,0,0); ${transitionDuration}:${time}ms;`
+    this.middleLStyle = `opacity:${opacity};${transitionDuration}:${time}ms;`
     this.touch.initiated = false
   }
 
@@ -231,6 +229,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private gotoPlay() {
     let AudioElement = this.$refs.audio as HTMLAudioElement
     AudioElement.play()
+    this.changePlayingStatus(true)
   }
 
   private updateTime(e: Event) {

@@ -17,6 +17,10 @@
       z-index: -1;
       opacity: 0.6;
       filter: blur(20px);
+      .inner {
+        @include setSize(100%, 100%);
+        @include setBgImg('', center, center, cover, no-repeat);
+      }
     }
     .top {
       position: relative;
@@ -175,6 +179,14 @@
           color: $color-theme;
         }
       }
+    }
+  }
+  @keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 }

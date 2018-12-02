@@ -9,7 +9,7 @@ export interface IkeyVal {
 }
 
 export default {
-  isLoading(state: State, val: boolean | {}) {
+  isLoading(state: State, val: boolean | {}): void {
     if (isBoolean(val)) {
       Object.assign(state.indicator, { text: '正在加载...', visible: val })
     } else if (isObject(val)) {
@@ -47,7 +47,7 @@ export default {
     state.playList = tempPlaySongList
     srorageSet('playList', val)
   },
-  setCurrentSong(state: State, song: number) {
+  setCurrentSong(state: State, song: number): void {
     const playList: IPlaySong[] = state.playList
     if (playList && playList.length > 0 && song) {
       for (let i = 0; i < playList.length; i++) {
@@ -59,5 +59,8 @@ export default {
         }
       }
     }
+  },
+  changePlayingStatus(state: State, playFlag: boolean): void {
+    state.playing = playFlag
   }
 }

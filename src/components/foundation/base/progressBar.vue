@@ -3,7 +3,7 @@
     <div class="bar-inner">
       <div class="progress" ref="progress"></div>
       <div class="progress-btn-wrapper" ref="progressBtn" @touchstart.prevent="progressTouchStart"
-        @touchmove.prevent="progressTouchMove" @touchend="progressTouchEnd">
+        @touchmove.prevent="progressTouchMove" @touchend="progressTouchEnd" :style="progressBtnStyle">
         <div class="progress-btn"></div>
       </div>
     </div>
@@ -35,6 +35,7 @@ interface ITtuch {
 export default class ProgressBar extends mixins(CommonMixin) {
   @Prop({ default: 0 })
   private percent: number
+  private progressBtnStyle: string = ''
 
   private touch: ITtuch = {
     initiated: false,
@@ -85,8 +86,7 @@ export default class ProgressBar extends mixins(CommonMixin) {
   }
   private _offset(offsetWidth: number) {
     let progressElement = this.$refs.progress as HTMLElement
-    let progressBtnElement = this.$refs.progressBtn as HTMLElement
-    progressBtnElement.style.cssText = `${transform}:translate3d(${offsetWidth}px,0,0);`
+    this.progressBtnStyle = `${transform}:translate3d(${offsetWidth}px,0,0);`
     progressElement.style.width = `${offsetWidth}px`
   }
 
