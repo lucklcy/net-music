@@ -229,3 +229,52 @@ export const formatAndRetainTwoDecimal = (amount: string | number) => {
   const cuttedNumber = cutNumber(amount, 2)
   return formatNumber(cuttedNumber)
 }
+
+enum STORAGETYPE {
+  SESSION = 'session',
+  LOCAL = 'local'
+}
+
+export const srorageSet = (key: string, val: any, storageType: string = STORAGETYPE.LOCAL) => {
+  switch (storageType) {
+    case STORAGETYPE.SESSION:
+      window.sessionStorage.setItem(key, JSON.stringify(val))
+      break
+    case STORAGETYPE.LOCAL:
+      window.localStorage.setItem(key, JSON.stringify(val))
+      break
+    default:
+      window.localStorage.setItem(key, JSON.stringify(val))
+      break
+  }
+}
+
+export const srorageGet = (key: string, storageType: string = STORAGETYPE.LOCAL) => {
+  let returnObj: any
+  switch (storageType) {
+    case STORAGETYPE.SESSION:
+      const sessionVal = window.sessionStorage.getItem(key)
+      if (sessionVal !== null) {
+        returnObj = JSON.parse(sessionVal)
+      } else {
+        returnObj = sessionVal
+      }
+    case STORAGETYPE.LOCAL:
+      const localVal = window.localStorage.getItem(key)
+      if (localVal !== null) {
+        returnObj = JSON.parse(localVal)
+      } else {
+        returnObj = localVal
+      }
+      break
+    default:
+      const defaultVal = window.localStorage.getItem(key)
+      if (defaultVal !== null) {
+        returnObj = JSON.parse(defaultVal)
+      } else {
+        returnObj = defaultVal
+      }
+      break
+  }
+  return returnObj
+}

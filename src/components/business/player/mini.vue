@@ -22,7 +22,7 @@ export default class Mini extends Vue {}
   .mini-item {
     display: inline-block;
     width: 2px;
-    background-color: #adadad;
+    background-color: #fff;
     border: none;
     border-radius: 10px;
     &.mini-first {

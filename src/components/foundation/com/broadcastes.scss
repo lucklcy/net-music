@@ -17,9 +17,7 @@ $baseAssets: '../../../assets';
         .pic {
           border-radius: 12px;
           @include setSize(200px, 200px);
-          background-position: center center;
-          background-size: cover;
-          background-repeat: no-repeat;
+          @include setBgImg('', center, center, cover, no-repeat);
         }
         .content {
           margin-left: 20px;
@@ -33,15 +31,6 @@ $baseAssets: '../../../assets';
           .count {
             font-size: 0.22rem;
             color: #666;
-            img {
-              @include setSize(42px, 42px);
-              vertical-align: middle;
-              margin-right: 12px;
-            }
-            span {
-              position: relative;
-              top: 2px;
-            }
           }
           .desc {
             color: #999;

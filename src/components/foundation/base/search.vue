@@ -1,7 +1,10 @@
 <template>
   <div class="search">
     <div class="search-bar">
-      <span>搜索</span>
+      <span>
+        <i class="iconfont icon-seach"></i>
+        搜索
+      </span>
     </div>
     <MiniPlayer></MiniPlayer>
   </div>
@@ -25,24 +28,20 @@ $baseAssets: '../../../assets';
   border: none;
   @include setFlexPos(row, space-around, center);
   .search-bar {
+    @include setFlexPos(row, center, center);
     border: none;
     border-radius: 48px;
     outline: none;
-    color: #b7b7b7;
-    font-size: 0.36rem;
+    color: #d8d7d7a4;
     text-align: center;
     @include setSize(76%, 92px);
-    background-color: #f1f1f1;
-    font-size: 0.42rem;
-    line-height: 92px;
+    background-color: #f1f1f136;
     span {
-      position: relative;
+      font-size: 0.44rem;
       display: inline-block;
-      background-image: url('#{$baseAssets}/img/search.png');
-      background-size: 40px;
-      background-position: left center;
-      background-repeat: no-repeat;
-      padding: 0 0 0 58px;
+      .iconfont {
+        font-size: 0.4rem;
+      }
     }
   }
 }

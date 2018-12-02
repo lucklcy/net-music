@@ -19,6 +19,15 @@
   }
 }
 
+@mixin setBgImg($url, $position-horizontal, $position-vertical, $size, $repeat) {
+  @if $url!= '' {
+    background-image: url($url);
+  }
+  background-position: $position-horizontal $position-vertical;
+  background-size: $size;
+  background-repeat: $repeat;
+}
+
 @mixin placeholder {
   &::-webkit-input-placeholder {
     /* Chrome/Opera/Safari */

@@ -56,5 +56,22 @@ export default [
     subUrl: '/playlist/detail',
     name: 'getPlayListDetail',
     method: REQUEST_METHOD_MAP.GET
+  },
+  // 使用歌单详情接口后 , 能得到的音乐的 id, 但不能得到的音乐 url, 调用此接口 , 传入的音乐 id( 可多个 , 用逗号隔开 ), 可以获取对应的音乐的 url( 不需要登录 )
+  // 必选参数 : id : 音乐 id
+  // 可选参数 : br: 码率,默认设置了 999000 即最大码率,如果要 320k 则可设置为 320000,其他类推
+  // 调用例子 : /song/url?id=33894312 /song/url?id=405998841,33894312
+  {
+    subUrl: '/song/url',
+    name: 'getSongUrl',
+    method: REQUEST_METHOD_MAP.GET
+  },
+  // /lyric
+  // 调用此接口 , 传入音乐 id 可获得对应音乐的歌词 ( 不需要登录 )
+  // 调用例子 : /lyric?id=33894312
+  {
+    subUrl: '/lyric',
+    name: 'getSongLyric',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]

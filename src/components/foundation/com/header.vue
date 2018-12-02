@@ -27,6 +27,7 @@ export default class Header extends mixins(CommonMixin) {}
 <style lang="scss" scoped>
 $baseAssets: '../../../assets';
 .header {
+  background-color: #e04136;
   .panel-container {
     @include setSize(100%, 100px);
     @include setFlexPos(column, space-around, center);
@@ -35,7 +36,7 @@ $baseAssets: '../../../assets';
       .panel-item {
         display: inline-block;
         font-size: 0.4rem;
-        color: #424242;
+        color: #fff;
         text-decoration: none;
         padding: 10px 112px;
         // 取消移动端点击的蓝色背景色
@@ -51,15 +52,13 @@ $baseAssets: '../../../assets';
       @include setSize(100px, 6px);
       border-radius: 50px;
       border: none;
-      background-color: #adadad;
-      transition: left linear 0.2s;
+      background-color: #fff;
+      transition: left linear 0.1s;
       &.to-first {
         left: -198px;
-        // transform: translateX(-198px);
       }
       &.to-second {
         left: 195px;
-        // transform: translateX(195px);
       }
     }
   }

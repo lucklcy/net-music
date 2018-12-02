@@ -9,8 +9,8 @@
             <div class="content">
               <span class="name">{{item.name | limitIn(16)}}</span>
               <span class="count">
-                <img :src="earPodImg" alt="听过">
-                <span>{{item.listenerCount|dealWithPlayCount}}</span>
+                <i class="iconfont icon-erji"></i>
+                {{item.listenerCount|dealWithPlayCount}}
               </span>
               <span class="desc">{{item.description | limitIn(46)}}</span>
             </div>
@@ -40,7 +40,6 @@ export interface IPrograms {
 })
 export default class Programs extends mixins(CommonMixin) {
   private ProgramList: IPrograms[] = []
-  private earPodImg: string | ImageData = require('@/assets/img/earPodGray.png')
   private title: string = ''
 
   created() {

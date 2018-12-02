@@ -1,3 +1,45 @@
+export interface ICreator {
+  avatarUrl: string
+  birthday: number
+  nickname: string
+  userId: number
+  city: number
+  province: number
+  [propName: string]: any
+}
+
+export interface IAl {
+  id: number
+  name: string
+  pic: number
+  picUrl: string
+  [propName: string]: any
+}
+
+export interface IArtist {
+  id: number
+  name: string
+  [propName: string]: any
+}
+
+export interface ITrack {
+  id: number
+  al: IAl
+  ar: IArtist[]
+  dt: number
+  name: string
+}
+
+export interface IPlaylist {
+  creator: ICreator
+  tracks: ITrack[]
+  coverImgUrl: string
+  createTime: number
+  description: string
+  name: string
+  [propName: string]: any
+}
+
 export interface Indicator {
   text: string
   tip?: string
@@ -12,9 +54,20 @@ export interface UserInfo {
   [propName: string]: any
 }
 
+export interface IPlaySong {
+  id: number
+  name: string
+  picUrl: string
+  songer: string
+  duration: number
+}
+
 export interface State {
   indicator: Indicator
   userInfo: UserInfo
+  playList: IPlaySong[]
+  currentSong: IPlaySong
+  playing: boolean
 }
 
 // 初始状态
@@ -25,7 +78,10 @@ const stateData: State = {
     userId: 0,
     avatarUrl: '',
     backgroundUrl: ''
-  }
+  },
+  playList: [],
+  currentSong: { id: 0, name: '', picUrl: '', songer: '', duration: 0 },
+  playing: false
 }
 
 export default stateData

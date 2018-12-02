@@ -20,19 +20,17 @@ $baseAssets: '../../../assets';
           border-top-left-radius: 10px;
           border-top-right-radius: 10px;
           @include setSize(100%, 76%);
-          background-position: center center;
-          background-size: cover;
+          @include setBgImg('', center, center, cover, no-repeat);
           .heared {
             float: right;
             padding: 10px 10px 0 0;
-            img {
-              @include setSize(42px, 42px);
-              vertical-align: middle;
-            }
             span {
               margin: 0 0 0 8px;
               color: #fff;
               font-size: 0.32rem;
+              .iconfont {
+                font-size: 0.28rem;
+              }
             }
           }
           .description {
@@ -44,8 +42,7 @@ $baseAssets: '../../../assets';
             @include setFlexPos(row, flex-start, center);
             .avatar {
               @include setSize(56px, 56px);
-              background-position: center center;
-              background-size: cover;
+              @include setBgImg('', center, center, cover, no-repeat);
             }
             span {
               margin-left: 16px;
@@ -58,7 +55,7 @@ $baseAssets: '../../../assets';
           border-bottom-right-radius: 10px;
           @include setSize(100%, 24%);
           color: #fff;
-          background-color: rgba(248, 120, 120, 0.9);
+          background-color: #e04136;
           font-size: 0.28rem;
           padding: 0 16px;
           @include setFlexPos(column, space-around, flex-start);
