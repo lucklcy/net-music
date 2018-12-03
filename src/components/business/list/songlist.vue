@@ -53,24 +53,29 @@
         </li>
       </ul>
     </section>
+    <Footer v-if="playList.length>0"></Footer>
   </div>
 </template>
 <script lang="ts">
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
+import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
 import MiniPlayer from '~/business/player/mini.vue'
 import { IPlaylist, ITrack } from '@/store/state'
+import { IPlaySong } from '@/store/state'
 
 @Component({
   components: {
-    MiniPlayer
+    MiniPlayer,
+    Footer
   }
 })
 export default class SongList extends mixins(CommonMixin) {
   @Mutation setPlayList: (tarcks: ITrack[]) => void
   @Mutation setCurrentSong: (songId: number) => void
+  @State playList: IPlaySong[]
 
   private playlist: IPlaylist | null = null
 
@@ -92,7 +97,6 @@ export default class SongList extends mixins(CommonMixin) {
   private goToSongPlay(songId: number) {
     this.setPlayList((this.playlist as IPlaylist).tracks)
     this.setCurrentSong(songId)
-    this.$router.push({ name: 'r_song_play', query: { id: `${songId}` } })
   }
 
   created() {

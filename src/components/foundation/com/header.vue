@@ -27,7 +27,7 @@ export default class Header extends mixins(CommonMixin) {}
 <style lang="scss" scoped>
 $baseAssets: '../../../assets';
 .header {
-  background-color: #e04136;
+  background-color: $color-highlight-background;
   .panel-container {
     @include setSize(100%, 100px);
     @include setFlexPos(column, space-around, center);

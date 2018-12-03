@@ -1,5 +1,4 @@
 .main-player {
-  @include setSize(100%, 100%);
   .normal-player {
     position: fixed;
     left: 0;
@@ -51,11 +50,12 @@
     .middle {
       position: fixed;
       width: 100%;
-      top: 380px;
-      bottom: 400px;
+      top: 160px;
+      bottom: 320px;
       white-space: nowrap;
       font-size: 0;
       .middle-l {
+        margin-top: 40px;
         display: inline-block;
         vertical-align: top;
         position: relative;
@@ -93,13 +93,13 @@
         }
         .playing-lyric-wrapper {
           width: 80%;
-          margin: 30px auto 0 auto;
+          margin: 100px auto 0 auto;
           overflow: hidden;
           text-align: center;
           .playing-lyric {
-            height: 20px;
-            line-height: 20px;
-            font-size: $font-size-medium;
+            height: 50px;
+            line-height: 50px;
+            font-size: 0.36rem;
             color: $color-text-l;
           }
         }
@@ -116,9 +116,9 @@
           overflow: hidden;
           text-align: center;
           .text {
-            line-height: 32px;
+            line-height: 2;
             color: $color-text-l;
-            font-size: $font-size-medium;
+            font-size: 0.36rem;
             &.current {
               color: $color-text;
             }
@@ -128,7 +128,7 @@
     }
     .bottom {
       position: absolute;
-      bottom: 180px;
+      bottom: 60px;
       width: 100%;
       .dot-wrapper {
         text-align: center;
@@ -178,6 +178,67 @@
           font-size: 0.56rem;
           color: $color-theme;
         }
+      }
+    }
+  }
+  .mini-player {
+    @include setFlexPos(row, space-between, center);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 180;
+    width: 100%;
+    height: $mini-player-height;
+    background: $color-highlight-background;
+
+    &.mini-enter-active,
+    &.mini-leave-active {
+      transition: all 0.4s;
+    }
+
+    &.mini-enter,
+    &.mini-leave-to {
+      opacity: 0;
+    }
+
+    .icon {
+      @include setSize(142px, 142px);
+      border-radius: 50%;
+      @include setBgImg('', center, center, cover, no-repeat);
+      margin-left: 50px;
+      &.play {
+        animation: rotate 20s linear infinite;
+      }
+      &.pause {
+        animation-play-state: paused;
+      }
+    }
+
+    .text {
+      @include setFlexPos(column, space-around, flex-start);
+      flex: 1;
+      overflow: hidden;
+      height: 120px;
+      padding: 0 0 0 40px;
+      .name {
+        font-size: 0.32rem;
+        color: $color-text;
+      }
+      .desc {
+        font-size: 0.22rem;
+        color: $color-text-d;
+      }
+    }
+
+    .control {
+      width: 80px;
+      padding: 0 10px;
+      .icon-mini.iconfont {
+        font-size: 0.42rem;
+        color: $color-theme-d;
+        position: absolute;
+        left: 38px;
+        top: 34px;
       }
     }
   }

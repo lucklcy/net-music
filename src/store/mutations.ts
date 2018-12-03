@@ -1,7 +1,6 @@
 import { State } from './state'
 import { isBoolean, isObject } from 'lodash'
 import { UserInfo, ITrack, IArtist, IPlaySong } from './state'
-import { srorageSet } from '@/utils'
 
 export interface IkeyVal {
   key: string
@@ -45,7 +44,6 @@ export default {
       })
     }
     state.playList = tempPlaySongList
-    srorageSet('playList', val)
   },
   setCurrentSong(state: State, song: number): void {
     const playList: IPlaySong[] = state.playList
@@ -53,8 +51,8 @@ export default {
       for (let i = 0; i < playList.length; i++) {
         const tempItem: IPlaySong = playList[i]
         if (tempItem.id === song) {
+          state.currentIndex = i
           state.currentSong = tempItem
-          srorageSet('currentSong', song)
           break
         }
       }
@@ -62,5 +60,18 @@ export default {
   },
   changePlayingStatus(state: State, playFlag: boolean): void {
     state.playing = playFlag
+  },
+  changeFullScreen(state: State, fullScreenFlag: boolean): void {
+    state.fullScreen = fullScreenFlag
+  },
+  setCurrentIndex(state: State, index: number): void {
+    state.currentIndex = index
+    const playList: IPlaySong[] = state.playList
+    if (playList && playList.length > 0 && index >= 0 && index < playList.length - 1) {
+      state.currentSong = playList[index]
+    }
+  },
+  changePlayingMode(state: State, mode: string) {
+    state.mode = mode
   }
 }

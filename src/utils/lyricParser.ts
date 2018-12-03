@@ -6,12 +6,10 @@ const STATE_PLAYING = 1
 interface ITagReg {
   [propName: string]: string
 }
-
 interface ILine {
   time: number
   txt: string
 }
-
 const tagRegMap: ITagReg = {
   title: 'ti',
   artist: 'ar',
@@ -21,16 +19,20 @@ const tagRegMap: ITagReg = {
 }
 
 function noop(item: { txt: string; lineNum: number }) {
-  console.log('this is noop')
+  console.log({ item })
 }
 
 export default class Lyric {
+  public lines: ILine[]
   private lrc: string
   private tags: { [propName: string]: string }
-  private lines: ILine[]
   private handler: (item: { txt: string; lineNum: number }) => void
   private state: number
   private curLine: number
+  private pauseStamp: number
+  private startStamp: number
+  private timer: number
+  private curNum: number
   constructor(lrc: string, hanlder = noop) {
     this.lrc = lrc
     this.tags = {}
@@ -38,18 +40,59 @@ export default class Lyric {
     this.handler = hanlder
     this.state = STATE_PAUSE
     this.curLine = 0
+    this.curNum = 0
 
     this._init()
   }
 
-  private _init() {
-    this._initTag()
+  public play(startTime = 0, skipLast: boolean = false) {
+    if (!this.lines.length) {
+      return
+    }
+    this.state = STATE_PLAYING
 
-    this._initLines()
+    this.curNum = this._findCurNum(startTime)
+    this.startStamp = +new Date() - startTime
+
+    if (!skipLast) {
+      this._callHandler(this.curNum - 1)
+    }
+
+    if (this.curNum < this.lines.length) {
+      clearTimeout(this.timer)
+      this._playRest()
+    }
+  }
+
+  public seek(offset: number) {
+    this.play(offset)
+  }
+
+  public togglePlay() {
+    const now = +new Date()
+    if (this.state === STATE_PLAYING) {
+      this.stop()
+      this.pauseStamp = now
+    } else {
+      this.state = STATE_PLAYING
+      this.play((this.pauseStamp || now) - (this.startStamp || now), true)
+      this.pauseStamp = 0
+    }
+  }
+
+  public stop() {
+    this.state = STATE_PAUSE
+    clearTimeout(this.timer)
+  }
+
+  private _init() {
+    if (this.lrc && this.lrc !== '') {
+      this._initTag()
+      this._initLines()
+    }
   }
 
   private _initTag() {
-    // const field of Object.keys(this.formErrors)
     for (const tag of Object.keys(tagRegMap)) {
       const matches = this.lrc.match(new RegExp(`\\[${tagRegMap[tag]}:([^\\]]*)]`, 'i'))
       this.tags[tag] = (matches && matches[1]) || ''
@@ -65,7 +108,10 @@ export default class Lyric {
         const txt = line.replace(timeExp, '').trim()
         if (txt) {
           this.lines.push({
-            time: result[1] * 60 * 1000 + result[2] * 1000 + (result[3] || 0) * 10,
+            time:
+              Number(result[1]) * 60 * 1000 +
+              Number(result[2]) * 1000 +
+              Number(result[3] || 0) * 10,
             txt
           })
         }
@@ -97,8 +143,8 @@ export default class Lyric {
   }
 
   private _playRest() {
-    let line = this.lines[this.curNum]
-    let delay = line.time - (+new Date() - this.startStamp)
+    const line = this.lines[this.curNum]
+    const delay = line.time - (+new Date() - this.startStamp)
 
     this.timer = setTimeout(() => {
       this._callHandler(this.curNum++)
@@ -106,45 +152,5 @@ export default class Lyric {
         this._playRest()
       }
     }, delay)
-  }
-
-  private play(startTime = 0, skipLast) {
-    if (!this.lines.length) {
-      return
-    }
-    this.state = STATE_PLAYING
-
-    this.curNum = this._findCurNum(startTime)
-    this.startStamp = +new Date() - startTime
-
-    if (!skipLast) {
-      this._callHandler(this.curNum - 1)
-    }
-
-    if (this.curNum < this.lines.length) {
-      clearTimeout(this.timer)
-      this._playRest()
-    }
-  }
-
-  private togglePlay() {
-    var now = +new Date()
-    if (this.state === STATE_PLAYING) {
-      this.stop()
-      this.pauseStamp = now
-    } else {
-      this.state = STATE_PLAYING
-      this.play((this.pauseStamp || now) - (this.startStamp || now), true)
-      this.pauseStamp = 0
-    }
-  }
-
-  private stop() {
-    this.state = STATE_PAUSE
-    clearTimeout(this.timer)
-  }
-
-  private seek(offset) {
-    this.play(offset)
   }
 }

@@ -55,7 +55,7 @@ $baseAssets: '../../../assets';
           border-bottom-right-radius: 10px;
           @include setSize(100%, 24%);
           color: #fff;
-          background-color: #e04136;
+          background-color: $color-highlight-background;
           font-size: 0.28rem;
           padding: 0 16px;
           @include setFlexPos(column, space-around, flex-start);

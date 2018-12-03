@@ -75,7 +75,7 @@ export default class TabContainer extends mixins(CommonMixin) {
       .pic {
         @include setSize(180px, 180px);
         @include setFlexPos(row, center, center);
-        background-color: #e04136;
+        background-color: $color-highlight-background;
         border-radius: 50%;
         color: #fff;
         &.fm-img .iconfont {
