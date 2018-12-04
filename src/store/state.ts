@@ -92,7 +92,7 @@ const stateData: State = {
   playList: [],
   currentSong: { id: 0, name: '', picUrl: '', songer: '', duration: 0 },
   playing: false,
-  fullScreen: false,
+  fullScreen: true,
   currentIndex: -1,
   mode: PLAYING_MODE.SEQUENCE
 }

@@ -9,7 +9,7 @@
           <i class="back iconfont icon-arrow-down-" @click="back"></i>
           <div class="song-header">
             <span class="title">{{currentSong.name | limitIn(18)}}</span>
-            <span class="subtitle">{{currentSong.songer | limitIn(38)}}</span>
+            <span class="subtitle">{{currentSong.songer | limitIn(30)}}</span>
           </div>
           <i class="about iconfont icon-qunfengshoucang"></i>
         </div>
@@ -87,12 +87,21 @@ import ProgressBar from '~/foundation/base/progressBar.vue'
 import ProgressCircle from '~/foundation/base/progressCircle.vue'
 import { prefixStyle } from '@/utils/dom'
 import lyricParser from '@/utils/lyricParser'
-import { IPlaySong, PLAYING_MODE } from '@/store/state'
+import { PLAYING_MODE } from '@/store/state.ts'
 
 interface ISongDetail {
   id: number
   url: string
 }
+
+interface IPlaySong {
+  id: number
+  name: string
+  picUrl: string
+  songer: string
+  duration: number
+}
+
 interface ISongLyric {
   code: number
   lrc: { lyric: string; version: number }
@@ -137,7 +146,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private autoPlayTimer: number = 0
   private currentLineNum: number = 0
   private songReady: boolean = false
-  private radius: number = 42
+  private radius: number = 36
   private timer: number
 
   @Mutation changePlayingStatus: (flag: boolean) => void
@@ -244,8 +253,8 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     if (!this.touch.moved) {
       return
     }
-    let offsetWidth
-    let opacity
+    let offsetWidth = 0
+    let opacity = 0
     if (this.currentShow === 'cd') {
       if (this.touch.percent > 0.1) {
         offsetWidth = -window.innerWidth
@@ -266,7 +275,6 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
       }
     }
     const time = 300
-
     this.lyricListStyle = `${transform}:translate3d(${offsetWidth}px,0,0); ${transitionDuration}:${time}ms;`
     this.middleLStyle = `opacity:${opacity};${transitionDuration}:${time}ms;`
     this.touch.initiated = false
@@ -324,8 +332,8 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
       if (index === this.playList.length) {
         index = 0
       }
-      this.setCurrentIndex(index)
       this.changePlayingStatus(false)
+      this.setCurrentIndex(index)
     }
   }
   // 上一首
@@ -341,8 +349,8 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
       if (index === -1) {
         index = this.playList.length - 1
       }
-      this.setCurrentIndex(index)
       this.changePlayingStatus(false)
+      this.setCurrentIndex(index)
     }
   }
 
@@ -396,21 +404,21 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
       let dataArray = resultSongDetail['data']
       this.songUrl = dataArray[0]['url']
       this.songReady = true
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.changePlayingStatus(true)
+        this.currentLyric.seek(0)
+      }, 800)
+    })
+    this.service.getSongLyric({ id: songId }).then((resultSongLyric: ISongLyric) => {
+      let lyric = resultSongLyric['lrc']['lyric']
       if (this.currentLyric) {
-        this.currentLyric.stop()
+        this.currentLyric.destroy()
         this.currentTime = 0
         this.playingLyric = ''
         this.currentLineNum = 0
       }
-      clearTimeout(this.timer)
-      this.timer = setTimeout(() => {
-        this.changePlayingStatus(true)
-      }, 1000)
-    })
-    this.service.getSongLyric({ id: songId }).then((resultSongLyric: ISongLyric) => {
-      let lyric = resultSongLyric['lrc']['lyric']
       this.currentLyric = new lyricParser(lyric, this.lyricHandler)
-      this.currentLyric.seek(this.currentTime * 1000)
     })
   }
 

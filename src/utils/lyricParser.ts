@@ -85,7 +85,23 @@ export default class Lyric {
     clearTimeout(this.timer)
   }
 
+  public destroy() {
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
+    this.lrc = ''
+    this.tags = {}
+    this.lines = []
+    this.handler = noop
+    this.state = STATE_PAUSE
+    this.curLine = 0
+    this.curNum = 0
+  }
+
   private _init() {
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
     if (this.lrc && this.lrc !== '') {
       this._initTag()
       this._initLines()

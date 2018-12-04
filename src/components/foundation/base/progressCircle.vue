@@ -4,8 +4,12 @@
       <circle class="progress-background" r="50" cx="50" cy="50" fill="transparent" />
       <circle class="progress-bar" r="50" cx="50" cy="50" fill="transparent" :stroke-dasharray="dashArray"
         :stroke-dashoffset="dashOffset" />
+      <g v-if="playing">
+        <line x1="39" y1="32" x2="39" y2="68" /> -->
+        <line x1="60" y1="32" x2="60" y2="68" />
+      </g>
+      <polygon fill="transparent" points="39,32 70,50 39,68 39,32" v-else />
     </svg>
-    <slot></slot>
   </div>
 </template>
 
@@ -19,6 +23,8 @@ import { prefixStyle } from '@/utils/dom'
   components: {}
 })
 export default class ProgressCircle extends mixins(CommonMixin) {
+  @State playing: boolean
+
   @Prop({ default: 100 })
   private radius: number
 
@@ -39,7 +45,6 @@ export default class ProgressCircle extends mixins(CommonMixin) {
   circle {
     stroke-width: 20px;
     transform-origin: center;
-
     &.progress-background {
       transform: scale(0.9);
       stroke: $color-theme-d;
@@ -49,6 +54,14 @@ export default class ProgressCircle extends mixins(CommonMixin) {
       transform: scale(0.9) rotate(-90deg);
       stroke: $color-theme;
     }
+  }
+  line {
+    stroke-width: 24px;
+    stroke: $color-theme;
+  }
+  polygon {
+    stroke-width: 20px;
+    stroke: $color-theme;
   }
 }
 </style>

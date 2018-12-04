@@ -100,7 +100,7 @@
             height: 50px;
             line-height: 50px;
             font-size: 0.36rem;
-            color: $color-text-l;
+            color: $color-text;
           }
         }
       }
@@ -231,14 +231,13 @@
     }
 
     .control {
-      width: 80px;
       padding: 0 10px;
       .icon-mini.iconfont {
         font-size: 0.42rem;
         color: $color-theme-d;
         position: absolute;
-        left: 38px;
-        top: 34px;
+        left: 28%;
+        top: 25%;
       }
     }
   }
