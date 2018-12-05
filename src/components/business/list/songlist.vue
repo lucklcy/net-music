@@ -32,6 +32,16 @@
         </div>
       </div>
     </section>
+    <section class="oper border-1px">
+      <div class="play-all">
+        <SvgIcon :iconClass="'list-play'" :className="'list-play'"></SvgIcon>
+        <span>播放全部</span>
+      </div>
+      <div class="collect">
+        <SvgIcon :iconClass="'list-plus'" :className="'list-plus'"></SvgIcon>
+        <span>收藏</span>
+      </div>
+    </section>
     <section class="list-container">
       <ul>
         <li v-for="(item,index) in playlist.tracks" :key="index" @click="goToSongPlay(item.id)">

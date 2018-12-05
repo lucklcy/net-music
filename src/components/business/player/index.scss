@@ -187,7 +187,7 @@
     right: 0;
     bottom: 250px;
     z-index: 180;
-    width: 50%;
+    width: 48%;
     height: $mini-player-height;
     background: $color-highlight-background;
 
@@ -205,7 +205,7 @@
       @include setSize(118px, 118px);
       border-radius: 50%;
       @include setBgImg('', center, center, cover, no-repeat);
-      margin-left: 50px;
+      margin-left: 16px;
       &.play {
         animation: rotate 20s linear infinite;
       }
@@ -219,7 +219,7 @@
       flex: 1;
       overflow: hidden;
       height: 120px;
-      padding: 0 0 0 40px;
+      padding: 0 0 0 18px;
       .name {
         font-size: 0.32rem;
         color: $color-text;

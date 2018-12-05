@@ -1,12 +1,12 @@
 <template>
-  <div class="progress-circle">
+  <div class="progress-circle" @click.stop="doClick">
     <svg :width="radius" :height="radius" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <circle class="progress-background" r="50" cx="50" cy="50" fill="transparent" />
       <circle class="progress-bar" r="50" cx="50" cy="50" fill="transparent" :stroke-dasharray="dashArray"
         :stroke-dashoffset="dashOffset" />
       <g v-if="playing">
-        <line x1="39" y1="32" x2="39" y2="68" /> -->
-        <line x1="60" y1="32" x2="60" y2="68" />
+        <line x1="39" y1="28" x2="39" y2="72" />
+        <line x1="60" y1="28" x2="60" y2="72" />
       </g>
       <polygon fill="transparent" points="39,32 70,50 39,68 39,32" v-else />
     </svg>
@@ -17,7 +17,7 @@
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { State } from 'vuex-class'
+import { State, Mutation } from 'vuex-class'
 import { prefixStyle } from '@/utils/dom'
 @Component({
   components: {}
@@ -32,8 +32,14 @@ export default class ProgressCircle extends mixins(CommonMixin) {
   private percent: number
   private dashArray: number = Math.PI * 100
 
+  @Mutation changePlayingStatus: (flag: boolean) => void
+
   get dashOffset() {
     return (1 - this.percent) * this.dashArray
+  }
+
+  private doClick() {
+    this.changePlayingStatus(!this.playing)
   }
 }
 </script>

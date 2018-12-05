@@ -114,6 +114,33 @@ $baseAssets: '../../../assets';
       }
     }
   }
+  .oper {
+    @include setSize(100%, 120px);
+    background-color: #fff;
+    @include setFlexPos(row, flex-start, center);
+    &.border-1px {
+      @include border-1px(bottom, $border-color);
+    }
+    .play-all {
+      @include setFlexPos(row, flex-start, center);
+      @include setSize(60%, 100%);
+      border-top-left-radius: 20px;
+      .list-play {
+        font-size: 0.58rem;
+        color: #333;
+      }
+    }
+    .collect {
+      @include setFlexPos(row, flex-start, center);
+      @include setSize(60%, 100%);
+      border-top-right-radius: 20px;
+      background-color: $color-highlight-background;
+      .list-plus {
+        font-size: 0.48rem;
+        color: #fff;
+      }
+    }
+  }
   .list-container {
     flex: 1;
     width: 100%;
