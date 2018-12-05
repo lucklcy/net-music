@@ -8,6 +8,7 @@ import '@/assets/scss/common.scss'
 import FastClick from 'fastclick'
 import '@/filters'
 import initPromise from '@/common/initLogin'
+import '@/assets/icons/index'
 
 // 兼容毒瘤ios的300ms延迟问题
 if ('addEventListener' in document) {

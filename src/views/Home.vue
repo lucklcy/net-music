@@ -2,7 +2,7 @@
   <div class="home">
     <Header></Header>
     <router-view />
-    <Footer v-if="playList.length>0"></Footer>
+    <Footer></Footer>
   </div>
 </template>
 

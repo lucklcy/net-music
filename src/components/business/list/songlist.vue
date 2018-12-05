@@ -36,7 +36,7 @@
       <ul>
         <li v-for="(item,index) in playlist.tracks" :key="index" @click="goToSongPlay(item.id)">
           <div class="index">{{index+1}}</div>
-          <div class="song-content">
+          <div class="song-content border-1px">
             <div class="label">
               <span class="name">{{item.name | limitIn(30) }}</span>
               <span class="author">{{getAuthorString(item) | limitIn(28)}}</span>
@@ -53,7 +53,6 @@
         </li>
       </ul>
     </section>
-    <Footer v-if="playList.length>0"></Footer>
   </div>
 </template>
 <script lang="ts">

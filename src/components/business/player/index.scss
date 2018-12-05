@@ -184,10 +184,10 @@
   .mini-player {
     @include setFlexPos(row, space-between, center);
     position: fixed;
-    left: 0;
-    bottom: 0;
+    right: 0;
+    bottom: 250px;
     z-index: 180;
-    width: 100%;
+    width: 50%;
     height: $mini-player-height;
     background: $color-highlight-background;
 
@@ -202,7 +202,7 @@
     }
 
     .icon {
-      @include setSize(142px, 142px);
+      @include setSize(118px, 118px);
       border-radius: 50%;
       @include setBgImg('', center, center, cover, no-repeat);
       margin-left: 50px;

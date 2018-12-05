@@ -117,7 +117,7 @@ $baseAssets: '../../../assets';
   .list-container {
     flex: 1;
     width: 100%;
-    background-color: #222;
+    background-color: #fff;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     ul {
@@ -125,24 +125,27 @@ $baseAssets: '../../../assets';
         @include setFlexPos(row, flex-start, center);
         .index {
           font-size: 0.3rem;
-          color: hsla(0, 0%, 100%, 0.3);
+          color: #999;
           width: 112px;
           text-align: center;
         }
         .song-content {
           flex: 1;
           padding: 20px 80px 20px 0;
+          &.border-1px {
+            @include border-1px(bottom, $border-color);
+          }
           @include setFlexPos(row, space-between, center);
           .label {
             @include setFlexPos(column, space-between, flex-start);
             .name {
               font-size: 0.36rem;
-              color: #eee;
+              color: #333;
               padding: 0 0 16px 0;
             }
             .author {
               font-size: 0.26rem;
-              color: hsla(0, 0%, 100%, 0.3);
+              color: #aaa;
             }
           }
           .oper {
