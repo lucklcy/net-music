@@ -42,8 +42,8 @@ export default {
           duration: Math.floor((duration || 0) / 1000)
         })
       })
+      state.playList = tempPlaySongList
     }
-    state.playList = tempPlaySongList
   },
   setCurrentSong(state: State, song: number): void {
     const playList: IPlaySong[] = state.playList

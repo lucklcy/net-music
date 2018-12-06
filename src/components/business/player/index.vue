@@ -25,14 +25,22 @@
               <div class="playing-lyric">{{playingLyric}}</div>
             </div>
           </div>
-          <scroll class="middle-r" ref="lyricList" :data-list="currentLyric && currentLyric.lines"
-            :style="lyricListStyle">
-            <div class="lyric-wrapper">
-              <div v-if="currentLyric">
-                <p ref="lyricLine" class="text" :class="{'current': currentLineNum ===index}" v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
-              </div>
+          <div class="middle-r" v-if="noLyricFlag" :style="lyricListStyle">
+            <div class="no-lyric">
+              <span>本歌曲暂无歌词</span>
             </div>
-          </scroll>
+          </div>
+          <template v-else>
+            <scroll class="middle-r" ref="lyricList" :data-list="currentLyric && currentLyric.lines"
+              :style="lyricListStyle">
+              <div class="lyric-wrapper">
+                <div v-if="currentLyric">
+                  <p ref="lyricLine" class="text" :class="{'current': currentLineNum ===index}"
+                    v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+                </div>
+              </div>
+            </scroll>
+          </template>
         </div>
         <div class="bottom">
           <div class="dot-wrapper">
@@ -61,8 +69,8 @@
         <div class="icon" :style="{backgroundImage:'url('+currentSong.picUrl+')'}" :class="cdCls">
         </div>
         <div class="text">
-          <span class="name" v-html="currentSong.name"></span>
-          <span class="desc" v-html="currentSong.songer"></span>
+          <span class="name">{{currentSong.name | limitIn(8)}}</span>
+          <span class="desc">{{currentSong.songer | limitIn(8)}}</span>
         </div>
         <div class="control">
           <ProgressCircle :radius="radius" :percent="percent">
@@ -106,6 +114,7 @@ interface ISongLyric {
   code: number
   lrc: { lyric: string; version: number }
   lyricUser: { id: number; nickname: string; userid: number; uptime: number }
+  nolyric?: boolean
 }
 
 interface ITtuch {
@@ -127,9 +136,6 @@ const transitionDuration = prefixStyle('transitionDuration')
   }
 })
 export default class SongMainPlayer extends mixins(CommonMixin) {
-  private songId: number = 0
-  private middleLStyle: string = ''
-  private lyricListStyle: string = ''
   @State currentSong: IPlaySong
   @State playing: boolean
   @State fullScreen: boolean
@@ -137,6 +143,9 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   @State currentIndex: number
   @State mode: string
 
+  private songId: number = 0
+  private middleLStyle: string = ''
+  private lyricListStyle: string = ''
   private touch: ITtuch = { initiated: false, moved: false, startX: 0, startY: 0, percent: 0 }
   private currentShow: string = 'cd'
   private playingLyric: string = ''
@@ -148,6 +157,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private songReady: boolean = false
   private radius: number = 36
   private timer: number
+  private noLyricFlag: boolean = false
 
   @Mutation changePlayingStatus: (flag: boolean) => void
   @Mutation changeFullScreen: (flag: boolean) => void
@@ -403,22 +413,42 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     this.service.getSongUrl({ id: songId }).then((resultSongDetail: { data: ISongDetail[] }) => {
       let dataArray = resultSongDetail['data']
       this.songUrl = dataArray[0]['url']
-      this.songReady = true
-      clearTimeout(this.timer)
+      this.timer && clearTimeout(this.timer)
       this.timer = setTimeout(() => {
-        this.changePlayingStatus(true)
+        this.currentTime = 0
+        this.currentLineNum = 0
+        this.songReady = true
         this.currentLyric.seek(0)
+        this.changePlayingStatus(true)
       }, 800)
     })
     this.service.getSongLyric({ id: songId }).then((resultSongLyric: ISongLyric) => {
-      let lyric = resultSongLyric['lrc']['lyric']
-      if (this.currentLyric) {
-        this.currentLyric.destroy()
-        this.currentTime = 0
+      this.currentLyric && this.currentLyric.destroy()
+      if (resultSongLyric['lrc'] && resultSongLyric['lrc']['lyric']) {
+        this.noLyricFlag = false
+        let lyric = resultSongLyric['lrc']['lyric']
         this.playingLyric = ''
-        this.currentLineNum = 0
+        this.currentLyric = new lyricParser(lyric, this.lyricHandler)
+        this.$nextTick(() => {
+          let scrollElement = this.$refs.lyricList as Vue & {
+            scrollToElement: (
+              el: HTMLElement | string,
+              time?: number,
+              offsetX?: number | boolean,
+              offsetY?: number | boolean,
+              easing?: object
+            ) => void
+            scrollTo: (x: number, y: number, time?: number, easing?: object) => void
+          }
+          scrollElement.scrollTo(0, 0, 1000)
+        })
+      } else if (resultSongLyric['nolyric']) {
+        this.noLyricFlag = true
+        this.playingLyric = '本歌曲暂无歌词'
+      } else {
+        this.noLyricFlag = true
+        this.playingLyric = '本歌曲暂无歌词'
       }
-      this.currentLyric = new lyricParser(lyric, this.lyricHandler)
     })
   }
 
