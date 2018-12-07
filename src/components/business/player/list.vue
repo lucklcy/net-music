@@ -10,7 +10,7 @@
         </span>
         <SvgIcon :iconClass="'player-list-garbage'" :className="'player-list-garbage'"></SvgIcon>
       </div>
-      <scroll ref="songList" :data-list="playList" class="list-wrapper border-1px">
+      <div class="list-wrapper border-1px">
         <ul>
           <li v-for="(item,index) in playList" :key="index" class="border-1px" @click="doClick(item.id)">
             <div class="face">
@@ -29,8 +29,9 @@
             <span>...到底啦....</span>
           </li>
         </ul>
-      </scroll>
-      <div class="close" @click="doClose(false)">
+      </div>
+
+      <div class="close" @click="changeShowSongList(false)">
         <span>关闭</span>
       </div>
     </div>
@@ -40,7 +41,6 @@
 <script lang="ts">
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Emit, Prop, Watch } from 'vue-property-decorator'
-import scroll from '~/foundation/base/scroll.vue'
 import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import { PLAYING_MODE } from '@/store/state.ts'
@@ -54,21 +54,19 @@ interface IPlaySong {
 }
 
 @Component({
-  components: {
-    scroll
-  }
+  components: {}
 })
 export default class PlaySongList extends mixins(CommonMixin) {
   @State mode: string
   @State playList: IPlaySong[]
   @State currentSong: IPlaySong
-
-  @Prop({ default: false })
-  private showFlag: boolean
+  @State showSongList: boolean
 
   @Mutation changePlayingMode: (mode: string) => void
   @Mutation setCurrentSong: (songId: number) => void
   @Mutation changePlayingStatus: (flag: boolean) => void
+  @Mutation changeShowSongList: (flag: boolean) => void
+
   get getIcon() {
     return `player-mode-${this.mode}`
   }
@@ -82,23 +80,10 @@ export default class PlaySongList extends mixins(CommonMixin) {
     }
     return MODE_NAME_MAP[this.mode]
   }
-  @Emit('close')
-  doClose(flag: boolean = false): void {}
 
   doClick(songId: number): void {
     this.changePlayingStatus(false)
     this.setCurrentSong(songId)
-  }
-
-  @Watch('showFlag')
-  onShowFlagChange(showFlagNew: boolean, showFlagOld: boolean) {
-    showFlagNew &&
-      this.$nextTick(() => {
-        let scrollElement = this.$refs.songList as Vue & {
-          refresh: () => void
-        }
-        scrollElement.refresh()
-      })
   }
 }
 </script>
@@ -150,7 +135,8 @@ export default class PlaySongList extends mixins(CommonMixin) {
     }
     .list-wrapper {
       flex: 1;
-      overflow: hidden;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
       width: 100%;
       &.border-1px {
         @include border-1px(top, $border-color);

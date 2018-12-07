@@ -63,6 +63,9 @@ export default {
   },
   changeFullScreen(state: State, fullScreenFlag: boolean): void {
     state.fullScreen = fullScreenFlag
+    if (!fullScreenFlag) {
+      state.showSongList = false
+    }
   },
   setCurrentIndex(state: State, index: number): void {
     state.currentIndex = index
@@ -73,5 +76,8 @@ export default {
   },
   changePlayingMode(state: State, mode: string) {
     state.mode = mode
+  },
+  changeShowSongList(state: State, flag: boolean) {
+    state.showSongList = flag
   }
 }

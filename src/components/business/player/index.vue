@@ -59,7 +59,7 @@
             <span class="play iconfont icon-Next" @click.stop="prev"></span>
             <span class="play iconfont" :class="playIcon" @click.stop="togglePlaying"></span>
             <span class="play iconfont icon-next1" @click.stop="next"></span>
-            <span @click="changeSongListShow(true)">
+            <span @click="changeShowSongList(true)">
               <SvgIcon :iconClass="'play-list'" :className="'play-list'"></SvgIcon>
             </span>
           </div>
@@ -84,8 +84,7 @@
         </div>
       </div>
     </transition>
-    <PlayingSongList class="song-list" @close="changeSongListShow" v-show="isSongListShow"
-      :show-flag="isSongListShow"></PlayingSongList>
+    <PlayingSongList class="song-list" v-show="showSongList"></PlayingSongList>
     <audio :src="songUrl" ref="audio" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
@@ -148,6 +147,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   @State playList: IPlaySong[]
   @State currentIndex: number
   @State mode: string
+  @State showSongList: boolean
 
   private songId: number = 0
   private middleLStyle: string = ''
@@ -164,12 +164,12 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private radius: number = 36
   private timer: number
   private noLyricFlag: boolean = false
-  private isSongListShow: boolean = false
 
   @Mutation changePlayingStatus: (flag: boolean) => void
   @Mutation changeFullScreen: (flag: boolean) => void
   @Mutation setCurrentIndex: (index: number) => void
   @Mutation changePlayingMode: (mode: string) => void
+  @Mutation changeShowSongList: (flag: boolean) => void
 
   get cdCls() {
     return this.playing ? 'play' : 'play pause'
@@ -457,10 +457,6 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
         this.playingLyric = '本歌曲暂无歌词'
       }
     })
-  }
-
-  private changeSongListShow(flag: boolean) {
-    this.isSongListShow = flag
   }
 
   @Watch('currentSong', { deep: true })
