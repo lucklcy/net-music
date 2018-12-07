@@ -59,7 +59,9 @@
             <span class="play iconfont icon-Next" @click.stop="prev"></span>
             <span class="play iconfont" :class="playIcon" @click.stop="togglePlaying"></span>
             <span class="play iconfont icon-next1" @click.stop="next"></span>
-            <span class="play iconfont icon-shoucangyuguanzhu"></span>
+            <span @click="changeSongListShow(true)">
+              <SvgIcon :iconClass="'play-list'" :className="'play-list'"></SvgIcon>
+            </span>
           </div>
         </div>
       </div>
@@ -82,6 +84,8 @@
         </div>
       </div>
     </transition>
+    <PlayingSongList class="song-list" @close="changeSongListShow" v-show="isSongListShow"
+      :show-flag="isSongListShow"></PlayingSongList>
     <audio :src="songUrl" ref="audio" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
@@ -93,6 +97,7 @@ import { State, Mutation } from 'vuex-class'
 import scroll from '~/foundation/base/scroll.vue'
 import ProgressBar from '~/foundation/base/progressBar.vue'
 import ProgressCircle from '~/foundation/base/progressCircle.vue'
+import PlayingSongList from '~/business/player/list.vue'
 import { prefixStyle } from '@/utils/dom'
 import lyricParser from '@/utils/lyricParser'
 import { PLAYING_MODE } from '@/store/state.ts'
@@ -132,7 +137,8 @@ const transitionDuration = prefixStyle('transitionDuration')
   components: {
     scroll,
     ProgressBar,
-    ProgressCircle
+    ProgressCircle,
+    PlayingSongList
   }
 })
 export default class SongMainPlayer extends mixins(CommonMixin) {
@@ -158,6 +164,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private radius: number = 36
   private timer: number
   private noLyricFlag: boolean = false
+  private isSongListShow: boolean = false
 
   @Mutation changePlayingStatus: (flag: boolean) => void
   @Mutation changeFullScreen: (flag: boolean) => void
@@ -427,7 +434,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
       if (resultSongLyric['lrc'] && resultSongLyric['lrc']['lyric']) {
         this.noLyricFlag = false
         let lyric = resultSongLyric['lrc']['lyric']
-        this.playingLyric = ''
+        this.playingLyric = this.currentSong.name
         this.currentLyric = new lyricParser(lyric, this.lyricHandler)
         this.$nextTick(() => {
           let scrollElement = this.$refs.lyricList as Vue & {
@@ -450,6 +457,10 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
         this.playingLyric = '本歌曲暂无歌词'
       }
     })
+  }
+
+  private changeSongListShow(flag: boolean) {
+    this.isSongListShow = flag
   }
 
   @Watch('currentSong', { deep: true })

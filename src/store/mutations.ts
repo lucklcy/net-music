@@ -32,7 +32,7 @@ export default {
               return artItem.name
             })
             .join('/')
-          songer = `${songer} - ${album || ''}`
+          songer = `${album || ''}`
         }
         tempPlaySongList.push({
           id,

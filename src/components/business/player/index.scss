@@ -183,6 +183,11 @@
           font-size: 0.56rem;
           color: $color-theme;
         }
+        .play-list {
+          font-size: 0.76rem;
+          color: $color-theme;
+          font-weight: 500;
+        }
       }
     }
   }
@@ -253,5 +258,13 @@
     100% {
       transform: rotate(360deg);
     }
+  }
+  .song-list {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 40%;
+    bottom: 0;
+    z-index: 151;
   }
 }

@@ -120,6 +120,9 @@ export default class SongList extends mixins(CommonMixin) {
     })
     if (isInList) {
       this.setCurrentSong(songId)
+    } else {
+      this.setPlayList(tracks)
+      this.setCurrentSong(songId)
     }
   }
 
