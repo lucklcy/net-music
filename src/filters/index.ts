@@ -22,9 +22,7 @@ Vue.filter('limitIn', (val: any, limit: number) => {
 Vue.filter('dealWithPlayCount', (val: number) => {
   if (val < 9999) {
     return val
-  } else if (val < 9999999) {
-    return `${Math.floor(val / 10000)}万`
   } else {
-    return `${Math.floor(val / 10000000)}千万`
+    return `${Math.floor(val / 10000)}万`
   }
 })

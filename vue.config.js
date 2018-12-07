@@ -74,5 +74,20 @@ module.exports = {
     config.plugins.delete('prefetch')
     // 移除 preload 插件
     config.plugins.delete('preload')
+
+    //重点:删除默认配置中处理svg
+    config.module.rules.delete('svg')
+    //const svgRule = config.module.rule('svg')
+    //svgRule.uses.clear()
+    config.module
+      .rule('svg-sprite-loader')
+      .test(/\.svg$/)
+      .include.add(resolve('src/assets/icons')) //处理svg目录
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
   }
 }

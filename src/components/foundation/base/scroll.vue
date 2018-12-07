@@ -115,11 +115,11 @@ export default class Scroll extends Vue {
     // 代理better-scroll的refresh方法
     this.scroll && this.scroll.refresh()
   }
-  private scrollTo(x: number, y: number, time?: number, easing?: object) {
+  public scrollTo(x: number, y: number, time?: number, easing?: object) {
     // 代理better-scroll的scrollTo方法
     this.scroll && this.scroll.scrollTo(x, y, time, easing)
   }
-  private scrollToElement(
+  public scrollToElement(
     el: HTMLElement | string,
     time?: number,
     offsetX?: number | boolean,

@@ -2,27 +2,19 @@
   <div class="tab border-1px">
     <ul class="container" v-if="type === 'recommand'">
       <li class="item">
-        <div class="pic fm-img">
-          <i class="iconfont icon-FM"></i>
-        </div>
+        <div class="pic fm-img"></div>
         <span>私人FM</span>
       </li>
       <li class="item">
-        <div class="pic recommand-img">
-          <i class="iconfont icon-rili-tianchong"></i>
-        </div>
+        <div class="pic recommand-img"></div>
         <span>每日推荐</span>
       </li>
       <li class="item">
-        <div class="pic song-list-img">
-          <i class="iconfont icon-yinleliebiao"></i>
-        </div>
+        <div class="pic song-list-img"></div>
         <span>歌单</span>
       </li>
       <li class="item">
-        <div class="pic ranking-list-img">
-          <i class="iconfont icon-icon_paihang-mian"></i>
-        </div>
+        <div class="pic ranking-list-img"></div>
         <span>排行榜</span>
       </li>
     </ul>
@@ -65,30 +57,43 @@ export default class TabContainer extends mixins(CommonMixin) {
 }
 </script>
 <style lang="scss" scoped>
+$baseAsset: '../../../assets';
 .tab {
   .container {
-    @include setSize(100%, 300px);
+    @include setSize(100%, 260px);
     @include setFlexPos(row, space-around, center);
     .item {
-      height: 288px;
+      height: 100%;
       @include setFlexPos(column, space-around, center);
       .pic {
-        @include setSize(180px, 180px);
+        @include setSize(156px, 156px);
         @include setFlexPos(row, center, center);
-        background-color: #e04136;
+        background-color: $color-highlight-background;
         border-radius: 50%;
         color: #fff;
-        &.fm-img .iconfont {
-          font-size: 1rem;
+        &.fm-img {
+          @include setBgImg('#{$baseAsset}/img/home/fm.png', center, center, cover, no-repeat);
         }
-        &.recommand-img .iconfont {
-          font-size: 0.9rem;
+        &.recommand-img {
+          @include setBgImg(
+            '#{$baseAsset}/img/home/recommand.png',
+            center,
+            center,
+            cover,
+            no-repeat
+          );
         }
-        &.song-list-img .iconfont {
-          font-size: 0.8rem;
+        &.song-list-img {
+          @include setBgImg(
+            '#{$baseAsset}/img/home/song-list.png',
+            center,
+            center,
+            cover,
+            no-repeat
+          );
         }
-        &.ranking-list-img .iconfont {
-          font-size: 0.95rem;
+        &.ranking-list-img {
+          @include setBgImg('#{$baseAsset}/img/home/ranking.png', center, center, cover, no-repeat);
         }
       }
       span {

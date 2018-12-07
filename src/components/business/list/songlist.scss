@@ -17,7 +17,7 @@ $baseAssets: '../../../assets';
       position: absolute;
       left: 0;
       top: 0;
-      background-color: rgba(88, 87, 87, 0.384);
+      background-color: rgba(19, 18, 18, 0.562);
       z-index: 2;
     }
     .title-bar {
@@ -114,10 +114,56 @@ $baseAssets: '../../../assets';
       }
     }
   }
+  .summary {
+    @include setSize(100%, 120px);
+    background-color: #fff;
+    @include setFlexPos(row, flex-start, center);
+    &.border-1px {
+      @include border-1px(bottom, $border-color);
+    }
+    .play-all {
+      padding: 0 0 0 60px;
+      @include setFlexPos(row, flex-start, center);
+      @include setSize(62%, 100%);
+      .list-play {
+        font-size: 0.58rem;
+        color: #333;
+      }
+      span {
+        margin-left: 40px;
+        color: #333;
+        font-size: 0.42rem;
+        &.track-count {
+          margin-left: 20px;
+          color: #999;
+          font-size: 0.32rem;
+        }
+      }
+    }
+    .collect {
+      padding: 0 0 0 60px;
+      @include setFlexPos(row, flex-start, center);
+      @include setSize(38%, 100%);
+      background-color: $color-highlight-background;
+      .list-plus {
+        font-size: 0.32rem;
+        color: #fff;
+      }
+      span {
+        margin-left: 10px;
+        color: #fff;
+        font-size: 0.28rem;
+        &.subscribe {
+          margin-left: 8px;
+          font-size: 0.28rem;
+        }
+      }
+    }
+  }
   .list-container {
     flex: 1;
     width: 100%;
-    background-color: #222;
+    background-color: #fff;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     ul {
@@ -125,24 +171,27 @@ $baseAssets: '../../../assets';
         @include setFlexPos(row, flex-start, center);
         .index {
           font-size: 0.3rem;
-          color: hsla(0, 0%, 100%, 0.3);
+          color: #999;
           width: 112px;
           text-align: center;
         }
         .song-content {
           flex: 1;
           padding: 20px 80px 20px 0;
+          &.border-1px {
+            @include border-1px(bottom, $border-color);
+          }
           @include setFlexPos(row, space-between, center);
           .label {
             @include setFlexPos(column, space-between, flex-start);
             .name {
               font-size: 0.36rem;
-              color: #eee;
+              color: #333;
               padding: 0 0 16px 0;
             }
             .author {
               font-size: 0.26rem;
-              color: hsla(0, 0%, 100%, 0.3);
+              color: #aaa;
             }
           }
           .oper {
@@ -158,6 +207,24 @@ $baseAssets: '../../../assets';
           color: #999;
           font-size: 0.38rem;
           @include setFlexPos(row, center, center);
+        }
+        &.subscribers {
+          padding: 30px 64px 30px 92px;
+          @include setFlexPos(row, flex-start, center);
+          span {
+            display: inline-block;
+            @include setSize(80px, 80px);
+            border-radius: 50%;
+            margin-right: 16px;
+            @include setBgImg('', center, center, cover, no-repeat);
+          }
+          .count {
+            flex: 1;
+            text-align: right;
+            font-style: normal;
+            font-size: 0.24rem;
+            color: #999;
+          }
         }
       }
     }

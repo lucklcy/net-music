@@ -17,7 +17,7 @@ import CommonMixin from '@/mixins/comMix'
 import { State } from 'vuex-class'
 import { prefixStyle } from '@/utils/dom'
 
-const progressBtnWidth = 16
+const progressBtnWidth = 13
 const transform = prefixStyle('transform')
 
 interface ITtuch {
@@ -120,7 +120,7 @@ export default class ProgressBar extends mixins(CommonMixin) {
 
     .progress-btn-wrapper {
       position: absolute;
-      left: -20px;
+      left: -12px;
       top: -20px;
       width: 52px;
       height: 52px;

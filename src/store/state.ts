@@ -62,12 +62,31 @@ export interface IPlaySong {
   duration: number
 }
 
+export const PLAYING_MODE = {
+  SEQUENCE: 'sequence',
+  LOOP: 'loop',
+  RANDOM: 'random',
+  CYCLE: 'cycle'
+}
+
+export const FOOT_BAR_STATUS = {
+  MUSIC: { icon: 'net-music', name: '音乐' },
+  VIDEO: { icon: 'net-video', name: '视频' },
+  MY: { icon: 'net-my', name: '我的' },
+  FRIENDS: { icon: 'net-friends', name: '朋友' },
+  ACCOUNT: { icon: 'net-account', name: '账号' }
+}
+
 export interface State {
   indicator: Indicator
   userInfo: UserInfo
   playList: IPlaySong[]
   currentSong: IPlaySong
   playing: boolean
+  fullScreen: boolean
+  currentIndex: number
+  mode: string
+  footBarStatus: string
 }
 
 // 初始状态
@@ -81,7 +100,11 @@ const stateData: State = {
   },
   playList: [],
   currentSong: { id: 0, name: '', picUrl: '', songer: '', duration: 0 },
-  playing: false
+  playing: false,
+  fullScreen: true,
+  currentIndex: -1,
+  mode: PLAYING_MODE.SEQUENCE,
+  footBarStatus: FOOT_BAR_STATUS.MUSIC.icon
 }
 
 export default stateData

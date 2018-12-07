@@ -22,7 +22,7 @@ npm run build
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-## API
+## API svg
 
 The api service is rely on 'Binaryify/NeteaseCloudMusicApi',please fork into your own respositories.Then,start the NeteaseCloudMusicApi on port 3000.
 

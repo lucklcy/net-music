@@ -1,14 +1,14 @@
 <template>
-  <div class="slide" ref="slide">
-    <div class="slide-group" ref="slideGroup">
-      <slot>
-      </slot>
-    </div>
-    <div v-if="showDot" class="dots">
-      <span class="dot"
-            :key="index"
-            :class="{active: currentPageIndex === index }"
-            v-for="(item, index) in dots"></span>
+  <div class="banner clear-float">
+    <div class="backgrond"></div>
+    <div class="slide" ref="slide">
+      <div class="slide-group" ref="slideGroup">
+        <slot>
+        </slot>
+      </div>
+      <div v-if="showDot" class="dots">
+        <span class="dot" :key="index" :class="{active: currentPageIndex === index }" v-for="(item, index) in dots"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -185,59 +185,70 @@ export default class Slide extends Vue {
 </script>
 
 <style lang="scss">
-.slide {
-  width: 100vw;
+.banner {
   position: relative;
-  min-height: 1px;
-  max-height: 480px;
-  overflow: hidden;
-
-  .slide-group {
-    position: relative;
+  @include setSize(100%, 380px);
+  .backgrond {
+    @include setSize(100%, 180px);
+    background-color: $color-highlight-background;
+  }
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 3%;
+    width: 94%;
+    min-height: 1px;
+    max-height: 480px;
+    border-radius: 10px;
     overflow: hidden;
-    white-space: nowrap;
 
-    .slide-item {
-      float: left;
-      box-sizing: border-box;
+    .slide-group {
+      position: relative;
       overflow: hidden;
-      text-align: center;
+      white-space: nowrap;
 
-      a {
-        display: block;
-        width: 100%;
+      .slide-item {
+        float: left;
+        box-sizing: border-box;
         overflow: hidden;
-        text-decoration: none;
-      }
+        text-align: center;
 
-      img {
-        display: block;
-        width: 100%;
+        a {
+          display: block;
+          width: 100%;
+          overflow: hidden;
+          text-decoration: none;
+        }
+
+        img {
+          display: block;
+          width: 100%;
+        }
       }
     }
-  }
 
-  .dots {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 12px;
-    transform: translateZ(1px);
-    text-align: center;
-    font-size: 0;
+    .dots {
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 12px;
+      transform: translateZ(1px);
+      text-align: center;
+      font-size: 0;
 
-    .dot {
-      display: inline-block;
-      margin: 0 4px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #999;
+      .dot {
+        display: inline-block;
+        margin: 0 4px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #999;
 
-      &.active {
-        width: 20px;
-        border-radius: 5px;
-        background: #fff;
+        &.active {
+          width: 20px;
+          border-radius: 5px;
+          background: #fff;
+        }
       }
     }
   }
