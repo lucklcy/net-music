@@ -68,20 +68,9 @@
     </transition>
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
-        <div class="icon" :style="{backgroundImage:'url('+currentSong.picUrl+')'}" :class="cdCls">
-        </div>
-        <div class="text">
-          <span class="name">{{currentSong.name | limitIn(8)}}</span>
-          <span class="desc">{{currentSong.songer | limitIn(8)}}</span>
-        </div>
-        <div class="control">
-          <ProgressCircle :radius="radius" :percent="percent">
-            <i @click.stop="togglePlaying" class="icon-mini iconfont" :class="miniIcon"></i>
-          </ProgressCircle>
-        </div>
-        <div class="control" @click.stop="showPlaylist">
-          <i class="icon-playlist"></i>
-        </div>
+        <ProgressCircle :radius="radius" :percent="percent">
+          <i @click.stop="togglePlaying" class="icon-mini iconfont" :class="miniIcon"></i>
+        </ProgressCircle>
       </div>
     </transition>
     <PlayingSongList class="song-list" v-show="showSongList"></PlayingSongList>

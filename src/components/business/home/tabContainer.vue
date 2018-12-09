@@ -9,7 +9,7 @@
         <div class="pic recommand-img"></div>
         <span>每日推荐</span>
       </li>
-      <li class="item">
+      <li class="item" @click="goToSongTable">
         <div class="pic song-list-img"></div>
         <span>歌单</span>
       </li>
@@ -54,6 +54,10 @@ export const enum TAB_TYPE {
 export default class TabContainer extends mixins(CommonMixin) {
   @Prop({ default: TAB_TYPE.RECOMMAND })
   private type: string
+
+  private goToSongTable() {
+    this.$router.push({ name: 'r_song_table_index' })
+  }
 }
 </script>
 <style lang="scss" scoped>
