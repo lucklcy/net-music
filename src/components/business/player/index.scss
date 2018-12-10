@@ -193,10 +193,9 @@
   }
   .mini-player {
     position: fixed;
-    right: 22px;
-    bottom: 258px;
+    right: 48px;
+    bottom: 200px;
     z-index: 180;
-    // background: $color-highlight-background;
 
     &.mini-enter-active,
     &.mini-leave-active {
@@ -206,6 +205,16 @@
     &.mini-enter,
     &.mini-leave-to {
       opacity: 0;
+    }
+    .content {
+      @include setSize(132px, 132px);
+      @include setFlexPos(row, center, center);
+      background-color: #273238;
+      border-radius: 50%;
+      .playing {
+        font-size: 0.62rem;
+        color: #fff;
+      }
     }
   }
   @keyframes rotate {

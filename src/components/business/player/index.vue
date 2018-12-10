@@ -68,9 +68,9 @@
     </transition>
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
-        <ProgressCircle :radius="radius" :percent="percent">
-          <i @click.stop="togglePlaying" class="icon-mini iconfont" :class="miniIcon"></i>
-        </ProgressCircle>
+        <div class="content">
+          <SvgIcon :iconClass="'playing'" :className="'playing'"></SvgIcon>
+        </div>
       </div>
     </transition>
     <PlayingSongList class="song-list" v-show="showSongList"></PlayingSongList>
@@ -84,7 +84,6 @@ import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import scroll from '~/foundation/base/scroll.vue'
 import ProgressBar from '~/foundation/base/progressBar.vue'
-import ProgressCircle from '~/foundation/base/progressCircle.vue'
 import PlayingSongList from '~/business/player/list.vue'
 import { prefixStyle } from '@/utils/dom'
 import lyricParser from '@/utils/lyricParser'
@@ -125,7 +124,6 @@ const transitionDuration = prefixStyle('transitionDuration')
   components: {
     scroll,
     ProgressBar,
-    ProgressCircle,
     PlayingSongList
   }
 })
