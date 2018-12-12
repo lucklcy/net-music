@@ -79,5 +79,8 @@ export default {
   },
   changeShowSongList(state: State, flag: boolean) {
     state.showSongList = flag
+  },
+  setCurrentSongListId(state: State, listId: number) {
+    state.currentSongListId = listId
   }
 }

@@ -88,6 +88,7 @@ export interface State {
   mode: string
   footBarStatus: string
   showSongList: boolean
+  currentSongListId: number
 }
 
 // 初始状态
@@ -106,7 +107,8 @@ const stateData: State = {
   currentIndex: -1,
   mode: PLAYING_MODE.SEQUENCE,
   footBarStatus: FOOT_BAR_STATUS.MUSIC.icon,
-  showSongList: false
+  showSongList: false,
+  currentSongListId: 0
 }
 
 export default stateData

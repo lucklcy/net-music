@@ -1,7 +1,7 @@
 <template>
   <div class="main-player">
     <transition name="normal">
-      <div class="normal-player" v-show="fullScreen">
+      <div class="normal-player" v-show="fullScreen" @click="changeShowSongList(false)">
         <div class="background">
           <div :style="{backgroundImage:'url('+currentSong.picUrl+')'}" class="inner"></div>
         </div>
@@ -59,7 +59,7 @@
             <span class="play iconfont icon-Next" @click.stop="prev"></span>
             <span class="play iconfont" :class="playIcon" @click.stop="togglePlaying"></span>
             <span class="play iconfont icon-next1" @click.stop="next"></span>
-            <span @click="changeShowSongList(true)">
+            <span @click.stop="changeShowSongList(true)">
               <SvgIcon :iconClass="'play-list'" :className="'play-list'"></SvgIcon>
             </span>
           </div>

@@ -50,7 +50,7 @@
     .middle {
       position: fixed;
       width: 100%;
-      top: 160px;
+      top: 180px;
       bottom: 320px;
       white-space: nowrap;
       font-size: 0;
@@ -115,7 +115,12 @@
           overflow: hidden;
           text-align: center;
           .text {
-            line-height: 2;
+            padding: 16px 0;
+            line-height: 1.3;
+            width: 100%;
+            word-wrap: break-word;
+            // word-break: break-all;
+            white-space: pre-wrap;
             color: $color-text-l;
             font-size: 0.36rem;
             &.current {

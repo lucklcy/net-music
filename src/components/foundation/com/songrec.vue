@@ -13,10 +13,10 @@
             </div>
             <div class="description">
               <div class="avatar" :style="{backgroundImage:'url('+item.creator.avatarUrl+')'}"></div>
-              <span>{{item.creator.nickname | limitIn(7)}}</span>
+              <span>{{item.creator.nickname | limitIn(5)}}</span>
             </div>
           </div>
-          <div class="content">{{item.name | limitIn(15)}}</div>
+          <div class="content">{{item.name | limitIn(16)}}</div>
         </li>
       </ul>
     </div>

@@ -34,8 +34,10 @@
     </section>
     <section class="summary border-1px">
       <div class="play-all" @click="doPlayAll">
-        <SvgIcon :iconClass="'list-play'" :className="'list-play'"></SvgIcon>
-        <span>播放全部</span>
+        <SvgIcon :iconClass="'playing'" :className="'playing'" v-if="currentSongListId === songListId"></SvgIcon>
+        <SvgIcon :iconClass="'list-play'" :className="'list-play'" v-else></SvgIcon>
+        <span v-if="currentSongListId === songListId">正在播放</span>
+        <span v-else>播放全部</span>
         <span class="track-count">共({{songList.trackCount}})首</span>
       </div>
       <div class="collect" @click="doSubscribe">
@@ -46,21 +48,25 @@
     </section>
     <section class="list-container">
       <ul>
-        <li v-for="(item,index) in songList.tracks" :key="index" @click="goToSongPlay(item.id)">
+        <li v-for="(item,index) in songList.tracks" :key="index" @click="goToSongPlay(item.id)"
+          :class="{'active':currentSong.id === item.id}">
           <div class="index">{{index+1}}</div>
           <div class="song-content border-1px">
             <div class="label">
               <span class="name">{{item.name | limitIn(30) }}</span>
               <span class="author">{{getAuthorString(item) | limitIn(28)}}</span>
             </div>
-            <div class="oper">
-              <i class="play iconfont icon-paly-time"></i>
+            <div class="oper active" v-if="currentSong.id === item.id">
+              <SvgIcon :iconClass="'playing'" :className="'playing'"></SvgIcon>
+            </div>
+            <div class="oper" v-else>
+              <SvgIcon :iconClass="'and-so-on'" :className="'and-so-on'"></SvgIcon>
             </div>
           </div>
         </li>
         <li class="subscribers">
           <template v-for="(item,index) in songList.subscribers">
-            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}" v-if="index < 7">
+            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}" v-if="index < 6">
             </span>
           </template>
           <i class="count">{{songList.subscribedCount}}人收藏</i>
@@ -86,13 +92,16 @@ import { IPlaySong } from '@/store/state'
   }
 })
 export default class SongList extends mixins(CommonMixin) {
+  @State currentSongListId: number
+  @State playList: IPlaySong[]
+  @State currentSong: IPlaySong
+  private songList: IPlaylist | null = null
+  private songListId: number = 0
+
   @Mutation setPlayList: (tarcks: ITrack[]) => void
   @Mutation setCurrentSong: (songId: number) => void
   @Mutation changePlayingStatus: (flag: boolean) => void
-
-  @State playList: IPlaySong[]
-
-  private songList: IPlaylist | null = null
+  @Mutation setCurrentSongListId: (listId: number) => void
 
   private goBack() {
     this.$router.push({ name: 'r_home_recommand' })
@@ -123,14 +132,18 @@ export default class SongList extends mixins(CommonMixin) {
     } else {
       this.setPlayList(tracks)
       this.setCurrentSong(songId)
+      this.setCurrentSongListId(this.songListId)
     }
   }
 
   private doPlayAll() {
-    let tracks = (this.songList as IPlaylist).tracks
-    this.changePlayingStatus(false)
-    this.setPlayList(tracks)
-    this.setCurrentSong(tracks && tracks[0]['id'])
+    if (this.currentSongListId !== this.songListId) {
+      let tracks = (this.songList as IPlaylist).tracks
+      this.changePlayingStatus(false)
+      this.setPlayList(tracks)
+      this.setCurrentSong(tracks && tracks[0]['id'])
+      this.setCurrentSongListId(this.songListId)
+    }
   }
 
   private doSubscribe() {
@@ -138,6 +151,7 @@ export default class SongList extends mixins(CommonMixin) {
   }
   created() {
     let songListId = this.$route.query && this.$route.query.id
+    this.songListId = Number(songListId)
     this.service
       .getPlayListDetail({ id: songListId })
       .then((playListDetail: { playlist: IPlaylist }) => {

@@ -169,6 +169,19 @@ $baseAssets: '../../../assets';
     ul {
       li {
         @include setFlexPos(row, flex-start, center);
+        &.active {
+          .index {
+            color: $color-highlight-background;
+          }
+          .song-content .label {
+            .name {
+              color: $color-highlight-background;
+            }
+            .author {
+              color: $color-highlight-background;
+            }
+          }
+        }
         .index {
           font-size: 0.3rem;
           color: #999;
@@ -195,10 +208,14 @@ $baseAssets: '../../../assets';
             }
           }
           .oper {
-            .play {
-              display: inline-block;
-              font-size: 0.46rem;
-              color: rgb(204, 200, 200);
+            .and-so-on {
+              font-size: 0.72rem;
+              color: #999;
+            }
+            .playing {
+              font-size: 0.42rem;
+              color: $color-highlight-background;
+              margin-right: 14px;
             }
           }
         }
