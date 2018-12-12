@@ -11,9 +11,30 @@
   &::after {
     display: block;
     position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
+
+    @if $position== 'bottom' {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+    @if $position== 'top' {
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    @if $position== 'left' {
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    @if $position== 'right' {
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+
     border-#{$position}: 1px solid $color;
     content: ' ';
   }

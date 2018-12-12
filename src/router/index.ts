@@ -4,6 +4,8 @@ import Home from '@/views/Home.vue'
 import Recommander from '~/business/home/recommander.vue'
 import Broadcaster from '~/business/home/broadcaster.vue'
 import SongList from '~/business/list/songlist.vue'
+import SongTableIndex from '~/business/songTable/index.vue'
+import SongTableHighQuality from '~/business/songTable/highQuality.vue'
 
 Vue.use(Router)
 
@@ -37,6 +39,16 @@ export default new Router({
       path: '/song-list',
       name: 'r_song_list',
       component: SongList
+    },
+    {
+      path: '/table',
+      name: 'r_song_table_index',
+      component: SongTableIndex
+    },
+    {
+      path: '/table/high-quality',
+      name: 'r_song_table_high_quality',
+      component: SongTableHighQuality
     }
   ]
 })

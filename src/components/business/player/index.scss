@@ -50,7 +50,7 @@
     .middle {
       position: fixed;
       width: 100%;
-      top: 160px;
+      top: 180px;
       bottom: 320px;
       white-space: nowrap;
       font-size: 0;
@@ -115,7 +115,12 @@
           overflow: hidden;
           text-align: center;
           .text {
-            line-height: 2;
+            padding: 16px 0;
+            line-height: 1.3;
+            width: 100%;
+            word-wrap: break-word;
+            // word-break: break-all;
+            white-space: pre-wrap;
             color: $color-text-l;
             font-size: 0.36rem;
             &.current {
@@ -192,14 +197,10 @@
     }
   }
   .mini-player {
-    @include setFlexPos(row, space-between, center);
     position: fixed;
-    right: 0;
-    bottom: 250px;
+    right: 48px;
+    bottom: 200px;
     z-index: 180;
-    width: 48%;
-    height: $mini-player-height;
-    background: $color-highlight-background;
 
     &.mini-enter-active,
     &.mini-leave-active {
@@ -210,44 +211,14 @@
     &.mini-leave-to {
       opacity: 0;
     }
-
-    .icon {
-      @include setSize(112px, 112px);
+    .content {
+      @include setSize(132px, 132px);
+      @include setFlexPos(row, center, center);
+      background-color: #273238;
       border-radius: 50%;
-      @include setBgImg('', center, center, cover, no-repeat);
-      margin-left: 16px;
-      &.play {
-        animation: rotate 20s linear infinite;
-      }
-      &.pause {
-        animation-play-state: paused;
-      }
-    }
-
-    .text {
-      @include setFlexPos(column, space-around, flex-start);
-      flex: 1;
-      overflow: hidden;
-      height: 120px;
-      padding: 0 0 0 18px;
-      .name {
-        font-size: 0.32rem;
-        color: $color-text;
-      }
-      .desc {
-        font-size: 0.22rem;
-        color: $color-text-d;
-      }
-    }
-
-    .control {
-      padding: 0 10px;
-      .icon-mini.iconfont {
-        font-size: 0.42rem;
-        color: $color-theme-d;
-        position: absolute;
-        left: 28%;
-        top: 25%;
+      .playing {
+        font-size: 0.62rem;
+        color: #fff;
       }
     }
   }

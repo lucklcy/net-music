@@ -26,7 +26,7 @@ $baseAssets: '../../../assets';
             padding: 10px 10px 0 0;
             span {
               margin: 0 0 0 8px;
-              color: #fff;
+              color: #eee;
               font-size: 0.32rem;
               .iconfont {
                 font-size: 0.28rem;
@@ -35,10 +35,11 @@ $baseAssets: '../../../assets';
           }
           .description {
             position: absolute;
-            font-size: 0.37rem;
+            font-size: 0.3rem;
             color: #fff;
             bottom: 12px;
             left: 8px;
+            background-color: rgba(61, 60, 60, 0.363);
             @include setFlexPos(row, flex-start, center);
             .avatar {
               @include setSize(56px, 56px);
@@ -46,7 +47,7 @@ $baseAssets: '../../../assets';
             }
             span {
               margin-left: 16px;
-              font-size: 0.2rem;
+              font-size: 0.28rem;
             }
           }
         }
@@ -57,7 +58,7 @@ $baseAssets: '../../../assets';
           color: #fff;
           background-color: $color-highlight-background;
           font-size: 0.28rem;
-          padding: 0 16px;
+          padding: 0 12px;
           @include setFlexPos(column, space-around, flex-start);
         }
       }

@@ -1,1 +1,8 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1544157951626" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2386" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32"><defs><style type="text/css"></style></defs><path d="M624.128 503.466667l301.653333 301.653333a85.333333 85.333333 0 1 1-120.661333 120.661333L503.381333 624.128l-301.653333 301.653333A85.333333 85.333333 0 1 1 81.066667 805.12l301.653333-301.738667L81.066667 201.728A85.333333 85.333333 0 1 1 201.728 81.066667l301.653333 301.653333L805.12 81.066667a85.333333 85.333333 0 1 1 120.661333 120.661333L624.128 503.381333z" p-id="2387"></path></svg>
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg t="1544157951626" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2386" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32">
+  <defs>
+    <style type="text/css"></style>
+  </defs>
+  <path d="M624.128 503.466667l301.653333 301.653333a85.333333 85.333333 0 1 1-120.661333 120.661333L503.381333 624.128l-301.653333 301.653333A85.333333 85.333333 0 1 1 81.066667 805.12l301.653333-301.738667L81.066667 201.728A85.333333 85.333333 0 1 1 201.728 81.066667l301.653333 301.653333L805.12 81.066667a85.333333 85.333333 0 1 1 120.661333 120.661333L624.128 503.381333z" p-id="2387"></path>
+</svg>

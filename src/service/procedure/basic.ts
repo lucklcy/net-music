@@ -73,5 +73,38 @@ export default [
     subUrl: '/lyric',
     name: 'getSongLyric',
     method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口,可获取歌单分类,包含 category 信息
+  {
+    subUrl: '/playlist/catlist',
+    name: 'getCategoryList',
+    method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口,可获取歌单分类,包含 category 信息
+  {
+    subUrl: '/playlist/hot',
+    name: 'getHotCategoryList',
+    method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口 , 可获取网友精选碟歌单
+  // 可选参数 : order: 可选值为 'new' 和 'hot', 分别对应最新和最热 , 默认为 'hot'
+  // cat:cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从歌单分类接口获取(/playlist/catlist)
+  // 接口地址 : /top/playlist
+  // 调用例子 : /top/playlist?limit=10&order=new
+  {
+    subUrl: '/top/playlist',
+    name: 'getHandpickList',
+    method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口 , 可获取精品歌单
+  // 可选参数 : cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从歌单分类接口获取(/playlist/catlist)
+  // limit: 取出歌单数量 , 默认为 20
+  // before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
+  // 接口地址 : /top/playlist/highquality
+  // 调用例子 : http://localhost:3000/top/playlist/highquality?before=1503639064232&limit=3
+  {
+    subUrl: '/top/playlist/highquality',
+    name: 'getHighQualityList',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]

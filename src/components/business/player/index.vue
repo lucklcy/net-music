@@ -1,7 +1,7 @@
 <template>
   <div class="main-player">
     <transition name="normal">
-      <div class="normal-player" v-show="fullScreen">
+      <div class="normal-player" v-show="fullScreen" @click="changeShowSongList(false)">
         <div class="background">
           <div :style="{backgroundImage:'url('+currentSong.picUrl+')'}" class="inner"></div>
         </div>
@@ -59,7 +59,7 @@
             <span class="play iconfont icon-Next" @click.stop="prev"></span>
             <span class="play iconfont" :class="playIcon" @click.stop="togglePlaying"></span>
             <span class="play iconfont icon-next1" @click.stop="next"></span>
-            <span @click="changeSongListShow(true)">
+            <span @click.stop="changeShowSongList(true)">
               <SvgIcon :iconClass="'play-list'" :className="'play-list'"></SvgIcon>
             </span>
           </div>
@@ -68,24 +68,12 @@
     </transition>
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
-        <div class="icon" :style="{backgroundImage:'url('+currentSong.picUrl+')'}" :class="cdCls">
-        </div>
-        <div class="text">
-          <span class="name">{{currentSong.name | limitIn(8)}}</span>
-          <span class="desc">{{currentSong.songer | limitIn(8)}}</span>
-        </div>
-        <div class="control">
-          <ProgressCircle :radius="radius" :percent="percent">
-            <i @click.stop="togglePlaying" class="icon-mini iconfont" :class="miniIcon"></i>
-          </ProgressCircle>
-        </div>
-        <div class="control" @click.stop="showPlaylist">
-          <i class="icon-playlist"></i>
+        <div class="content">
+          <SvgIcon :iconClass="'playing'" :className="'playing'"></SvgIcon>
         </div>
       </div>
     </transition>
-    <PlayingSongList class="song-list" @close="changeSongListShow" v-show="isSongListShow"
-      :show-flag="isSongListShow"></PlayingSongList>
+    <PlayingSongList class="song-list" v-show="showSongList"></PlayingSongList>
     <audio :src="songUrl" ref="audio" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
@@ -96,7 +84,6 @@ import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import scroll from '~/foundation/base/scroll.vue'
 import ProgressBar from '~/foundation/base/progressBar.vue'
-import ProgressCircle from '~/foundation/base/progressCircle.vue'
 import PlayingSongList from '~/business/player/list.vue'
 import { prefixStyle } from '@/utils/dom'
 import lyricParser from '@/utils/lyricParser'
@@ -137,7 +124,6 @@ const transitionDuration = prefixStyle('transitionDuration')
   components: {
     scroll,
     ProgressBar,
-    ProgressCircle,
     PlayingSongList
   }
 })
@@ -148,6 +134,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   @State playList: IPlaySong[]
   @State currentIndex: number
   @State mode: string
+  @State showSongList: boolean
 
   private songId: number = 0
   private middleLStyle: string = ''
@@ -164,12 +151,12 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private radius: number = 36
   private timer: number
   private noLyricFlag: boolean = false
-  private isSongListShow: boolean = false
 
   @Mutation changePlayingStatus: (flag: boolean) => void
   @Mutation changeFullScreen: (flag: boolean) => void
   @Mutation setCurrentIndex: (index: number) => void
   @Mutation changePlayingMode: (mode: string) => void
+  @Mutation changeShowSongList: (flag: boolean) => void
 
   get cdCls() {
     return this.playing ? 'play' : 'play pause'
@@ -457,10 +444,6 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
         this.playingLyric = '本歌曲暂无歌词'
       }
     })
-  }
-
-  private changeSongListShow(flag: boolean) {
-    this.isSongListShow = flag
   }
 
   @Watch('currentSong', { deep: true })
