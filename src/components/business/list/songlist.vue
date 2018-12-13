@@ -2,8 +2,8 @@
   <div class="song-list" v-if="songList">
     <section class="header" :style="{backgroundImage:'url('+songList.coverImgUrl+')'}">
       <div class="title-bar">
-        <span class="backup" @click="goBack">
-          <i class="iconfont icon-arrow-left-"></i>
+        <span class="backup" @click='goBack'>
+          <SvgIcon :iconClass="'arrow-left'" :className="'arrow-left'"></SvgIcon>
         </span>
         <span class="title">歌单</span>
         <MiniPlayer></MiniPlayer>

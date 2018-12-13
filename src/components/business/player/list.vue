@@ -10,7 +10,7 @@
         </span>
         <SvgIcon :iconClass="'player-list-garbage'" :className="'player-list-garbage'"></SvgIcon>
       </div>
-      <div class="list-wrapper border-1px">
+      <div class="list-wrapper">
         <ul>
           <li v-for="(item,index) in playList" :key="index" class="border-1px" @click="doClick(item.id)">
             <div class="face">
@@ -19,9 +19,9 @@
               <span class="cd" :style="{backgroundImage:'url('+item.picUrl+')'}"></span>
             </div>
             <div :class="{'content':true,'active':currentSong.id === item.id}">
-              <span class="name">{{item.name | limitIn(10) }}</span>
+              <span class="name">{{item.name | limitIn(16) }}</span>
               <span class="space"> - </span>
-              <span class="songer">{{item.songer | limitIn(10)}}</span>
+              <span class="songer">{{item.songer | limitIn(8)}}</span>
             </div>
             <SvgIcon :iconClass="'delete'" :className="'delete'"></SvgIcon>
           </li>
@@ -31,7 +31,7 @@
         </ul>
       </div>
 
-      <div class="close" @click="changeShowSongList(false)">
+      <div class="close border-1px" @click="changeShowSongList(false)">
         <span>关闭</span>
       </div>
     </div>
@@ -138,14 +138,11 @@ export default class PlaySongList extends mixins(CommonMixin) {
       overflow: auto;
       -webkit-overflow-scrolling: touch;
       width: 100%;
-      &.border-1px {
-        @include border-1px(top, $border-color);
-      }
       li {
         @include setSize(100%, 106px);
         @include setFlexPos(row, space-between, center);
         &.border-1px {
-          @include border-1px(bottom, $border-color);
+          @include border-1px(bottom, #efefef);
         }
         .cd {
           display: inline-block;
@@ -195,7 +192,7 @@ export default class PlaySongList extends mixins(CommonMixin) {
         &.last {
           @include setSize(100%, 80px);
           font-size: 0.26rem;
-          color: #a1a1a1;
+          color: #ccc;
           @include setFlexPos(row, center, center);
         }
       }
@@ -203,6 +200,9 @@ export default class PlaySongList extends mixins(CommonMixin) {
     .close {
       @include setFlexPos(row, center, center);
       @include setSize(100%, 110px);
+      &.border-1px {
+        @include border-1px(top, $border-color);
+      }
       font-size: 0.42rem;
       color: #666;
     }

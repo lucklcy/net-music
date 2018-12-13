@@ -106,5 +106,11 @@ export default [
     subUrl: '/top/playlist/highquality',
     name: 'getHighQualityList',
     method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口,可获取所有榜单 接口地址 : /toplist
+  {
+    subUrl: '/toplist',
+    name: 'getTopList',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]

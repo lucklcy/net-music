@@ -8,8 +8,8 @@
         <div class="top">
           <i class="back iconfont icon-arrow-down-" @click="back"></i>
           <div class="song-header">
-            <span class="title">{{currentSong.name | limitIn(18)}}</span>
-            <span class="subtitle">{{currentSong.songer | limitIn(30)}}</span>
+            <span class="title">{{currentSong.name | limitIn(15)}}</span>
+            <span class="subtitle">{{currentSong.songer | limitIn(20)}}</span>
           </div>
           <i class="about iconfont icon-qunfengshoucang"></i>
         </div>

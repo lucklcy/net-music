@@ -116,6 +116,9 @@ export default class SongTable extends mixins(CommonMixin) {
         this.highQualitySong =
           highQualityListResult['playlists'] && highQualityListResult['playlists'][0]
       })
+    this.service.getTopList({}).then((topListResult: { playlists: IPlayList[] }) => {
+      console.log({ topListResult })
+    })
   }
 }
 </script>
