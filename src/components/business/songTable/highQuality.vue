@@ -35,31 +35,7 @@
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { ICreator } from '@/store/state'
-
-interface ICreater {
-  avatarUrl: string
-  backgroundUrl: string
-  nickname: string
-  userId: number
-  [propName: string]: any
-}
-
-interface IPlayList {
-  createTime: number
-  creator: ICreator
-  copywriter?: string
-  coverImgUrl: string
-  description: string
-  name: string
-  playCount: number
-  shareCount: number
-  trackCount: number
-  updateTime: number
-  userId: number
-  tags: string[]
-  [propName: string]: any
-}
+import { ICreator, IPlayList } from '@/common/interface/base.ts'
 
 @Component({
   components: {}

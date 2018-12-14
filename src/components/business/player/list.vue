@@ -44,14 +44,7 @@ import { Component, Vue, Emit, Prop, Watch } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import { PLAYING_MODE } from '@/store/state.ts'
-
-interface IPlaySong {
-  id: number
-  name: string
-  picUrl: string
-  songer: string
-  duration: number
-}
+import { IPlaySong } from '@/common/interface/base.ts'
 
 @Component({
   components: {}

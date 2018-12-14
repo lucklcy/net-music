@@ -88,34 +88,7 @@ import PlayingSongList from '~/business/player/list.vue'
 import { prefixStyle } from '@/utils/dom'
 import lyricParser from '@/utils/lyricParser'
 import { PLAYING_MODE } from '@/store/state.ts'
-
-interface ISongDetail {
-  id: number
-  url: string
-}
-
-interface IPlaySong {
-  id: number
-  name: string
-  picUrl: string
-  songer: string
-  duration: number
-}
-
-interface ISongLyric {
-  code: number
-  lrc: { lyric: string; version: number }
-  lyricUser: { id: number; nickname: string; userid: number; uptime: number }
-  nolyric?: boolean
-}
-
-interface ITtuch {
-  initiated: boolean
-  moved: boolean
-  startX: number
-  startY: number
-  percent: number
-}
+import { IPlaySong, ITouch, ISongDetail, ISongLyric } from '@/common/interface/base.ts'
 
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
@@ -139,7 +112,14 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private songId: number = 0
   private middleLStyle: string = ''
   private lyricListStyle: string = ''
-  private touch: ITtuch = { initiated: false, moved: false, startX: 0, startY: 0, percent: 0 }
+  private touch: ITouch = {
+    initiated: false,
+    moved: false,
+    startX: 0,
+    startY: 0,
+    percent: 0,
+    left: 0
+  }
   private currentShow: string = 'cd'
   private playingLyric: string = ''
   private currentLyric: lyricParser = new lyricParser('', () => {})

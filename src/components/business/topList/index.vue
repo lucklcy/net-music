@@ -1,5 +1,5 @@
 <template>
-  <div class="song-list" v-if="songList">
+  <div class="top-list" v-if="topList">
     <section class="header" :style="{backgroundImage:'url('+songList.coverImgUrl+')'}">
       <div class="title-bar">
         <span class="backup" @click='goBack'>
@@ -82,7 +82,7 @@ import CommonMixin from '@/mixins/comMix'
 import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
 import MiniPlayer from '~/business/player/mini.vue'
-import { IPlaySong, IPlaylist, ITrack } from '@/common/interface/base.ts'
+import { IPlaylist, ITrack, IPlaySong } from '@/common/interface/base.ts'
 
 @Component({
   components: {
@@ -162,5 +162,5 @@ export default class SongList extends mixins(CommonMixin) {
   }
 }
 </script>
-<style lang="scss" scoped src='./songlist.scss'></style>
+<style lang="scss" scoped src='./index.scss'></style>
 

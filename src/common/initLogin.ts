@@ -1,6 +1,6 @@
 import _http from '@/service'
 import store from '@/store'
-import { UserInfo } from '@/store/state'
+import { UserInfo } from '@/common/interface/base.ts'
 
 const initPromise: Promise<any> = new Promise((resolve, reject) => {
   _http

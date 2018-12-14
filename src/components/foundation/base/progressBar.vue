@@ -16,18 +16,10 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State } from 'vuex-class'
 import { prefixStyle } from '@/utils/dom'
+import { ITouch } from '@/common/interface/base.ts'
 
 const progressBtnWidth = 13
 const transform = prefixStyle('transform')
-
-interface ITtuch {
-  initiated: boolean
-  moved: boolean
-  startX: number
-  startY: number
-  percent: number
-  left: number
-}
 
 @Component({
   components: {}
@@ -37,7 +29,7 @@ export default class ProgressBar extends mixins(CommonMixin) {
   private percent: number
   private progressBtnStyle: string = ''
 
-  private touch: ITtuch = {
+  private touch: ITouch = {
     initiated: false,
     moved: false,
     startX: 0,

@@ -1,6 +1,7 @@
 import { State } from './state'
 import { isBoolean, isObject } from 'lodash'
-import { UserInfo, ITrack, IArtist, IPlaySong } from './state'
+import { IPlaySong } from '@/common/interface/base.ts'
+import { UserInfo, ITrack, IArtist } from '@/common/interface/base.ts'
 
 export interface IkeyVal {
   key: string

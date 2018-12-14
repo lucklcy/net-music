@@ -26,14 +26,7 @@ import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State } from 'vuex-class'
-
-export interface IDJPrograms {
-  id: number
-  picUrl: string
-  name: string
-  copywriter: string
-  [propName: string]: any
-}
+import { IDJPrograms } from '@/common/interface/base.ts'
 
 @Component({
   components: {}

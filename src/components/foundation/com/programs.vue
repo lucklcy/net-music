@@ -26,14 +26,7 @@ import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State } from 'vuex-class'
-
-export interface IPrograms {
-  id: number
-  coverUrl: string
-  name: string
-  description: string
-  [propName: string]: any
-}
+import { IPrograms } from '@/common/interface/base.ts'
 
 @Component({
   components: {}
