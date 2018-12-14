@@ -16,13 +16,19 @@ $baseAssets: '../../../assets';
         @include setFlexPos(row, flex-start, center);
         .pic {
           border-radius: 12px;
-          @include setSize(200px, 200px);
+          position: relative;
+          @include setSize(240px, 240px);
           @include setBgImg('', center, center, cover, no-repeat);
+          @include setFlexPos(row, center, center);
+          .program-play {
+            font-size: 0.9rem;
+            color: #ffffffd2;
+          }
         }
         .content {
           margin-left: 20px;
           @include setFlexPos(column, space-around, flex-start);
-          @include setSize(76%, 200px);
+          @include setSize(74%, 240px);
           font-size: 0.222222rem;
           .name {
             font-size: 0.351852rem;

@@ -3,9 +3,11 @@
     <p class="title">{{title}}</p>
     <div class="program-container">
       <ul class="program-list">
-        <li v-for="(item,index) in ProgramList" :key="index">
+        <li v-for="(item,index) in ProgramList" :key="index" @click="onProgramPlay(item)">
           <div class="program-item">
-            <div class="pic" :style="{backgroundImage:'url('+item.coverUrl+')'}"></div>
+            <div class="pic" :style="{backgroundImage:'url('+item.coverUrl+')'}">
+              <SvgIcon :iconClass="'program-play'" :className="'program-play'"></SvgIcon>
+            </div>
             <div class="content">
               <span class="name">{{item.name | limitIn(16)}}</span>
               <span class="count">
@@ -25,8 +27,9 @@
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { State } from 'vuex-class'
+import { State, Mutation } from 'vuex-class'
 import { IPrograms } from '@/common/interface/base.ts'
+import { IPlaySong } from '@/common/interface/base.ts'
 
 @Component({
   components: {}
@@ -34,6 +37,24 @@ import { IPrograms } from '@/common/interface/base.ts'
 export default class Programs extends mixins(CommonMixin) {
   private ProgramList: IPrograms[] = []
   private title: string = ''
+
+  @Mutation addIntoPlayList: (song: IPlaySong) => void
+  @Mutation setCurrentSong: (id: number) => void
+  @Mutation changeFullScreen: (fullScreenFlag: boolean) => void
+  @Mutation changePlayingStatus: (playingFlag: boolean) => void
+  private onProgramPlay(item: IPrograms) {
+    const songItem: IPlaySong = {
+      id: item['mainSong']['id'],
+      name: item['name'],
+      picUrl: item['coverUrl'],
+      songer: item['dj']['brand'],
+      duration: item['duration'] / 1000
+    }
+    this.changePlayingStatus(false)
+    this.addIntoPlayList(songItem)
+    this.changeFullScreen(true)
+    this.setCurrentSong(item['mainSong']['id'])
+  }
 
   created() {
     this.service

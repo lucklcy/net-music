@@ -59,6 +59,20 @@ export default {
       }
     }
   },
+  addIntoPlayList(state: State, song: IPlaySong) {
+    const playList: IPlaySong[] = state.playList
+    let hasSongInList: boolean = false
+    for (let i = 0; i < playList.length; i++) {
+      const tempItem: IPlaySong = playList[i]
+      if (tempItem.id === song.id) {
+        hasSongInList = true
+        break
+      }
+    }
+    if (!hasSongInList) {
+      state.playList = playList.concat([song])
+    }
+  },
   changePlayingStatus(state: State, playFlag: boolean): void {
     state.playing = playFlag
   },

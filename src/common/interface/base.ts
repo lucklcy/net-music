@@ -48,11 +48,32 @@ export interface IDJPrograms {
   [propName: string]: any
 }
 
+interface IDJ {
+  brand: string
+  description: string
+  detailDescription: string
+  nickname: string
+  signature: string
+  userId: number
+  avatarUrl: string
+  backgroundUrl: string
+  [propName: string]: any
+}
+
+interface IMainSong {
+  name: string
+  id: number
+  duration: number
+  [propName: string]: any
+}
 export interface IPrograms {
   id: number
   coverUrl: string
   name: string
   description: string
+  dj: IDJ
+  mainSong: IMainSong
+  duration: number
   [propName: string]: any
 }
 
