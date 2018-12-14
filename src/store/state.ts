@@ -27,6 +27,8 @@ export interface State {
   footTab: string
   showSongList: boolean
   currentSongListId: number
+  tableCat: string
+  hotTableCat: string
 }
 
 // 初始状态
@@ -46,7 +48,11 @@ const stateData: State = {
   mode: PLAYING_MODE.SEQUENCE,
   footTab: FOOT_BAR_STATUS.MUSIC.code,
   showSongList: false,
-  currentSongListId: 0
+  currentSongListId: 0,
+  // 当前歌单类型
+  tableCat: '',
+  // 当前精品歌单类型
+  hotTableCat: ''
 }
 
 export default stateData

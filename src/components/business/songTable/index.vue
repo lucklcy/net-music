@@ -19,13 +19,14 @@
     </section>
     <section class="oper-choose">
       <div class="all-category">
-        <span class="lable">全部歌单</span>
+        <span class="lable" @click="goToCatChoose">全部歌单</span>
         <SvgIcon :iconClass="'arrow-right-thin'" :className="'arrow-right-thin'"></SvgIcon>
       </div>
       <div class="hot-catgeory">
-        <span class="border-1px-v">华语</span>
-        <span class="border-1px-v">电子</span>
-        <span>民谣</span>
+        <span :class="{'border-1px-v':index!== 2}" v-for="(item,index) in hotCategoryList" :key="index"
+          @click="changeCat(item.name)" v-if="index<=2">
+          {{item.name}}
+        </span>
       </div>
     </section>
     <section class="container">
@@ -57,13 +58,32 @@ import CommonMixin from '@/mixins/comMix'
 import { ICreator, IPlayList } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
 import Footer from '~/foundation/com/footer.vue'
+import { Mutation, State } from 'vuex-class'
+
+interface ICategory {
+  category: number
+  createTime: number
+  hot: boolean
+  id: number
+  name: string
+  position: number
+  type: number
+  usedCount: number
+}
 
 @Component({
   components: { TopBar, Footer }
 })
 export default class SongTable extends mixins(CommonMixin) {
+  @State tableCat: string
   private highQualitySong: IPlayList | null = null
   private handpickSongListArray: IPlayList[] | null = null
+  private cat: string = ''
+  private limit: number = 20
+  private categoryList: ICategory[] = []
+  private hotCategoryList: ICategory[] = []
+
+  @Mutation changeTableCat: (payload: { type: number; cat: string }) => void
 
   private gotoDetail(id: string) {
     this.$router.push({ name: 'r_song_list', query: { id } })
@@ -73,18 +93,48 @@ export default class SongTable extends mixins(CommonMixin) {
     this.$router.push({ name: 'r_song_table_high_quality' })
   }
 
-  created() {
-    this.service
-      .getHandpickList({ limit: 50 })
-      .then((handpickListResult: { playlists: IPlayList[] }) => {
-        this.handpickSongListArray = handpickListResult['playlists']
-      })
+  private goToCatChoose() {
+    this.$router.push({ name: 'r_table_cat_choose' })
+  }
+
+  private getHandpickList() {
+    const params = { limit: this.limit, cat: this.tableCat }
+    this.service.getHandpickList(params).then((handpickListResult: { playlists: IPlayList[] }) => {
+      this.handpickSongListArray = handpickListResult['playlists']
+    })
+  }
+
+  private getHighQualityList() {
     this.service
       .getHighQualityList({ limit: 1 })
       .then((highQualityListResult: { playlists: IPlayList[] }) => {
         this.highQualitySong =
           highQualityListResult['playlists'] && highQualityListResult['playlists'][0]
       })
+  }
+
+  private changeCat(name: string) {
+    this.changeTableCat({ type: 0, cat: name })
+    this.getHandpickList()
+  }
+
+  private getCategoryList() {
+    this.service.getCategoryList({}).then((categoryListResult: { playlists: IPlayList[] }) => {
+      console.log({ categoryListResult })
+    })
+  }
+
+  private getHotCategoryList() {
+    this.service.getHotCategoryList({}).then((hotCategoryListResult: { tags: ICategory[] }) => {
+      this.hotCategoryList = hotCategoryListResult['tags']
+    })
+  }
+
+  created() {
+    this.getHandpickList()
+    this.getHighQualityList()
+    this.getCategoryList()
+    this.getHotCategoryList()
   }
 }
 </script>

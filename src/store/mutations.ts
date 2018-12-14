@@ -100,5 +100,13 @@ export default {
   },
   changeFootTab(state: State, footTabCode: string) {
     state.footTab = footTabCode
+  },
+  changeTableCat(state: State, payload: { type: number; cat: string }): void {
+    const { type, cat } = payload
+    if (type === 0) {
+      state.tableCat = cat
+    } else if (type === 1) {
+      state.hotTableCat = cat
+    }
   }
 }
