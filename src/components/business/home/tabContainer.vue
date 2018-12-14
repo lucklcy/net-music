@@ -13,7 +13,7 @@
         <div class="pic song-list-img"></div>
         <span>歌单</span>
       </li>
-      <li class="item">
+      <li class="item" @click="goToTopList">
         <div class="pic ranking-list-img"></div>
         <span>排行榜</span>
       </li>
@@ -57,6 +57,10 @@ export default class TabContainer extends mixins(CommonMixin) {
 
   private goToSongTable() {
     this.$router.push({ name: 'r_song_table_index' })
+  }
+
+  private goToTopList() {
+    this.$router.push({ name: 'r_top_list' })
   }
 }
 </script>

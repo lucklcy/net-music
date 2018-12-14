@@ -1,9 +1,9 @@
 <template>
   <div class="footer">
     <ul>
-      <li v-for="(item,index) in footBarStatusMap">
-        <SvgIcon :iconClass="item.icon" :className="getClassName(item.icon)"></SvgIcon>
-        <span v-if="nameShow(item.icon)">{{item.name}}</span>
+      <li v-for="(item,index) in footBarStatusMap" @click="goToTab(item.code)">
+        <SvgIcon :iconClass="item.icon" :className="getClassName(item.code)"></SvgIcon>
+        <span v-if="nameShow(item.code)">{{item.name}}</span>
       </li>
     </ul>
   </div>
@@ -14,25 +14,33 @@ import { mixins } from 'vue-class-component'
 import { Component, Vue } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { FOOT_BAR_STATUS } from '@/store/state'
-import { State } from 'vuex-class'
+import { State, Mutation } from 'vuex-class'
 
 @Component({
   components: {}
 })
 export default class Footer extends mixins(CommonMixin) {
-  @State footBarStatus: string
+  @State footTab: string
   private footBarStatusMap: { [propName: string]: { icon: string; name: string } } = FOOT_BAR_STATUS
 
+  @Mutation changeFootTab: (code: string) => void
+
   private getClassName(name: string) {
-    if (name === this.footBarStatus) {
+    if (name === this.footTab) {
       return `${name} active`
     } else {
       return `${name}`
     }
   }
 
-  private nameShow(name: string) {
-    return name === this.footBarStatus
+  private nameShow(code: string) {
+    return code === this.footTab
+  }
+
+  private goToTab(code: string) {
+    let tabRouterMap: { [propName: string]: string } = { music: 'r_home_recommand' }
+    this.$router.push({ name: tabRouterMap[code] })
+    this.changeFootTab(code)
   }
 }
 </script>

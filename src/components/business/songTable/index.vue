@@ -1,12 +1,6 @@
 <template>
   <div class="song-table">
-    <div class="top">
-      <span @click='goBack'>
-        <SvgIcon :iconClass="'arrow-left'" :className="'arrow-left'"></SvgIcon>
-      </span>
-      <span class="title">歌单</span>
-      <SvgIcon :iconClass="'table'" :className="'table'"></SvgIcon>
-    </div>
+    <TopBar back-route-name='r_home_recommand' title='歌单'></TopBar>
     <section class="high-quality" v-if="highQualitySong" @click="goToHighQualityTable">
       <div class="background" :style="{backgroundImage:'url('+highQualitySong.coverImgUrl+')'}">
       </div>
@@ -53,6 +47,7 @@
         </li>
       </ul>
     </section>
+    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
@@ -60,17 +55,15 @@ import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { ICreator, IPlayList } from '@/common/interface/base.ts'
+import TopBar from '~/foundation/com/topBar.vue'
+import Footer from '~/foundation/com/footer.vue'
 
 @Component({
-  components: {}
+  components: { TopBar, Footer }
 })
 export default class SongTable extends mixins(CommonMixin) {
   private highQualitySong: IPlayList | null = null
   private handpickSongListArray: IPlayList[] | null = null
-
-  private goBack() {
-    this.$router.push({ name: 'r_home_recommand' })
-  }
 
   private gotoDetail(id: string) {
     this.$router.push({ name: 'r_song_list', query: { id } })
@@ -92,9 +85,6 @@ export default class SongTable extends mixins(CommonMixin) {
         this.highQualitySong =
           highQualityListResult['playlists'] && highQualityListResult['playlists'][0]
       })
-    this.service.getTopListDetail({}).then((topListDetailResult: { playlists: IPlayList[] }) => {
-      console.log({ topListDetailResult })
-    })
   }
 }
 </script>
@@ -103,24 +93,6 @@ $baseAsset: '../../../assets';
 .song-table {
   @include setSize(100%, 100%);
   @include setFlexPos(column, flex-start, flex-start);
-  .top {
-    @include setSize(100%, 138px);
-    @include setFlexPos(row, space-between, center);
-    background-color: $color-highlight-background;
-    z-index: 10;
-    color: #fff;
-    .arrow-left {
-      font-size: 0.62rem;
-      margin-left: 32px;
-    }
-    .title {
-      font-size: 0.44rem;
-    }
-    .table {
-      font-size: 0.62rem;
-      margin-right: 40px;
-    }
-  }
   .high-quality {
     position: relative;
     background-color: #333;

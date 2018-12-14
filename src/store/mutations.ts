@@ -83,5 +83,8 @@ export default {
   },
   setCurrentSongListId(state: State, listId: number) {
     state.currentSongListId = listId
+  },
+  changeFootTab(state: State, footTabCode: string) {
+    state.footTab = footTabCode
   }
 }

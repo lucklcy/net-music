@@ -8,11 +8,11 @@ export const PLAYING_MODE = {
 }
 
 export const FOOT_BAR_STATUS = {
-  MUSIC: { icon: 'net-music', name: '音乐' },
-  VIDEO: { icon: 'net-video', name: '视频' },
-  MY: { icon: 'net-my', name: '我的' },
-  FRIENDS: { icon: 'net-friends', name: '朋友' },
-  ACCOUNT: { icon: 'net-account', name: '账号' }
+  MUSIC: { icon: 'net-music', name: '音乐', code: 'music' },
+  VIDEO: { icon: 'net-video', name: '视频', code: 'video' },
+  MY: { icon: 'net-my', name: '我的', code: 'my' },
+  FRIENDS: { icon: 'net-friends', name: '朋友', mcode: 'friends' },
+  ACCOUNT: { icon: 'net-account', name: '账号', code: 'account' }
 }
 
 export interface State {
@@ -24,7 +24,7 @@ export interface State {
   fullScreen: boolean
   currentIndex: number
   mode: string
-  footBarStatus: string
+  footTab: string
   showSongList: boolean
   currentSongListId: number
 }
@@ -44,7 +44,7 @@ const stateData: State = {
   fullScreen: true,
   currentIndex: -1,
   mode: PLAYING_MODE.SEQUENCE,
-  footBarStatus: FOOT_BAR_STATUS.MUSIC.icon,
+  footTab: FOOT_BAR_STATUS.MUSIC.code,
   showSongList: false,
   currentSongListId: 0
 }

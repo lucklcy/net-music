@@ -73,6 +73,7 @@
         </li>
       </ul>
     </section>
+    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
@@ -103,7 +104,7 @@ export default class SongList extends mixins(CommonMixin) {
   @Mutation setCurrentSongListId: (listId: number) => void
 
   private goBack() {
-    this.$router.push({ name: 'r_home_recommand' })
+    this.$router.go(-1)
   }
 
   private getAuthorString(item: ITrack) {

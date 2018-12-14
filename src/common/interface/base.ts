@@ -125,3 +125,29 @@ export interface ISongRecommandList {
   name: string
   [propName: string]: any
 }
+
+interface ITopListTrack {
+  first: string
+  second: string
+}
+// 歌曲榜单Detail
+export interface ITopSongListDetail {
+  ToplistType?: string
+  coverImgUrl: string
+  createTime: number
+  description: string
+  // 是否精品歌单
+  highQuality: boolean
+  name: string
+  id: number
+  playCount: number
+  tags: string[]
+  subscribedCount: number
+  trackNumberUpdateTime: number
+  trackUpdateTime: number
+  tracks: ITopListTrack[]
+  updateFrequency: string
+  updateTime: number
+  userId: number
+  [propName: string]: any
+}
