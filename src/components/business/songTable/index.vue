@@ -55,21 +55,10 @@
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { ICreator, IPlayList } from '@/common/interface/base.ts'
+import { ICreator, IPlayList, ICategory } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
 import Footer from '~/foundation/com/footer.vue'
 import { Mutation, State } from 'vuex-class'
-
-interface ICategory {
-  category: number
-  createTime: number
-  hot: boolean
-  id: number
-  name: string
-  position: number
-  type: number
-  usedCount: number
-}
 
 @Component({
   components: { TopBar, Footer }
@@ -78,7 +67,6 @@ export default class SongTable extends mixins(CommonMixin) {
   @State tableCat: string
   private highQualitySong: IPlayList | null = null
   private handpickSongListArray: IPlayList[] | null = null
-  private cat: string = ''
   private limit: number = 20
   private categoryList: ICategory[] = []
   private hotCategoryList: ICategory[] = []

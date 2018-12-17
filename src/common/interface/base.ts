@@ -172,3 +172,15 @@ export interface ITopSongListDetail {
   userId: number
   [propName: string]: any
 }
+
+// 歌单分类
+export interface ICategory {
+  category: number
+  createTime: number
+  hot: boolean
+  id: number
+  name: string
+  position: number
+  type: number
+  usedCount: number
+}
