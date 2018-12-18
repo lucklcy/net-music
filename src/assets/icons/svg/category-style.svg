@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg t="1545097637383" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6153" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48">
+  <defs>
+    <style type="text/css"></style>
+  </defs>
+  <path d="M864 0 160 0C89.312 0 32 57.312 32 128l0 768c0 70.688 57.312 128 128 128l704 0c70.688 0 128-57.312 128-128L992 128C992 57.312 934.688 0 864 0zM928 896c0 35.312-28.72 64-64 64l-64 0L800 576l-64 0 0 384L544 960 544 576l-64 0 0 384L288 960 288 576l-64 0 0 384-64 0c-35.28 0-64-28.688-64-64L96 128c0-35.312 28.72-64 64-64l704 0c35.28 0 64 28.688 64 64L928 896z" fill="currentColor" p-id="6154"></path>
+  <path d="M352 0 160 0l0 512c0 35.376 28.656 64 64 64l64 0c35.344 0 64-28.624 64-64L352 0 352 0z" fill="currentColor" p-id="6155"></path>
+  <path d="M608 0 416 0l0 512c0 35.376 28.656 64 64 64l64 0c35.344 0 64-28.624 64-64L608 0 608 0z" fill="currentColor" p-id="6156"></path>
+  <path d="M864 0 672 0l0 512c0 35.376 28.656 64 64 64l64 0c35.344 0 64-28.624 64-64L864 0 864 0z" fill="currentColor" p-id="6157"></path>
+</svg>
