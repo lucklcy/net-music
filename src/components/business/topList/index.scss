@@ -1,0 +1,85 @@
+.top-list {
+  @include setSize(100%, 100%);
+  @include setFlexPos(column, flex-start, flex-start);
+  .content {
+    flex: 1;
+    width: 100%;
+    overflow: auto;
+    .official-title,
+    .global-title {
+      @include setSize(100%, 112px);
+      @include setFlexPos(row, flex-start, center);
+      span {
+        margin-left: 30px;
+        font-size: 0.42rem;
+        font-weight: bold;
+        color: #333;
+      }
+    }
+    .official-list {
+      padding: 0 18px;
+      .item {
+        width: 100%;
+        margin-bottom: 12px;
+        @include setFlexPos(row, space-between, center);
+        .pic {
+          @include setSize(392px, 392px);
+          @include setBgImg('', center, center, cover, no-repeat);
+          border-radius: 12px;
+          position: relative;
+          .frequency {
+            position: absolute;
+            left: 18px;
+            bottom: 20px;
+            color: #fff;
+            font-size: 0.34rem;
+          }
+        }
+        .label-list {
+          padding: 60px 0;
+          @include setSize(620px, 392px);
+          @include setFlexPos(column, space-around, flex-start);
+          &.border-1px {
+            @include border-1px(bottom, $border-color);
+          }
+          .item {
+            text-align: left;
+            font-size: 0.36rem;
+            color: #555;
+          }
+        }
+      }
+    }
+    .global-list {
+      width: 100%;
+      padding: 0 20px;
+      @include setFlexPos(row, space-between, flex-start);
+      flex-wrap: wrap;
+      .item {
+        width: 31.6vw;
+        .pic {
+          @include setSize(100%, 340px);
+          @include setBgImg('', center, center, cover, no-repeat);
+          border-radius: 12px;
+          position: relative;
+          .frequency {
+            position: absolute;
+            left: 18px;
+            bottom: 20px;
+            color: #fff;
+            font-size: 0.32rem;
+            padding: 2px 6px 6px 6px;
+            border-radius: 6px;
+            background-color: rgba(61, 60, 60, 0.363);
+          }
+        }
+        .name {
+          display: inline-block;
+          padding: 10px 6px 50px 6px;
+          font-size: 0.34rem;
+          color: #333;
+        }
+      }
+    }
+  }
+}

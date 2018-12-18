@@ -6,37 +6,48 @@
   #{$name}: px2rem($px);
 }
 
-@mixin border-1px($position, $color) {
+@mixin border-1px($position, $color, $width: 1px) {
   position: relative;
   &::after {
-    display: block;
+    content: '';
     position: absolute;
-
     @if $position== 'bottom' {
+      left: 0;
       bottom: 0;
-      left: 0;
       width: 100%;
-    }
-    @if $position== 'top' {
-      top: 0;
-      left: 0;
-      width: 100%;
-    }
-
-    @if $position== 'left' {
+      height: $width;
+      transform-origin: 0 0;
+      background-color: $color;
+    } @else if $position== 'top' {
       left: 0;
       top: 0;
-      bottom: 0;
-    }
-
-    @if $position== 'right' {
+      width: 100%;
+      height: $width;
+      transform-origin: 0 0;
+      background-color: $color;
+    } @else if $position== 'left' {
+      left: 0;
+      top: 0;
+      width: $width;
+      height: 100%;
+      transform-origin: 0 0;
+      background-color: $color;
+    } @else if $position== 'right' {
+      box-sizing: border-box;
       right: 0;
       top: 0;
+      width: $width;
+      height: 100%;
+      transform-origin: 0 0;
+      background-color: $color;
+    } @else if $position == 'all' {
+      box-sizing: border-box;
+      left: 0;
+      top: 0;
+      right: 0;
       bottom: 0;
+      border: $width solid $color;
     }
-
-    border-#{$position}: 1px solid $color;
-    content: ' ';
   }
 }
 

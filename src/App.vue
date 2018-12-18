@@ -11,7 +11,7 @@ import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
-import { IPlaySong } from '@/store/state'
+import { IPlaySong } from '@/common/interface/base.ts'
 
 @Component({
   components: {

@@ -12,7 +12,7 @@
     <div :class="{'panel-container':true}">
       <div class="panel-list">
         <router-link class="panel-item" :to="{name:'r_home_recommand'}">个性推荐</router-link>
-        <router-link class="panel-item" :to="{name:'r_home_broadcast'}">主播电台</router-link>
+        <router-link class="panel-item" :to="{name:'r_home_broadcast'}">精彩节目</router-link>
       </div>
       <div :class="{'under-tag':true,'to-first':$route.name==='r_home_recommand','to-second':$route.name==='r_home_broadcast'}"></div>
     </div>

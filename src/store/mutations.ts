@@ -1,6 +1,7 @@
 import { State } from './state'
 import { isBoolean, isObject } from 'lodash'
-import { UserInfo, ITrack, IArtist, IPlaySong } from './state'
+import { IPlaySong } from '@/common/interface/base.ts'
+import { UserInfo, ITrack, IArtist } from '@/common/interface/base.ts'
 
 export interface IkeyVal {
   key: string
@@ -58,6 +59,20 @@ export default {
       }
     }
   },
+  addIntoPlayList(state: State, song: IPlaySong) {
+    const playList: IPlaySong[] = state.playList
+    let hasSongInList: boolean = false
+    for (let i = 0; i < playList.length; i++) {
+      const tempItem: IPlaySong = playList[i]
+      if (tempItem.id === song.id) {
+        hasSongInList = true
+        break
+      }
+    }
+    if (!hasSongInList) {
+      state.playList = playList.concat([song])
+    }
+  },
   changePlayingStatus(state: State, playFlag: boolean): void {
     state.playing = playFlag
   },
@@ -82,5 +97,16 @@ export default {
   },
   setCurrentSongListId(state: State, listId: number) {
     state.currentSongListId = listId
+  },
+  changeFootTab(state: State, footTabCode: string) {
+    state.footTab = footTabCode
+  },
+  changeTableCat(state: State, payload: { type: number; cat: string }): void {
+    const { type, cat } = payload
+    if (type === 0) {
+      state.tableCat = cat
+    } else if (type === 1) {
+      state.hotTableCat = cat
+    }
   }
 }

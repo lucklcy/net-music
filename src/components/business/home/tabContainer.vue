@@ -13,27 +13,9 @@
         <div class="pic song-list-img"></div>
         <span>歌单</span>
       </li>
-      <li class="item">
+      <li class="item" @click="goToTopList">
         <div class="pic ranking-list-img"></div>
         <span>排行榜</span>
-      </li>
-    </ul>
-    <ul class="container" v-if="type === 'broadcast'">
-      <li class="item">
-        <div class="pic fm-img">分类</div>
-        <span>电台分类</span>
-      </li>
-      <li class="item">
-        <div class="pic recommand-img">排行</div>
-        <span>电台排行</span>
-      </li>
-      <li class="item">
-        <div class="pic song-list-img">DI</div>
-        <span>DI电音</span>
-      </li>
-      <li class="item">
-        <div class="pic ranking-list-img">小冰</div>
-        <span>小冰电台</span>
       </li>
     </ul>
   </div>
@@ -57,6 +39,10 @@ export default class TabContainer extends mixins(CommonMixin) {
 
   private goToSongTable() {
     this.$router.push({ name: 'r_song_table_index' })
+  }
+
+  private goToTopList() {
+    this.$router.push({ name: 'r_top_list' })
   }
 }
 </script>

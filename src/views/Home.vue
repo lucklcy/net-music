@@ -12,9 +12,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import Header from '~/foundation/com/header.vue'
 import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
-import { UserInfo } from '@/store/state'
+import { UserInfo } from '@/common/interface/base.ts'
 import CommonMixin from '@/mixins/comMix'
-import { IPlaySong } from '@/store/state'
+import { IPlaySong } from '@/common/interface/base.ts'
 
 @Component({
   components: {

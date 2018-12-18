@@ -1,66 +1,4 @@
-export interface ICreator {
-  avatarUrl: string
-  birthday: number
-  nickname: string
-  userId: number
-  city: number
-  province: number
-  [propName: string]: any
-}
-
-export interface IAl {
-  id: number
-  name: string
-  pic: number
-  picUrl: string
-  [propName: string]: any
-}
-
-export interface IArtist {
-  id: number
-  name: string
-  [propName: string]: any
-}
-
-export interface ITrack {
-  id: number
-  al: IAl
-  ar: IArtist[]
-  dt: number
-  name: string
-}
-
-export interface IPlaylist {
-  creator: ICreator
-  tracks: ITrack[]
-  coverImgUrl: string
-  createTime: number
-  description: string
-  name: string
-  [propName: string]: any
-}
-
-export interface Indicator {
-  text: string
-  tip?: string
-  visible: boolean
-}
-
-export interface UserInfo {
-  nickname: string
-  userId: number
-  avatarUrl: string
-  backgroundUrl: string
-  [propName: string]: any
-}
-
-export interface IPlaySong {
-  id: number
-  name: string
-  picUrl: string
-  songer: string
-  duration: number
-}
+import { IPlaySong, Indicator, UserInfo } from '@/common/interface/base.ts'
 
 export const PLAYING_MODE = {
   SEQUENCE: 'sequence',
@@ -70,11 +8,11 @@ export const PLAYING_MODE = {
 }
 
 export const FOOT_BAR_STATUS = {
-  MUSIC: { icon: 'net-music', name: '音乐' },
-  VIDEO: { icon: 'net-video', name: '视频' },
-  MY: { icon: 'net-my', name: '我的' },
-  FRIENDS: { icon: 'net-friends', name: '朋友' },
-  ACCOUNT: { icon: 'net-account', name: '账号' }
+  MUSIC: { icon: 'net-music', name: '音乐', code: 'music' },
+  VIDEO: { icon: 'net-video', name: '视频', code: 'video' },
+  MY: { icon: 'net-my', name: '我的', code: 'my' },
+  FRIENDS: { icon: 'net-friends', name: '朋友', mcode: 'friends' },
+  ACCOUNT: { icon: 'net-account', name: '账号', code: 'account' }
 }
 
 export interface State {
@@ -86,9 +24,11 @@ export interface State {
   fullScreen: boolean
   currentIndex: number
   mode: string
-  footBarStatus: string
+  footTab: string
   showSongList: boolean
   currentSongListId: number
+  tableCat: string
+  hotTableCat: string
 }
 
 // 初始状态
@@ -106,9 +46,13 @@ const stateData: State = {
   fullScreen: true,
   currentIndex: -1,
   mode: PLAYING_MODE.SEQUENCE,
-  footBarStatus: FOOT_BAR_STATUS.MUSIC.icon,
+  footTab: FOOT_BAR_STATUS.MUSIC.code,
   showSongList: false,
-  currentSongListId: 0
+  currentSongListId: 0,
+  // 当前歌单类型
+  tableCat: '',
+  // 当前精品歌单类型
+  hotTableCat: ''
 }
 
 export default stateData

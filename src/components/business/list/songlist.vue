@@ -2,8 +2,8 @@
   <div class="song-list" v-if="songList">
     <section class="header" :style="{backgroundImage:'url('+songList.coverImgUrl+')'}">
       <div class="title-bar">
-        <span class="backup" @click="goBack">
-          <i class="iconfont icon-arrow-left-"></i>
+        <span class="backup" @click='goBack'>
+          <SvgIcon :iconClass="'arrow-left'" :className="'arrow-left'"></SvgIcon>
         </span>
         <span class="title">歌单</span>
         <MiniPlayer></MiniPlayer>
@@ -73,6 +73,7 @@
         </li>
       </ul>
     </section>
+    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
@@ -82,8 +83,7 @@ import CommonMixin from '@/mixins/comMix'
 import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
 import MiniPlayer from '~/business/player/mini.vue'
-import { IPlaylist, ITrack } from '@/store/state'
-import { IPlaySong } from '@/store/state'
+import { IPlaySong, IPlaylist, ITrack } from '@/common/interface/base.ts'
 
 @Component({
   components: {
@@ -104,7 +104,7 @@ export default class SongList extends mixins(CommonMixin) {
   @Mutation setCurrentSongListId: (listId: number) => void
 
   private goBack() {
-    this.$router.push({ name: 'r_home_recommand' })
+    this.$router.go(-1)
   }
 
   private getAuthorString(item: ITrack) {

@@ -22,13 +22,12 @@ $baseAssets: '../../../assets';
     }
     .title-bar {
       @include setFlexPos(row, space-between, center);
-      height: 100px;
+      height: 120px;
       padding: 0 40px;
       .backup {
         z-index: 11;
-        padding: 0px 20px 0px 5px;
-        .iconfont {
-          font-size: 0.58rem;
+        .arrow-left {
+          font-size: 0.64rem;
           color: #fff;
         }
       }

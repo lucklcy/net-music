@@ -6,6 +6,8 @@ import Broadcaster from '~/business/home/broadcaster.vue'
 import SongList from '~/business/list/songlist.vue'
 import SongTableIndex from '~/business/songTable/index.vue'
 import SongTableHighQuality from '~/business/songTable/highQuality.vue'
+import TopList from '~/business/topList/index.vue'
+import TableCatChoose from '~/business/songTable/catChoose.vue'
 
 Vue.use(Router)
 
@@ -46,9 +48,19 @@ export default new Router({
       component: SongTableIndex
     },
     {
+      path: '/table/cat-choose',
+      name: 'r_table_cat_choose',
+      component: TableCatChoose
+    },
+    {
       path: '/table/high-quality',
       name: 'r_song_table_high_quality',
       component: SongTableHighQuality
+    },
+    {
+      path: '/top-list',
+      name: 'r_top_list',
+      component: TopList
     }
   ]
 })

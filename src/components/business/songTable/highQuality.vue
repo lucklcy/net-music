@@ -1,12 +1,6 @@
 <template>
   <div class="song-table-high-quality">
-    <div class="top">
-      <span @click='goBack'>
-        <SvgIcon :iconClass="'arrow-left'" :className="'arrow-left'"></SvgIcon>
-      </span>
-      <span class="title">精品歌单</span>
-      <SvgIcon :iconClass="'table'" :className="'table'"></SvgIcon>
-    </div>
+    <TopBar back-route-name='r_song_table_index' title='精品歌单'></TopBar>
     <section class="container">
       <ul class="list" v-if="highQualitySongListArray && highQualitySongListArray.length>0">
         <li class="item border-1px" v-for="(item,index) in highQualitySongListArray" :key="index"
@@ -29,47 +23,22 @@
         </li>
       </ul>
     </section>
+    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { ICreator } from '@/store/state'
-
-interface ICreater {
-  avatarUrl: string
-  backgroundUrl: string
-  nickname: string
-  userId: number
-  [propName: string]: any
-}
-
-interface IPlayList {
-  createTime: number
-  creator: ICreator
-  copywriter?: string
-  coverImgUrl: string
-  description: string
-  name: string
-  playCount: number
-  shareCount: number
-  trackCount: number
-  updateTime: number
-  userId: number
-  tags: string[]
-  [propName: string]: any
-}
+import { ICreator, IPlayList } from '@/common/interface/base.ts'
+import TopBar from '~/foundation/com/topBar.vue'
+import Footer from '~/foundation/com/footer.vue'
 
 @Component({
-  components: {}
+  components: { TopBar, Footer }
 })
 export default class SongHighQualityTable extends mixins(CommonMixin) {
   private highQualitySongListArray: IPlayList[] | null = null
-
-  private goBack() {
-    this.$router.push({ name: 'r_song_table_index' })
-  }
 
   private gotoDetail(id: string) {
     this.$router.push({ name: 'r_song_list', query: { id } })
@@ -90,24 +59,6 @@ $baseAsset: '../../../assets';
 .song-table-high-quality {
   @include setSize(100%, 100%);
   @include setFlexPos(column, flex-start, flex-start);
-  .top {
-    @include setSize(100%, 138px);
-    @include setFlexPos(row, space-between, center);
-    background-color: $color-highlight-background;
-    z-index: 10;
-    color: #fff;
-    .arrow-left {
-      font-size: 0.62rem;
-      margin-left: 32px;
-    }
-    .title {
-      font-size: 0.44rem;
-    }
-    .table {
-      font-size: 0.62rem;
-      margin-right: 40px;
-    }
-  }
   .container {
     flex: 1;
     width: 100%;

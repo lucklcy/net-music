@@ -1,12 +1,6 @@
 <template>
   <div class="song-table">
-    <div class="top">
-      <span @click='goBack'>
-        <SvgIcon :iconClass="'arrow-left'" :className="'arrow-left'"></SvgIcon>
-      </span>
-      <span class="title">歌单</span>
-      <SvgIcon :iconClass="'table'" :className="'table'"></SvgIcon>
-    </div>
+    <TopBar back-route-name='r_home_recommand' title='歌单'></TopBar>
     <section class="high-quality" v-if="highQualitySong" @click="goToHighQualityTable">
       <div class="background" :style="{backgroundImage:'url('+highQualitySong.coverImgUrl+')'}">
       </div>
@@ -25,13 +19,14 @@
     </section>
     <section class="oper-choose">
       <div class="all-category">
-        <span class="lable">全部歌单</span>
+        <span class="lable" @click="goToCatChoose">全部歌单</span>
         <SvgIcon :iconClass="'arrow-right-thin'" :className="'arrow-right-thin'"></SvgIcon>
       </div>
       <div class="hot-catgeory">
-        <span class="border-1px-v">华语</span>
-        <span class="border-1px-v">电子</span>
-        <span>民谣</span>
+        <span :class="{'border-1px-v':index!== 2}" v-for="(item,index) in hotCategoryList" :key="index"
+          @click="changeCat(item.name)" v-if="index<=2">
+          {{item.name}}
+        </span>
       </div>
     </section>
     <section class="container">
@@ -53,48 +48,30 @@
         </li>
       </ul>
     </section>
+    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { ICreator } from '@/store/state'
-
-interface ICreater {
-  avatarUrl: string
-  backgroundUrl: string
-  nickname: string
-  userId: number
-  [propName: string]: any
-}
-
-interface IPlayList {
-  createTime: number
-  creator: ICreator
-  copywriter?: string
-  coverImgUrl: string
-  description: string
-  name: string
-  playCount: number
-  shareCount: number
-  trackCount: number
-  updateTime: number
-  userId: number
-  tags: string[]
-  [propName: string]: any
-}
+import { ICreator, IPlayList, ICategory } from '@/common/interface/base.ts'
+import TopBar from '~/foundation/com/topBar.vue'
+import Footer from '~/foundation/com/footer.vue'
+import { Mutation, State } from 'vuex-class'
 
 @Component({
-  components: {}
+  components: { TopBar, Footer }
 })
 export default class SongTable extends mixins(CommonMixin) {
+  @State tableCat: string
   private highQualitySong: IPlayList | null = null
   private handpickSongListArray: IPlayList[] | null = null
+  private limit: number = 20
+  private categoryList: ICategory[] = []
+  private hotCategoryList: ICategory[] = []
 
-  private goBack() {
-    this.$router.push({ name: 'r_home_recommand' })
-  }
+  @Mutation changeTableCat: (payload: { type: number; cat: string }) => void
 
   private gotoDetail(id: string) {
     this.$router.push({ name: 'r_song_list', query: { id } })
@@ -104,18 +81,48 @@ export default class SongTable extends mixins(CommonMixin) {
     this.$router.push({ name: 'r_song_table_high_quality' })
   }
 
-  created() {
-    this.service
-      .getHandpickList({ limit: 50 })
-      .then((handpickListResult: { playlists: IPlayList[] }) => {
-        this.handpickSongListArray = handpickListResult['playlists']
-      })
+  private goToCatChoose() {
+    this.$router.push({ name: 'r_table_cat_choose' })
+  }
+
+  private getHandpickList() {
+    const params = { limit: this.limit, cat: this.tableCat }
+    this.service.getHandpickList(params).then((handpickListResult: { playlists: IPlayList[] }) => {
+      this.handpickSongListArray = handpickListResult['playlists']
+    })
+  }
+
+  private getHighQualityList() {
     this.service
       .getHighQualityList({ limit: 1 })
       .then((highQualityListResult: { playlists: IPlayList[] }) => {
         this.highQualitySong =
           highQualityListResult['playlists'] && highQualityListResult['playlists'][0]
       })
+  }
+
+  private changeCat(name: string) {
+    this.changeTableCat({ type: 0, cat: name })
+    this.getHandpickList()
+  }
+
+  private getCategoryList() {
+    this.service.getCategoryList({}).then((categoryListResult: { playlists: IPlayList[] }) => {
+      console.log({ categoryListResult })
+    })
+  }
+
+  private getHotCategoryList() {
+    this.service.getHotCategoryList({}).then((hotCategoryListResult: { tags: ICategory[] }) => {
+      this.hotCategoryList = hotCategoryListResult['tags']
+    })
+  }
+
+  created() {
+    this.getHandpickList()
+    this.getHighQualityList()
+    this.getCategoryList()
+    this.getHotCategoryList()
   }
 }
 </script>
@@ -124,24 +131,6 @@ $baseAsset: '../../../assets';
 .song-table {
   @include setSize(100%, 100%);
   @include setFlexPos(column, flex-start, flex-start);
-  .top {
-    @include setSize(100%, 138px);
-    @include setFlexPos(row, space-between, center);
-    background-color: $color-highlight-background;
-    z-index: 10;
-    color: #fff;
-    .arrow-left {
-      font-size: 0.62rem;
-      margin-left: 32px;
-    }
-    .title {
-      font-size: 0.44rem;
-    }
-    .table {
-      font-size: 0.62rem;
-      margin-right: 40px;
-    }
-  }
   .high-quality {
     position: relative;
     background-color: #333;

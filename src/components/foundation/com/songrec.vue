@@ -28,14 +28,7 @@ import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State } from 'vuex-class'
-
-interface ISongRecommandList {
-  id: number
-  picUrl: string
-  copywriter: string
-  name: string
-  [propName: string]: any
-}
+import { ISongRecommandList } from '@/common/interface/base.ts'
 
 const enum SongRecType {
   RECOMMAND = 'recommand'

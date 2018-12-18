@@ -48,52 +48,38 @@ p {
   padding: 0;
 }
 
-@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-  .border-1px {
-    &::after {
-      -webkit-transform: scaleY(0.7);
-      transform: scaleY(0.7);
-    }
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 2dppx) {
+  .border-bottom-1px::after,
+  .border-top-1px::after {
+    transform: scaleY(0.5);
   }
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-  .border-1px {
-    &::after {
-      -webkit-transform: scaleY(0.5);
-      transform: scaleY(0.5);
-    }
+  .border-left-1px::after,
+  .border-right-1px::after {
+    transform: scaleX(0.5);
   }
-}
-@media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-  .border-1px {
-    &::after {
-      -webkit-transform: scaleY(0.4);
-      transform: scaleY(0.4);
-    }
+  .border-1px::after {
+    width: 200%;
+    height: 200%;
+    transform: scale(0.5);
+    transform-origin: 0 0;
   }
 }
 
-@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
-  .border-1px-v {
-    &::after {
-      -webkit-transform: scaleY(0.8) scaleX(0.7);
-      transform: scaleY(0.8) scaleX(0.7);
-    }
+@media only screen and (-webkit-min-device-pixel-ratio: 3),
+  only screen and (min-resolution: 3dppx) {
+  .border-bottom-1px::after,
+  .border-top-1px::after {
+    transform: scaleY(0.333);
   }
-}
-@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-  .border-1px-v {
-    &::after {
-      -webkit-transform: scaleY(0.8) scaleX(0.5);
-      transform: scaleY(0.8) scaleX(0.5);
-    }
+  .border-left-1px::after,
+  .border-right-1px::after {
+    transform: scaleX(0.333);
   }
-}
-@media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-  .border-1px-v {
-    &::after {
-      -webkit-transform: scaleY(0.8) scaleX(0.4);
-      transform: scaleY(0.8) scaleX(0.4);
-    }
+  .border-1px::after {
+    width: 300%;
+    height: 300%;
+    transform: scale(0.333);
+    transform-origin: 0 0;
   }
 }

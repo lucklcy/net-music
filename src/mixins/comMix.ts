@@ -4,7 +4,7 @@ import { Mutation } from 'vuex-class'
 import { HttpService, default as service } from '@/service'
 import { isValidUrl } from '@/utils'
 import { isEmpty, isFunction } from 'lodash'
-import { Indicator } from '@/store/state'
+import { Indicator } from '@/common/interface/base.ts'
 
 @Component
 export default class CommonMixin extends Vue {
