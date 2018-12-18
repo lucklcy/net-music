@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer border-top-1px">
     <ul>
       <li v-for="(item,index) in footBarStatusMap" @click="goToTab(item.code)">
         <SvgIcon :iconClass="item.icon" :className="getClassName(item.code)"></SvgIcon>
@@ -49,6 +49,9 @@ $baseAssets: '../../../assets';
 .footer {
   width: 100%;
   height: $mini-player-height;
+  &.border-top-1px {
+    @include border-set(top, $border-color);
+  }
   ul {
     @include setSize(100%, 100%);
     padding: 0 40px;

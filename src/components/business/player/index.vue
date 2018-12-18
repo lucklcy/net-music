@@ -1,7 +1,7 @@
 <template>
   <div class="main-player">
     <transition name="normal">
-      <div class="normal-player" v-show="fullScreen" @click="changeShowSongList(false)">
+      <div class="normal-player" v-show="fullScreen">
         <div class="background">
           <div :style="{backgroundImage:'url('+currentSong.picUrl+')'}" class="inner"></div>
         </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="tab border-1px">
+  <div class="tab border-bottom-1px">
     <ul class="container" v-if="type === 'recommand'">
       <li class="item">
         <div class="pic fm-img"></div>
@@ -92,8 +92,8 @@ $baseAsset: '../../../assets';
       }
     }
   }
-  &.border-1px {
-    @include border-1px(bottom, $border-color);
+  &.border-bottom-1px {
+    @include border-set(bottom, $border-color);
   }
 }
 </style>

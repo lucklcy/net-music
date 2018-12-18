@@ -14,7 +14,7 @@
       <div class="space">&nbsp;</div>
       <template v-for="(item,index) in categoryList">
         <div class="t-head">
-          <div class="c-type border-bottom-1px">
+          <div :class="{'c-type':true, 'border-bottom-1px':item.val.length > 6}">
             <div class="inner-container border-right-1px">
               <span :class="['icon','code-'+item.code]">
                 <SvgIcon v-if="item.code==='0'" :iconClass="'category-language'" :className="'category-language'"></SvgIcon>
@@ -27,10 +27,9 @@
                 {{item.key}}
               </span>
             </div>
-
           </div>
           <div class="t-head-container">
-            <div class="category-item border-bottom-1px" v-for="(innterItem,innnerIndex) in item.val"
+            <div :class="{'category-item':true, 'border-bottom-1px':innterItem.hasBottom}" v-for="(innterItem,innnerIndex) in item.val"
               v-if="innnerIndex < 6" @click="onCategoryItemClick(innterItem.name)">
               <span :class="{'border-right-1px':true,'active':tableCat===innterItem.name,'hot':innterItem.hot}">
                 {{innterItem.name}}
@@ -41,7 +40,7 @@
           </div>
         </div>
         <div class="t-foot" v-if="item.val.length > 6">
-          <div class="category-item border-bottom-1px" v-for="(innterItem,innnerIndex) in item.val"
+          <div :class="{'category-item':true, 'border-bottom-1px':innterItem.hasBottom}" v-for="(innterItem,innnerIndex) in item.val"
             v-if="innnerIndex >=6" @click="onCategoryItemClick(innterItem.name)">
             <span :class="{'border-right-1px':true,'active':tableCat===innterItem.name,'hot':innterItem.hot}">
               {{innterItem.name}}
@@ -101,6 +100,22 @@ export default class CatChooser extends mixins(CommonMixin) {
                   innerCategoryList.push(innerItem)
                 }
               })
+              let innerCategoryListLen = innerCategoryList.length
+              if (innerCategoryListLen > 0) {
+                innerCategoryList.forEach((innerItem, innerIndex) => {
+                  innerItem['hasBottom'] = true
+                  if (innerCategoryListLen > 3 && innerCategoryListLen <= 6) {
+                    if (innerIndex > 2) {
+                      innerItem['hasBottom'] = false
+                    }
+                  } else if (innerCategoryListLen > 6) {
+                    let indexBegin = Math.floor((innerCategoryListLen - 6) / 4) * 4 + 6 - 1
+                    if (innerIndex > indexBegin) {
+                      innerItem['hasBottom'] = false
+                    }
+                  }
+                })
+              }
               tempCategoryList.push({ key: categoryType, val: innerCategoryList, code: item })
             }
             this.categoryList = tempCategoryList
@@ -148,7 +163,7 @@ $category-border-color: #efefef;
         @include setFlexPos(row, center, center);
         @include setSize(100%, 100%);
         &.border-1px {
-          @include border-1px(all, $category-border-color);
+          @include border-set(all, $category-border-color);
         }
         span {
           font-size: 0.44rem;
@@ -174,19 +189,19 @@ $category-border-color: #efefef;
       line-height: 0;
     }
     .t-head {
-      @include setSize(100%, 241px);
+      @include setSize(100%, 240px);
       @include setFlexPos(row, flex-start, flex-start);
       .c-type {
         @include setSize(25vw, 100%);
         &.border-bottom-1px {
-          @include border-1px(bottom, $category-border-color);
+          @include border-set(bottom, $category-border-color);
         }
         .inner-container {
           position: relative;
           @include setSize(100%, 100%);
           @include setFlexPos(column, center, center);
           &.border-right-1px {
-            @include border-1px(right, $category-border-color);
+            @include border-set(right, $category-border-color);
           }
           .name {
             font-size: 0.4rem;
@@ -229,9 +244,9 @@ $category-border-color: #efefef;
     }
     .t-head .t-head-container .category-item,
     .t-foot .category-item {
-      @include setSize(25vw, 121px);
+      @include setSize(25vw, 120px);
       &.border-bottom-1px {
-        @include border-1px(bottom, $category-border-color);
+        @include border-set(bottom, $category-border-color);
       }
       span {
         display: inline-block;
@@ -240,7 +255,7 @@ $category-border-color: #efefef;
         line-height: 120px;
         font-size: 0.38rem;
         &.border-right-1px {
-          @include border-1px(right, $category-border-color);
+          @include border-set(right, $category-border-color);
         }
         &.hot {
           .hot-triangle {

@@ -18,13 +18,13 @@
       </div>
     </section>
     <section class="oper-choose">
-      <div class="all-category">
-        <span class="lable" @click="goToCatChoose">全部歌单</span>
+      <div class="all-category" @click="goToCatChoose">
+        <span class="lable">全部歌单</span>
         <SvgIcon :iconClass="'arrow-right-thin'" :className="'arrow-right-thin'"></SvgIcon>
       </div>
       <div class="hot-catgeory">
-        <span :class="{'border-1px-v':index!== 2}" v-for="(item,index) in hotCategoryList" :key="index"
-          @click="changeCat(item.name)" v-if="index<=2">
+        <span :class="{'border-right-1px':index!== 4,'active':item.name===tableCat}" v-for="(item,index) in hotCategoryList"
+          :key="index" @click="changeCat(item.name)" v-if="index<=4">
           {{item.name}}
         </span>
       </div>
@@ -33,6 +33,7 @@
       <ul class="list" v-if="handpickSongListArray && handpickSongListArray.length>0">
         <li class="item" v-for="(item,index) in handpickSongListArray" :key="index" @click="gotoDetail(item.id)">
           <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
+            <SvgIcon v-if="item.highQuality" :iconClass="'high-quality-triangle'" :className="'high-quality-triangle'"></SvgIcon>
             <div class="heared">
               <span>
                 <i class="iconfont icon-erji"></i>
@@ -40,7 +41,13 @@
               </span>
             </div>
             <div class="description">
-              <div class="avatar" :style="{backgroundImage:'url('+item.creator.avatarUrl+')'}"></div>
+              <div class="avatar">
+                <SvgIcon v-if="item.creator.gender === 1" :iconClass="'avatar-male-default'"
+                  :className="'avatar-male-default'"></SvgIcon>
+                <SvgIcon v-else-if="item.creator.gender === 2" :iconClass="'avatar-female-default'"
+                  :className="'avatar-female-default'"></SvgIcon>
+                <SvgIcon v-else :iconClass="'avatar-default'" :className="'avatar-default'"></SvgIcon>
+              </div>
               <span>{{item.creator.nickname | limitIn(7)}}</span>
             </div>
           </div>
@@ -215,8 +222,11 @@ $baseAsset: '../../../assets';
       color: #666;
       span {
         padding: 0 30px;
-        &.border-1px-v {
-          @include border-1px(right, $border-color);
+        &.border-right-1px {
+          @include border-set(right, $border-color);
+        }
+        &.active {
+          color: $color-highlight-background;
         }
       }
     }
@@ -239,6 +249,10 @@ $baseAsset: '../../../assets';
           @include setBgImg('', center, center, cover, no-repeat);
           border-radius: 12px;
           position: relative;
+          .high-quality-triangle {
+            color: $color-theme;
+            font-size: 0.68rem;
+          }
           .heared {
             float: right;
             padding: 10px 10px 0 0;
@@ -260,9 +274,12 @@ $baseAsset: '../../../assets';
             background-color: rgba(61, 60, 60, 0.363);
             @include setFlexPos(row, flex-start, center);
             .avatar {
-              @include setSize(56px, 56px);
-              @include setBgImg('', center, center, cover, no-repeat);
-              border-radius: 4px;
+              .avatar-male-default,
+              .avatar-female-default,
+              .avatar-default {
+                font-size: 0.4rem;
+                color: #fff;
+              }
             }
             span {
               margin-left: 16px;

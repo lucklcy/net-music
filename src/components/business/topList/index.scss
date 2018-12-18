@@ -39,8 +39,8 @@
           padding: 60px 0;
           @include setSize(620px, 392px);
           @include setFlexPos(column, space-around, flex-start);
-          &.border-1px {
-            @include border-1px(bottom, $border-color);
+          &.border-bottom-1px {
+            @include border-set(bottom, $border-color);
           }
           .item {
             text-align: left;

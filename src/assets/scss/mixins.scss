@@ -1,12 +1,11 @@
 @charset "UTF-8";
 
 @import './functions.scss';
-// http://www.html-js.com/article/Mobile-terminal-H5-mobile-terminal-HD-multi-screen-adaptation-scheme%203041
 @mixin px2rem($name, $px) {
   #{$name}: px2rem($px);
 }
 
-@mixin border-1px($position, $color, $width: 1px) {
+@mixin border-set($position, $color, $width: 1px, $radius: 0px) {
   position: relative;
   &::after {
     content: '';
@@ -47,6 +46,7 @@
       right: 0;
       bottom: 0;
       border: $width solid $color;
+      border-radius: $radius;
     }
   }
 }

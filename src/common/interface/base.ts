@@ -182,5 +182,6 @@ export interface ICategory {
   name: string
   position: number
   type: number
+  hasBottom?: boolean
   usedCount: number
 }

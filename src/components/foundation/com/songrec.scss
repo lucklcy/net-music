@@ -42,8 +42,12 @@ $baseAssets: '../../../assets';
             background-color: rgba(61, 60, 60, 0.363);
             @include setFlexPos(row, flex-start, center);
             .avatar {
-              @include setSize(56px, 56px);
-              @include setBgImg('', center, center, cover, no-repeat);
+              .avatar-male-default,
+              .avatar-female-default,
+              .avatar-default {
+                font-size: 0.4rem;
+                color: #fff;
+              }
             }
             span {
               margin-left: 16px;
