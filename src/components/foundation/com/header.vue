@@ -60,7 +60,10 @@ $baseAssets: '../../../assets';
         font-size: 0.4rem;
         color: #fff;
         text-decoration: none;
-        padding: 10px 180px;
+        padding: 10px 100px;
+        &:first-child {
+          margin-right: 146px;
+        }
         // 取消移动端点击的蓝色背景色
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
         -webkit-user-select: none;

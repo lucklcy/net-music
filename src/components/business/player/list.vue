@@ -1,7 +1,8 @@
 <template>
   <div class="palyer-song-list">
+    <div class="mask" @click="changeShowSongList(false)"></div>
     <div class="container">
-      <div class="summary border-1px">
+      <div class="summary border-bottom-1px">
         <span>
           <SvgIcon :iconClass="getIcon" :className="getIcon"></SvgIcon>
           <span class="mode-lable" v-text="getModeString"></span>
@@ -12,11 +13,11 @@
       </div>
       <div class="list-wrapper">
         <ul>
-          <li v-for="(item,index) in playList" :key="index" class="border-1px" @click="doClick(item.id)">
+          <li v-for="(item,index) in playList" :key="index" class="border-bottom-1px" @click="doClick(item.id)">
             <div class="face">
               <SvgIcon :iconClass="'playing'" :className="'playing'" v-show="currentSong.id === item.id"></SvgIcon>
               <span v-show="currentSong.id !== item.id">&nbsp;</span>
-              <span class="cd" :style="{backgroundImage:'url('+item.picUrl+')'}"></span>
+              <span class="cd">{{index+1}}</span>
             </div>
             <div :class="{'content':true,'active':currentSong.id === item.id}">
               <span class="name">{{item.name | limitIn(16) }}</span>
@@ -31,7 +32,7 @@
         </ul>
       </div>
 
-      <div class="close border-1px" @click="changeShowSongList(false)">
+      <div class="close border-bottom-1px" @click="changeShowSongList(false)">
         <span>关闭</span>
       </div>
     </div>
@@ -82,18 +83,23 @@ export default class PlaySongList extends mixins(CommonMixin) {
 </script>
 <style lang="scss" scoped>
 .palyer-song-list {
+  @include setSize(100%, 100%);
+  .mask {
+    height: 40%;
+    background-color: rgba(51, 51, 51, 0.075);
+  }
   .container {
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;
     @include setFlexPos(column, space-between, flex-start);
-    @include setSize(100%, 100%);
+    @include setSize(100%, 60%);
     background-color: #fff;
     overflow: auto;
     .summary {
       @include setSize(100%, 100px);
       @include setFlexPos(row, space-between, center);
-      &.border-1px {
-        @include border-1px(bottom, $border-color);
+      &.border-bottom-1px {
+        @include border-set(bottom, $border-color);
       }
       .svg-icon {
         &.player-mode-sequence,
@@ -134,22 +140,22 @@ export default class PlaySongList extends mixins(CommonMixin) {
       li {
         @include setSize(100%, 106px);
         @include setFlexPos(row, space-between, center);
-        &.border-1px {
-          @include border-1px(bottom, #efefef);
+        &.border-bottom-1px {
+          @include border-set(bottom, #efefef);
         }
-        .cd {
-          display: inline-block;
-          @include setSize(60px, 60px);
-          border-radius: 10%;
-          @include setBgImg('', center, center, cover, no-repeat);
-        }
+
         .face {
-          width: 160px;
+          width: 140px;
           @include setFlexPos(row, space-between, center);
           .playing {
             margin-left: 20px;
             font-size: 0.44rem;
             color: $color-highlight-background;
+          }
+          .cd {
+            font-size: 0.3rem;
+            color: #999;
+            margin-top: 6px;
           }
         }
         .content {
@@ -193,8 +199,8 @@ export default class PlaySongList extends mixins(CommonMixin) {
     .close {
       @include setFlexPos(row, center, center);
       @include setSize(100%, 110px);
-      &.border-1px {
-        @include border-1px(top, $border-color);
+      &.border-bottom-1px {
+        @include border-set(top, $border-color);
       }
       font-size: 0.42rem;
       color: #666;

@@ -117,8 +117,9 @@ $baseAssets: '../../../assets';
     @include setSize(100%, 120px);
     background-color: #fff;
     @include setFlexPos(row, flex-start, center);
-    &.border-1px {
-      @include border-1px(bottom, $border-color);
+    padding: 0 0 1px 0;
+    &.border-bottom-1px {
+      @include border-set(bottom, $border-color);
     }
     .play-all {
       padding: 0 0 0 60px;
@@ -190,8 +191,8 @@ $baseAssets: '../../../assets';
         .song-content {
           flex: 1;
           padding: 20px 80px 20px 0;
-          &.border-1px {
-            @include border-1px(bottom, $border-color);
+          &.border-bottom-1px {
+            @include border-set(bottom, $border-color);
           }
           @include setFlexPos(row, space-between, center);
           .label {

@@ -32,7 +32,7 @@
         </div>
       </div>
     </section>
-    <section class="summary border-1px">
+    <section class="summary border-bottom-1px">
       <div class="play-all" @click="doPlayAll">
         <SvgIcon :iconClass="'playing'" :className="'playing'" v-if="currentSongListId === songListId"></SvgIcon>
         <SvgIcon :iconClass="'list-play'" :className="'list-play'" v-else></SvgIcon>
@@ -51,7 +51,7 @@
         <li v-for="(item,index) in songList.tracks" :key="index" @click="goToSongPlay(item.id)"
           :class="{'active':currentSong.id === item.id}">
           <div class="index">{{index+1}}</div>
-          <div class="song-content border-1px">
+          <div class="song-content border-bottom-1px">
             <div class="label">
               <span class="name">{{item.name | limitIn(30) }}</span>
               <span class="author">{{getAuthorString(item) | limitIn(28)}}</span>

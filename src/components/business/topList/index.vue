@@ -12,7 +12,7 @@
               <span>{{item.updateFrequency}}</span>
             </div>
           </div>
-          <div class="label-list border-1px">
+          <div class="label-list border-bottom-1px">
             <span class="item" v-for="(innerIntem,innerIndex) in item.tracks">
               <span class="name">{{innerIndex+1}}.&nbsp;{{innerIntem.first+' - '+innerIntem.second
                 | limitIn(20)}}</span>
