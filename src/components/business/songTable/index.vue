@@ -1,7 +1,7 @@
 <template>
   <div class="song-table">
     <TopBar back-route-name='r_home_recommand' title='歌单'></TopBar>
-    <section class="high-quality" v-if="highQualitySong" @click="goToHighQualityTable">
+    <section class="high-quality" v-if="highQualitySong" @click="$router.push({ name: 'r_song_table_high_quality' })">
       <div class="background" :style="{backgroundImage:'url('+highQualitySong.coverImgUrl+')'}">
       </div>
       <div class="content">
@@ -18,7 +18,7 @@
       </div>
     </section>
     <section class="oper-choose">
-      <div class="all-category" @click="goToCatChoose">
+      <div class="all-category" @click="$router.push({ name: 'r_table_cat_choose' })">
         <span class="lable">全部歌单</span>
         <SvgIcon :iconClass="'arrow-right-thin'" :className="'arrow-right-thin'"></SvgIcon>
       </div>
@@ -29,8 +29,9 @@
         </span>
       </div>
     </section>
-    <section class="container">
-      <ul class="list" v-if="handpickSongListArray && handpickSongListArray.length>0">
+    <Scroll class="container" ref="handpickSongList" :data-list="handpickSongListArray" :pullup="true"
+      @scrollToEnd="doPullup">
+      <ul class="list">
         <li class="item" v-for="(item,index) in handpickSongListArray" :key="index" @click="gotoDetail(item.id)">
           <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
             <SvgIcon v-if="item.highQuality" :iconClass="'high-quality-triangle'" :className="'high-quality-triangle'"></SvgIcon>
@@ -53,8 +54,13 @@
           </div>
           <span class="name">{{item.name}}</span>
         </li>
+        <li class="pull-up-asking">
+          <SvgIcon :iconClass="'small-loading'" :className="'small-loading'"></SvgIcon>
+          <span>加载中</span>
+          <SvgIcon :iconClass="'small-loading'" :className="'small-loading'"></SvgIcon>
+        </li>
       </ul>
-    </section>
+    </Scroll>
     <Footer></Footer>
   </div>
 </template>
@@ -65,16 +71,19 @@ import CommonMixin from '@/mixins/comMix'
 import { ICreator, IPlayList, ICategory } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
 import Footer from '~/foundation/com/footer.vue'
+import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
 
 @Component({
-  components: { TopBar, Footer }
+  components: { TopBar, Footer, Scroll }
 })
 export default class SongTable extends mixins(CommonMixin) {
   @State tableCat: string
+
+  private currentPage: number = 1
   private highQualitySong: IPlayList | null = null
-  private handpickSongListArray: IPlayList[] | null = null
-  private limit: number = 20
+  private handpickSongListArray: IPlayList[] = []
+  private limit: number = 10
   private categoryList: ICategory[] = []
   private hotCategoryList: ICategory[] = []
 
@@ -84,21 +93,39 @@ export default class SongTable extends mixins(CommonMixin) {
     this.$router.push({ name: 'r_song_list', query: { id } })
   }
 
-  private goToHighQualityTable() {
-    this.$router.push({ name: 'r_song_table_high_quality' })
-  }
-
-  private goToCatChoose() {
-    this.$router.push({ name: 'r_table_cat_choose' })
-  }
-
+  // 初始化时获取歌单数据
   private getHandpickList() {
-    const params = { limit: this.limit, cat: this.tableCat }
+    let params: { [propName: string]: any } = {
+      offset: 0,
+      limit: this.limit
+    }
+    if (this.tableCat !== '') {
+      params['cat'] = this.tableCat
+    }
     this.service.getHandpickList(params).then((handpickListResult: { playlists: IPlayList[] }) => {
-      this.handpickSongListArray = handpickListResult['playlists']
+      let tempHandpickSongListArray = handpickListResult['playlists']
+      this.handpickSongListArray = tempHandpickSongListArray
     })
   }
 
+  // 上拉加载时，加载下一页数据
+  private addHandpickList() {
+    let params: { [propName: string]: any } = {
+      offset: this.currentPage * this.limit,
+      limit: this.limit
+    }
+    if (this.tableCat !== '') {
+      params['cat'] = this.tableCat
+    }
+    this.service.getHandpickList(params).then((handpickListResult: { playlists: IPlayList[] }) => {
+      let tempHandpickSongListArray = handpickListResult['playlists']
+      let _thisHandpickSongListArray = this.handpickSongListArray
+      ++this.currentPage
+      this.handpickSongListArray = _thisHandpickSongListArray.concat(tempHandpickSongListArray)
+    })
+  }
+
+  // 获取精品歌单，作为顶部精品歌单概览展示用
   private getHighQualityList() {
     this.service
       .getHighQualityList({ limit: 1 })
@@ -108,27 +135,34 @@ export default class SongTable extends mixins(CommonMixin) {
       })
   }
 
+  // 当点击切换歌单类型的时候
   private changeCat(name: string) {
     this.changeTableCat({ type: 0, cat: name })
     this.getHandpickList()
-  }
-
-  private getCategoryList() {
-    this.service.getCategoryList({}).then((categoryListResult: { playlists: IPlayList[] }) => {
-      console.log({ categoryListResult })
+    this.currentPage = 1
+    let scrollElement = this.$refs.handpickSongList as Vue & {
+      scrollTo: (x: number, y: number, time?: number, easing?: object) => void
+    }
+    this.$nextTick(() => {
+      scrollElement.scrollTo(0, 0, 1000)
     })
   }
 
+  // 获取热门歌单类型
   private getHotCategoryList() {
     this.service.getHotCategoryList({}).then((hotCategoryListResult: { tags: ICategory[] }) => {
       this.hotCategoryList = hotCategoryListResult['tags']
     })
   }
 
+  // 上拉时，加载下一页歌单数据
+  private doPullup() {
+    this.addHandpickList()
+  }
+
   created() {
     this.getHandpickList()
     this.getHighQualityList()
-    this.getCategoryList()
     this.getHotCategoryList()
   }
 }
@@ -234,7 +268,7 @@ $baseAsset: '../../../assets';
   .container {
     flex: 1;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
     .list {
       z-index: 10;
       padding: 0 32px;
@@ -292,6 +326,19 @@ $baseAsset: '../../../assets';
           padding: 20px 20px;
           font-size: 0.36rem;
           color: #555;
+        }
+      }
+      .pull-up-asking {
+        @include setSize(100vw, '');
+        @include setFlexPos(row, center, center);
+        span {
+          font-size: 0.38rem;
+          margin: 0 24px;
+          color: #666;
+        }
+        .small-loading {
+          font-size: 1rem;
+          color: #999;
         }
       }
     }
