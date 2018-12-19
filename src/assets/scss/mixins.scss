@@ -93,8 +93,12 @@
 }
 
 @mixin setSize($width, $height) {
-  width: $width;
-  height: $height;
+  @if $width!= '' {
+    width: $width;
+  }
+  @if $height!= '' {
+    height: $height;
+  }
 }
 
 @mixin textCenter($width, $height) {

@@ -11,7 +11,7 @@
         </span>
         <SvgIcon :iconClass="'player-list-garbage'" :className="'player-list-garbage'"></SvgIcon>
       </div>
-      <div class="list-wrapper">
+      <Scroll class="list-wrapper" ref="playList" :data-list="playList">
         <ul>
           <li v-for="(item,index) in playList" :key="index" class="border-bottom-1px" @click="doClick(item.id)">
             <div class="face">
@@ -30,8 +30,7 @@
             <span>...到底啦....</span>
           </li>
         </ul>
-      </div>
-
+      </Scroll>
       <div class="close border-bottom-1px" @click="changeShowSongList(false)">
         <span>关闭</span>
       </div>
@@ -45,10 +44,11 @@ import { Component, Vue, Emit, Prop, Watch } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import { PLAYING_MODE } from '@/store/state.ts'
+import Scroll from '~/foundation/base/scroll.vue'
 import { IPlaySong } from '@/common/interface/base.ts'
 
 @Component({
-  components: {}
+  components: { Scroll }
 })
 export default class PlaySongList extends mixins(CommonMixin) {
   @State mode: string
@@ -78,6 +78,14 @@ export default class PlaySongList extends mixins(CommonMixin) {
   doClick(songId: number): void {
     this.changePlayingStatus(false)
     this.setCurrentSong(songId)
+  }
+
+  @Watch('showSongList')
+  showSongListChange(val: boolean, oldVal: boolean) {
+    if (val) {
+      let playListScrollElement = this.$refs.playList as Vue & { refresh: () => void }
+      playListScrollElement.refresh()
+    }
   }
 }
 </script>

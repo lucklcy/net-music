@@ -52,6 +52,13 @@ export default class Scroll extends Vue {
    */
   @Prop(Boolean)
   private beforeScroll: boolean
+
+  /**
+   * 是否派发轻拂的事件
+   */
+  @Prop(Boolean)
+  private flick: boolean
+
   /**
    * 当数据更新后，刷新scroll的延时。
    */
@@ -100,6 +107,12 @@ export default class Scroll extends Vue {
     if (this.beforeScroll) {
       this.scroll.on('beforeScrollStart', () => {
         this.$emit('beforeScroll')
+      })
+    }
+
+    if (this.flick) {
+      this.scroll.on('flick', () => {
+        this.$emit('flick')
       })
     }
   }

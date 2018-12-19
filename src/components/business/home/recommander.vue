@@ -57,8 +57,6 @@ export default class Recommander extends mixins(CommonMixin) {
 <style lang="scss">
 .main-content {
   position: relative;
-  flex: 1;
-  overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 </style>

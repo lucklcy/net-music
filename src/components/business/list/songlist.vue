@@ -46,7 +46,7 @@
         <span class="subscribe">({{songList.subscribedCount}})</span>
       </div>
     </section>
-    <section class="list-container">
+    <Scroll class="list-container" ref="songList" :data-list="songList.tracks">
       <ul>
         <li v-for="(item,index) in songList.tracks" :key="index" @click="goToSongPlay(item.id)"
           :class="{'active':currentSong.id === item.id}">
@@ -72,7 +72,7 @@
           <i class="count">{{songList.subscribedCount}}人收藏</i>
         </li>
       </ul>
-    </section>
+    </Scroll>
     <Footer></Footer>
   </div>
 </template>
@@ -83,12 +83,14 @@ import CommonMixin from '@/mixins/comMix'
 import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
 import MiniPlayer from '~/business/player/mini.vue'
+import Scroll from '~/foundation/base/scroll.vue'
 import { IPlaySong, IPlaylist, ITrack } from '@/common/interface/base.ts'
 
 @Component({
   components: {
     MiniPlayer,
-    Footer
+    Footer,
+    Scroll
   }
 })
 export default class SongList extends mixins(CommonMixin) {
