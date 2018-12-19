@@ -164,7 +164,7 @@ $baseAssets: '../../../assets';
     flex: 1;
     width: 100%;
     background-color: #fff;
-    overflow: auto;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
     ul {
       li {

@@ -4,33 +4,46 @@
       <span class="cancel" @click="onCancel">取消</span>
       <span class="content">筛选歌单</span>
     </div>
-    <section class="container">
-      <div class="all">
-        <div :class="['title','border-1px',{'active':tableCat===''}]" @click="onCategoryItemClick('')">
-          <span>全部歌单</span>
-          <SvgIcon v-if="tableCat===''" :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+    <Scroll class="container" ref="categoryContaioner" :data-list="[]">
+      <section>
+        <div class="all">
+          <div :class="['title','border-1px',{'active':tableCat===''}]" @click="onCategoryItemClick('')">
+            <span>全部歌单</span>
+            <SvgIcon v-if="tableCat===''" :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+          </div>
         </div>
-      </div>
-      <div class="space">&nbsp;</div>
-      <template v-for="(item,index) in categoryList">
-        <div class="t-head">
-          <div :class="{'c-type':true, 'border-bottom-1px':item.val.length > 6}">
-            <div class="inner-container border-right-1px">
-              <span :class="['icon','code-'+item.code]">
-                <SvgIcon v-if="item.code==='0'" :iconClass="'category-language'" :className="'category-language'"></SvgIcon>
-                <SvgIcon v-if="item.code==='1'" :iconClass="'category-style'" :className="'category-style'"></SvgIcon>
-                <SvgIcon v-if="item.code==='2'" :iconClass="'category-scene'" :className="'category-scene'"></SvgIcon>
-                <SvgIcon v-if="item.code==='3'" :iconClass="'category-emotion'" :className="'category-emotion'"></SvgIcon>
-                <SvgIcon v-if="item.code==='4'" :iconClass="'category-theme'" :className="'category-theme'"></SvgIcon>
-              </span>
-              <span class="name">
-                {{item.key}}
-              </span>
+        <div class="space">&nbsp;</div>
+        <template v-for="(item,index) in categoryList">
+          <div class="t-head">
+            <div :class="{'c-type':true, 'border-bottom-1px':item.val.length > 6}">
+              <div class="inner-container border-right-1px">
+                <span :class="['icon','code-'+item.code]">
+                  <SvgIcon v-if="item.code==='0'" :iconClass="'category-language'" :className="'category-language'"></SvgIcon>
+                  <SvgIcon v-if="item.code==='1'" :iconClass="'category-style'" :className="'category-style'"></SvgIcon>
+                  <SvgIcon v-if="item.code==='2'" :iconClass="'category-scene'" :className="'category-scene'"></SvgIcon>
+                  <SvgIcon v-if="item.code==='3'" :iconClass="'category-emotion'" :className="'category-emotion'"></SvgIcon>
+                  <SvgIcon v-if="item.code==='4'" :iconClass="'category-theme'" :className="'category-theme'"></SvgIcon>
+                </span>
+                <span class="name">
+                  {{item.key}}
+                </span>
+              </div>
+            </div>
+            <div class="t-head-container">
+              <div :class="{'category-item':true, 'border-bottom-1px':innterItem.hasBottom}" v-for="(innterItem,innnerIndex) in item.val"
+                v-if="innnerIndex < 6" @click="onCategoryItemClick(innterItem.name)">
+                <span :class="{'border-right-1px':true,'active':tableCat===innterItem.name,'hot':innterItem.hot}">
+                  {{innterItem.name}}
+                  <SvgIcon v-if="innterItem.hot" :iconClass="'hot-triangle'" :className="'hot-triangle'"></SvgIcon>
+                  <SvgIcon v-if="tableCat===innterItem.name" :iconClass="'right-triangle'"
+                    :className="'right-triangle'"></SvgIcon>
+                </span>
+              </div>
             </div>
           </div>
-          <div class="t-head-container">
+          <div class="t-foot" v-if="item.val.length > 6">
             <div :class="{'category-item':true, 'border-bottom-1px':innterItem.hasBottom}" v-for="(innterItem,innnerIndex) in item.val"
-              v-if="innnerIndex < 6" @click="onCategoryItemClick(innterItem.name)">
+              v-if="innnerIndex >=6" @click="onCategoryItemClick(innterItem.name)">
               <span :class="{'border-right-1px':true,'active':tableCat===innterItem.name,'hot':innterItem.hot}">
                 {{innterItem.name}}
                 <SvgIcon v-if="innterItem.hot" :iconClass="'hot-triangle'" :className="'hot-triangle'"></SvgIcon>
@@ -38,20 +51,10 @@
               </span>
             </div>
           </div>
-        </div>
-        <div class="t-foot" v-if="item.val.length > 6">
-          <div :class="{'category-item':true, 'border-bottom-1px':innterItem.hasBottom}" v-for="(innterItem,innnerIndex) in item.val"
-            v-if="innnerIndex >=6" @click="onCategoryItemClick(innterItem.name)">
-            <span :class="{'border-right-1px':true,'active':tableCat===innterItem.name,'hot':innterItem.hot}">
-              {{innterItem.name}}
-              <SvgIcon v-if="innterItem.hot" :iconClass="'hot-triangle'" :className="'hot-triangle'"></SvgIcon>
-              <SvgIcon v-if="tableCat===innterItem.name" :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
-            </span>
-          </div>
-        </div>
-        <div class="space">&nbsp;</div>
-      </template>
-    </section>
+          <div class="space">&nbsp;</div>
+        </template>
+      </section>
+    </Scroll>
   </div>
 </template>
 <script lang="ts">
@@ -60,9 +63,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { Mutation, State } from 'vuex-class'
 import { ICategory } from '@/common/interface/base.ts'
+import Scroll from '~/foundation/base/scroll.vue'
 
 @Component({
-  components: {}
+  components: { Scroll }
 })
 export default class CatChooser extends mixins(CommonMixin) {
   @State tableCat: string
@@ -154,7 +158,7 @@ $category-border-color: #efefef;
   .container {
     width: 100%;
     flex: 1;
-    overflow: auto;
+    overflow: hidden;
     .all {
       position: relative;
       @include setSize(100%, 162px);
