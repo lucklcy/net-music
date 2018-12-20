@@ -1,20 +1,23 @@
 <template>
   <div class="song-table-high-quality">
-    <TopBar back-route-name='r_song_table_index' title='精品歌单'></TopBar>
+    <TopBar back-route-name='r_song_table_index' :title="getCatTitle"></TopBar>
     <div class="oper-choose border-bottom-1px">
-      <span @click='showTableCat()'>全部</span>
+      <span @click="showTableCat()">全部 </span>
       <span @click='showTableCat()'>
         <SvgIcon :iconClass="'filtrate'" :className="'filtrate'"></SvgIcon>
         筛选
       </span>
     </div>
     <div class="cat-container" v-show="isShowTableCat">
-      <div class="all">全部</div>
+      <div class="all" @click="onSelectedAllCat('')" :class="{'active':hotTableCat===''}">
+        全部
+        <SvgIcon v-if="hotTableCat===''" :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+      </div>
       <div class="cat-list">
         <div class="cat-item" v-for='(item,index) in tableCatArray' @click="changeCat(item.value)">
-          <span :class="{'active':tableCat===item.value}">
+          <span :class="{'active':hotTableCat===item.value}">
             {{item.value}}
-            <SvgIcon v-if='tableCat===item.value' :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+            <SvgIcon v-if='hotTableCat===item.value' :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
           </span>
         </div>
       </div>
@@ -52,19 +55,20 @@
 </template>
 <script lang="ts">
 import { mixins } from 'vue-class-component'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { ICreator, IPlayList } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
 import Footer from '~/foundation/com/footer.vue'
 import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
+import { isEmpty } from '@/utils/index.ts'
 
 @Component({
   components: { TopBar, Footer, Scroll }
 })
 export default class SongHighQualityTable extends mixins(CommonMixin) {
-  @State tableCat: string
+  @State hotTableCat: string
   @Mutation changeTableCat: (payload: { type: number; cat: string }) => void
   private highQualitySongListArray: IPlayList[] = []
   private limit: number = 10
@@ -120,11 +124,14 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
   private showTableCat() {
     this.isShowTableCat = true
   }
-  private changeCat(name: string) {
-    // debugger
-    console.log('changeCatchangeCatchangeCatchangeCatchangeCat')
-    this.changeTableCat({ type: 0, cat: name })
+  private onSelectedAllCat(name: string) {
     this.isShowTableCat = false
+    this.changeTableCat({ type: 1, cat: name })
+    this.getPlayList({ limit: this.limit })
+  }
+  private changeCat(name: string) {
+    this.isShowTableCat = false
+    this.changeTableCat({ type: 1, cat: name })
     this.getPlayList({ limit: this.limit, cat: name })
   }
   // 获取精选歌单
@@ -139,7 +146,11 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
           tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
       })
   }
-
+  get getCatTitle() {
+    if (isEmpty(this.hotTableCat)) {
+      return '精品歌单'
+    } else return this.hotTableCat + '.精品歌单'
+  }
   created() {
     this.getHighQualityList()
   }
@@ -171,10 +182,10 @@ $category-border-color: #efefef;
         opacity: 0;
       }
       100% {
-        opacity: 1;
+        opacity: 0.7;
       }
     }
-    // margin: 10px;
+    opacity: 0.7;
     .all {
       margin-top: 20px;
       @include setSize(100%, 160px);
@@ -183,6 +194,9 @@ $category-border-color: #efefef;
       line-height: 160px;
       color: #222;
       @include border-set(all, $category-border-color);
+      &.active {
+        color: $color-highlight-background;
+      }
     }
     .cat-list {
       @include setFlexPos(row, flex-start, flex-start);
@@ -201,16 +215,16 @@ $category-border-color: #efefef;
           @include border-set(right, $category-border-color);
           &.active {
             color: $color-highlight-background;
-            .right-triangle {
-              position: absolute;
-              bottom: 1px;
-              right: 1px;
-              font-size: 0.56rem;
-              color: $color-highlight-background;
-            }
           }
         }
       }
+    }
+    .right-triangle {
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      font-size: 0.56rem;
+      color: $color-highlight-background;
     }
   }
 
