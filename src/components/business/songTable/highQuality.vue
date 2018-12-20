@@ -11,8 +11,8 @@
     <div class="cat-container" v-show="isShowTableCat">
       <div class="all">全部</div>
       <div class="cat-list">
-        <div class="cat-item" v-for='(item,index) in tableCatArray'>
-          <span :class="{'active':tableCat===item.value}" @click="changeCat(item.value)">
+        <div class="cat-item" v-for='(item,index) in tableCatArray' @click="changeCat(item.value)">
+          <span :class="{'active':tableCat===item.value}">
             {{item.value}}
             <SvgIcon v-if='tableCat===item.value' :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
           </span>
@@ -122,6 +122,7 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
   }
   private changeCat(name: string) {
     // debugger
+    console.log('changeCatchangeCatchangeCatchangeCatchangeCat')
     this.changeTableCat({ type: 0, cat: name })
     this.isShowTableCat = false
     this.getPlayList({ limit: this.limit, cat: name })
@@ -185,7 +186,6 @@ $category-border-color: #efefef;
     }
     .cat-list {
       @include setFlexPos(row, flex-start, flex-start);
-      @include border-set(all, $category-border-color);
       flex-wrap: wrap;
       margin-top: 20px;
       .cat-item {

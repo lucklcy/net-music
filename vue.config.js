@@ -1,3 +1,5 @@
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
+// const { SkeletonPlugin } = require('page-skeleton-webpack-plugin')
 const path = require('path')
 function resolve(dir) {
   return path.join(__dirname, '.', dir)
@@ -68,6 +70,19 @@ module.exports = {
     } else {
       // 为开发环境修改配置...
     }
+    // config.plugins = [
+    //   new HtmlWebpackPlugin({
+    //     // Your HtmlWebpackPlugin config
+    //   }),
+    //   new SkeletonPlugin({
+    //     // 用来存储 shell 文件的地址
+    //     pathname: path.resolve(__dirname, `./shell`),
+    //     // 最好和 `output.path` 相同
+    //     staticDir: path.resolve(__dirname, './dist'),
+    //     // 将需要生成骨架屏的路由添加到数组中
+    //     routes: ['/home/recommand']
+    //   })
+    // ]
   },
   chainWebpack: config => {
     // 移除 prefetch 插件
