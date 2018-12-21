@@ -8,20 +8,6 @@
         筛选
       </span>
     </div>
-    <div class="cat-container" v-show="isShowTableCat">
-      <div class="all" @click="onSelectedAllCat('')" :class="{'active':hotTableCat===''}">
-        全部
-        <SvgIcon v-if="hotTableCat===''" :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
-      </div>
-      <div class="cat-list">
-        <div class="cat-item" v-for='(item,index) in tableCatArray' @click="changeCat(item.value)">
-          <span :class="{'active':hotTableCat===item.value}">
-            {{item.value}}
-            <SvgIcon v-if='hotTableCat===item.value' :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
-          </span>
-        </div>
-      </div>
-    </div>
     <Scroll class="container" ref="highQualitySongList" :data-list="highQualitySongListArray"
       :pullup="true" @scrollToEnd="doPullup">
       <ul class="list">
@@ -51,6 +37,26 @@
       </ul>
     </Scroll>
     <Footer></Footer>
+
+    <div class="table-cat" v-show="isShowTableCat">
+      <div class="modal"></div>
+      <div class="cat-container">
+        <div class="all" @click="onSelectedAllCat('')" :class="{'active':hotTableCat===''}">
+          全部
+          <SvgIcon v-if="hotTableCat===''" :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+        </div>
+        <div class="cat-list">
+          <div class="cat-item" v-for='(item,index) in tableCatArray' @click="changeCat(item.value)">
+            <span :class="{'active':hotTableCat===item.value}">
+              {{item.value}}
+              <SvgIcon v-if='hotTableCat===item.value' :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </template>
 <script lang="ts">
@@ -173,58 +179,73 @@ $category-border-color: #efefef;
     font-size: 0.39rem;
     color: #555;
   }
-  .cat-container {
-    @include setSize(100%, 50%);
-    background-color: #f5f5f5;
-    animation: fadeIn 2s 1 0s;
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
+  .table-cat {
+    position: fixed;
+    .cat-container {
+      margin-top: 140px;
+      z-index: 100;
+      @include setSize(100%, 50%);
+      background-color: #f5f5f5;
+      animation: fadeIn 1s 1 0s;
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 0.9;
+        }
       }
-      100% {
-        opacity: 0.7;
+      opacity: 0.9;
+      .all {
+        @include setSize(100%, 150px);
+        text-align: center;
+        font-size: 0.44rem;
+        line-height: 150px;
+        color: #222;
+        @include border-set(all, #eee);
+        &.active {
+          color: $color-highlight-background;
+        }
+        margin-bottom: 30px;
       }
-    }
-    opacity: 0.7;
-    .all {
-      margin-top: 20px;
-      @include setSize(100%, 160px);
-      text-align: center;
-      font-size: 0.44rem;
-      line-height: 160px;
-      color: #222;
-      @include border-set(all, $category-border-color);
-      &.active {
-        color: $color-highlight-background;
-      }
-    }
-    .cat-list {
-      @include setFlexPos(row, flex-start, flex-start);
-      flex-wrap: wrap;
-      margin-top: 20px;
-      .cat-item {
-        @include setSize(25vw, 120px);
-        @include border-set(bottom, $category-border-color);
-        span {
-          @include setSize(100%, 100%);
-          display: inline-block;
-          text-align: center;
-          line-height: 120px;
-          font-size: 0.38rem;
-          padding: 10px;
-          @include border-set(right, $category-border-color);
-          &.active {
-            color: $color-highlight-background;
+      .cat-list {
+        @include setFlexPos(row, flex-start, flex-start);
+        flex-wrap: wrap;
+        @include border-set(top, #eee);
+        .cat-item {
+          @include setSize(25vw, 120px);
+          @include border-set(bottom, #eee);
+          span {
+            @include setSize(100%, 100%);
+            display: inline-block;
+            text-align: center;
+            line-height: 120px;
+            font-size: 0.38rem;
+            padding: 10px;
+            @include border-set(right, #eee);
+            &.active {
+              color: $color-highlight-background;
+            }
           }
         }
       }
+      .right-triangle {
+        position: absolute;
+        bottom: 1px;
+        right: 1px;
+        font-size: 0.56rem;
+        color: $color-highlight-background;
+      }
     }
-    .right-triangle {
-      position: absolute;
-      bottom: 1px;
-      right: 1px;
-      font-size: 0.56rem;
-      color: $color-highlight-background;
+    .modal {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      outline: none;
+      position: fixed;
+      background-color: rgba(0, 0, 0, 0.6);
     }
   }
 
