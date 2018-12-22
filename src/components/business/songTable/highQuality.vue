@@ -29,7 +29,7 @@
               {{item.copywriter}}</span>
           </div>
         </li>
-        <li class="pull-up-asking" v-show="total!==highQualitySongListArray.length">
+        <li class="pull-up-asking" v-show="total>highQualitySongListArray.length">
           <SvgIcon :iconClass="'small-loading'" :className="'small-loading'"></SvgIcon>
           <span>加载中</span>
           <SvgIcon :iconClass="'small-loading'" :className="'small-loading'"></SvgIcon>
@@ -39,7 +39,6 @@
     <Footer></Footer>
 
     <div class="table-cat" v-show="isShowTableCat">
-      <div class="modal" @click="isShowTableCat = false"></div>
       <div class="cat-container">
         <div class="all" @click="changeCat('')" :class="{'active':hotTableCat===''}">
           <span class="border-1px">
@@ -58,9 +57,8 @@
           </div>
         </div>
       </div>
-
+      <div class="modal" @click="isShowTableCat = false"></div>
     </div>
-
   </div>
 </template>
 <script lang="ts">
@@ -96,8 +94,15 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
 
   private addHighQualityList() {
     if (this.total > this.highQualitySongListArray.length) {
+      let params: { [propName: string]: string | number } = {
+        limit: this.limit,
+        before: this.updateTime
+      }
+      if (this.hotTableCat !== '') {
+        params['cat'] = this.hotTableCat
+      }
       this.service
-        .getHighQualityList({ before: this.updateTime, limit: this.limit, cat: this.hotTableCat })
+        .getHighQualityList(params)
         .then((highQualityListResult: { playlists: IPlayList[] }) => {
           let thisHighQualitySongListArray = this.highQualitySongListArray
           let tempHighQualitySongListArray =
@@ -122,8 +127,12 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
     }
     scrollElement && scrollElement.scrollTo(0, 0, 200)
     this.$nextTick(() => {
+      let params: { [propName: string]: string | number } = { limit: this.limit }
+      if (this.hotTableCat !== '') {
+        params['cat'] = this.hotTableCat
+      }
       this.service
-        .getHighQualityList({ limit: this.limit, cat: this.hotTableCat })
+        .getHighQualityList(params)
         .then((highQualityListResult: { playlists: IPlayList[]; total: number }) => {
           this.total = highQualityListResult['total']
           let tempHighQualitySongListArray =
@@ -146,7 +155,7 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
 </script>
 <style lang="scss">
 $baseAsset: '../../../assets';
-$category-background-color: #fcfcfc;
+$category-background-color: #f8f8f8;
 $category-border-color: #aaa;
 .song-table-high-quality {
   @include setSize(100%, 100%);
@@ -164,22 +173,17 @@ $category-border-color: #aaa;
   }
   .table-cat {
     position: fixed;
+    top: 140px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: fadeIn 0.2s 1 0s;
+    opacity: 0.956;
+    @include setFlexPos(column, flex-start, flex-start);
     .cat-container {
-      margin-top: 140px;
-      z-index: 100;
+      @include setSize(100%, '');
       padding: 3vw 1vw 2vw 1vw;
-      @include setSize(100%, 50%);
       background-color: $category-background-color;
-      animation: fadeIn 1s 1 0s;
-      @keyframes fadeIn {
-        0% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 0.9;
-        }
-      }
-      opacity: 0.9;
       .all {
         @include setSize(100%, 132px);
         padding: 0 0 3vw 0;
@@ -229,14 +233,9 @@ $category-border-color: #aaa;
       }
     }
     .modal {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      outline: none;
-      position: fixed;
-      background-color: rgba(0, 0, 0, 0.6);
+      @include setSize(100%, '');
+      flex: 1;
+      background-color: rgba(39, 39, 39, 0.301);
     }
   }
 
@@ -320,6 +319,14 @@ $category-border-color: #aaa;
           color: #999;
         }
       }
+    }
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0.9;
     }
   }
 }
