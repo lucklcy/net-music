@@ -2,8 +2,8 @@
   <div class="song-table-high-quality">
     <TopBar back-route-name='r_song_table_index' :title="getCatTitle"></TopBar>
     <div class="oper-choose border-bottom-1px">
-      <span @click="showTableCat()">全部 </span>
-      <span @click='showTableCat()'>
+      <span @click="isShowTableCat = true">{{hotTableCat===''?'全部':hotTableCat}}</span>
+      <span @click='isShowTableCat = true'>
         <SvgIcon :iconClass="'filtrate'" :className="'filtrate'"></SvgIcon>
         筛选
       </span>
@@ -29,7 +29,7 @@
               {{item.copywriter}}</span>
           </div>
         </li>
-        <li class="pull-up-asking">
+        <li class="pull-up-asking" v-show="total!==highQualitySongListArray.length">
           <SvgIcon :iconClass="'small-loading'" :className="'small-loading'"></SvgIcon>
           <span>加载中</span>
           <SvgIcon :iconClass="'small-loading'" :className="'small-loading'"></SvgIcon>
@@ -39,18 +39,22 @@
     <Footer></Footer>
 
     <div class="table-cat" v-show="isShowTableCat">
-      <div class="modal"></div>
+      <div class="modal" @click="isShowTableCat = false"></div>
       <div class="cat-container">
-        <div class="all" @click="onSelectedAllCat('')" :class="{'active':hotTableCat===''}">
-          全部
-          <SvgIcon v-if="hotTableCat===''" :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+        <div class="all" @click="changeCat('')" :class="{'active':hotTableCat===''}">
+          <span class="border-1px">
+            全部
+            <SvgIcon v-if="hotTableCat===''" :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+          </span>
         </div>
-        <div class="cat-list">
-          <div class="cat-item" v-for='(item,index) in tableCatArray' @click="changeCat(item.value)">
-            <span :class="{'active':hotTableCat===item.value}">
-              {{item.value}}
-              <SvgIcon v-if='hotTableCat===item.value' :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
-            </span>
+        <div class="cat-list border-top-1px">
+          <div class="cat-list-container border-left-1px">
+            <div class="cat-item border-bottom-1px" v-for='(item,index) in tableCatArray' @click="changeCat(item.value)">
+              <span :class="{'active':hotTableCat===item.value,'border-right-1px':true}">
+                {{item.value}}
+                <SvgIcon v-if='hotTableCat===item.value' :iconClass="'right-triangle'" :className="'right-triangle'"></SvgIcon>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -69,6 +73,7 @@ import Footer from '~/foundation/com/footer.vue'
 import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
 import { isEmpty } from '@/utils/index.ts'
+import { HOT_TABLE_CAT_ARRAY } from '@/common/const.ts'
 
 @Component({
   components: { TopBar, Footer, Scroll }
@@ -79,29 +84,9 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
   private highQualitySongListArray: IPlayList[] = []
   private limit: number = 10
   private updateTime: number = 0
-  private tableCatArray: any[] = [
-    { key: 1, value: '华语' },
-    { key: 2, value: '欧美' },
-    { key: 3, value: '韩语' },
-    { key: 4, value: '日语' },
-    { key: 5, value: '粤语' },
-    { key: 6, value: '小语种' },
-    { key: 7, value: '运动' },
-    { key: 4, value: 'ACG' },
-    { key: 5, value: '影视原声' },
-    { key: 6, value: '流行' },
-    { key: 7, value: '摇滚' },
-    { key: 6, value: '后摇' },
-    { key: 7, value: '古风' },
-    { key: 4, value: '民谣' },
-    { key: 5, value: '轻音乐' },
-    { key: 6, value: '电子' },
-    { key: 7, value: '器乐' },
-    { key: 5, value: '说唱' },
-    { key: 6, value: '古典' },
-    { key: 7, value: '爵士' }
-  ]
+  private tableCatArray: any[] = HOT_TABLE_CAT_ARRAY
   private isShowTableCat: boolean = false
+  private total: number = 0
   private gotoDetail(id: string) {
     this.$router.push({ name: 'r_song_list', query: { id } })
   }
@@ -109,48 +94,45 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
     this.addHighQualityList()
   }
 
-  private getHighQualityList() {
-    this.getPlayList({ limit: this.limit })
-  }
-
   private addHighQualityList() {
-    this.service
-      .getHighQualityList({ before: this.updateTime, limit: this.limit })
-      .then((highQualityListResult: { playlists: IPlayList[] }) => {
-        let thisHighQualitySongListArray = this.highQualitySongListArray
-        let tempHighQualitySongListArray =
-          highQualityListResult['playlists'] && highQualityListResult['playlists']
-        this.updateTime =
-          tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
-        this.highQualitySongListArray = thisHighQualitySongListArray.concat(
-          tempHighQualitySongListArray
-        )
-      })
-  }
-  private showTableCat() {
-    this.isShowTableCat = true
-  }
-  private onSelectedAllCat(name: string) {
-    this.isShowTableCat = false
-    this.changeTableCat({ type: 1, cat: name })
-    this.getPlayList({ limit: this.limit })
+    if (this.total > this.highQualitySongListArray.length) {
+      this.service
+        .getHighQualityList({ before: this.updateTime, limit: this.limit, cat: this.hotTableCat })
+        .then((highQualityListResult: { playlists: IPlayList[] }) => {
+          let thisHighQualitySongListArray = this.highQualitySongListArray
+          let tempHighQualitySongListArray =
+            highQualityListResult['playlists'] && highQualityListResult['playlists']
+          this.updateTime =
+            tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
+          this.highQualitySongListArray = thisHighQualitySongListArray.concat(
+            tempHighQualitySongListArray
+          )
+        })
+    }
   }
   private changeCat(name: string) {
     this.isShowTableCat = false
     this.changeTableCat({ type: 1, cat: name })
-    this.getPlayList({ limit: this.limit, cat: name })
+    this.getPlayList()
   }
   // 获取精选歌单
-  private getPlayList(item: object) {
-    this.service
-      .getHighQualityList(item)
-      .then((highQualityListResult: { playlists: IPlayList[] }) => {
-        let tempHighQualitySongListArray =
-          highQualityListResult['playlists'] && highQualityListResult['playlists']
-        this.highQualitySongListArray = tempHighQualitySongListArray
-        this.updateTime =
-          tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
-      })
+  private getPlayList() {
+    let scrollElement = this.$refs.highQualitySongList as Vue & {
+      scrollTo: (x: number, y: number, time?: number, easing?: object) => void
+    }
+    scrollElement && scrollElement.scrollTo(0, 0, 200)
+    this.$nextTick(() => {
+      this.service
+        .getHighQualityList({ limit: this.limit, cat: this.hotTableCat })
+        .then((highQualityListResult: { playlists: IPlayList[]; total: number }) => {
+          this.total = highQualityListResult['total']
+          let tempHighQualitySongListArray =
+            highQualityListResult['playlists'] && highQualityListResult['playlists']
+          this.highQualitySongListArray = tempHighQualitySongListArray
+          this.updateTime =
+            tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
+        })
+    })
   }
   get getCatTitle() {
     if (isEmpty(this.hotTableCat)) {
@@ -158,13 +140,14 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
     } else return this.hotTableCat + '.精品歌单'
   }
   created() {
-    this.getHighQualityList()
+    this.getPlayList()
   }
 }
 </script>
 <style lang="scss">
 $baseAsset: '../../../assets';
-$category-border-color: #efefef;
+$category-background-color: #fcfcfc;
+$category-border-color: #aaa;
 .song-table-high-quality {
   @include setSize(100%, 100%);
   @include setFlexPos(column, flex-start, flex-start);
@@ -174,18 +157,19 @@ $category-border-color: #efefef;
     &.border-bottom-1px {
       @include border-set(bottom, $border-color);
     }
-    background-color: #f5f5f5;
-    padding: 0 20px;
-    font-size: 0.39rem;
-    color: #555;
+    background-color: $category-background-color;
+    padding: 0 2vw;
+    font-size: 0.38rem;
+    color: #333;
   }
   .table-cat {
     position: fixed;
     .cat-container {
       margin-top: 140px;
       z-index: 100;
+      padding: 3vw 1vw 2vw 1vw;
       @include setSize(100%, 50%);
-      background-color: #f5f5f5;
+      background-color: $category-background-color;
       animation: fadeIn 1s 1 0s;
       @keyframes fadeIn {
         0% {
@@ -197,34 +181,41 @@ $category-border-color: #efefef;
       }
       opacity: 0.9;
       .all {
-        @include setSize(100%, 150px);
-        text-align: center;
-        font-size: 0.44rem;
-        line-height: 150px;
-        color: #222;
-        @include border-set(all, #eee);
-        &.active {
-          color: $color-highlight-background;
+        @include setSize(100%, 132px);
+        padding: 0 0 3vw 0;
+        span {
+          display: inline-block;
+          @include setSize(100%, 100%);
+          text-align: center;
+          font-size: 0.34rem;
+          line-height: 108px;
+          color: #222;
+          @include border-set(all, $category-border-color);
+          &.active {
+            color: $color-highlight-background;
+          }
         }
-        margin-bottom: 30px;
       }
       .cat-list {
-        @include setFlexPos(row, flex-start, flex-start);
-        flex-wrap: wrap;
-        @include border-set(top, #eee);
-        .cat-item {
-          @include setSize(25vw, 120px);
-          @include border-set(bottom, #eee);
-          span {
-            @include setSize(100%, 100%);
-            display: inline-block;
-            text-align: center;
-            line-height: 120px;
-            font-size: 0.38rem;
-            padding: 10px;
-            @include border-set(right, #eee);
-            &.active {
-              color: $color-highlight-background;
+        @include border-set(top, $category-border-color);
+        .cat-list-container {
+          @include setFlexPos(row, flex-start, flex-start);
+          flex-wrap: wrap;
+          @include border-set(left, $category-border-color);
+          .cat-item {
+            @include setSize(24.5vw, 108px);
+            @include border-set(bottom, $category-border-color);
+            span {
+              @include setSize(100%, 100%);
+              display: inline-block;
+              text-align: center;
+              line-height: 100px;
+              font-size: 0.32rem;
+              padding: 10px;
+              @include border-set(right, #999);
+              &.active {
+                color: $color-highlight-background;
+              }
             }
           }
         }
