@@ -83,7 +83,13 @@ $baseAssets: '../../../assets';
             z-index: 11;
             display: inline-block;
             @include setSize(80px, 80px);
-            @include setBgImg('', center, center, cover, no-repeat);
+            @include setBgImg(
+              '#{$baseAssets}/img/singer-default.jpeg',
+              center,
+              center,
+              cover,
+              no-repeat
+            );
             border-radius: 50%;
             margin-right: 18px;
           }
@@ -254,7 +260,13 @@ $baseAssets: '../../../assets';
             @include setSize(80px, 80px);
             border-radius: 50%;
             margin-right: 16px;
-            @include setBgImg('', center, center, cover, no-repeat);
+            @include setBgImg(
+              '#{$baseAssets}/img/singer-default.jpeg',
+              center,
+              center,
+              cover,
+              no-repeat
+            );
           }
           .count {
             flex: 1;

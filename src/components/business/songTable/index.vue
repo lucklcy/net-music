@@ -2,17 +2,17 @@
   <div class="song-table">
     <TopBar back-route-name='r_home_recommand' title='歌单'></TopBar>
     <section class="high-quality" v-if="highQualitySong" @click="$router.push({ name: 'r_song_table_high_quality' })">
-      <div class="background" :style="{backgroundImage:'url('+highQualitySong.coverImgUrl+')'}">
+      <div class="background" :data-background-img='highQualitySong.coverImgUrl' v-change-back-img>
       </div>
       <div class="content">
-        <div class="pic" :style="{backgroundImage:'url('+highQualitySong.coverImgUrl+')'}"></div>
+        <div class="pic" :data-background-img='highQualitySong.coverImgUrl' v-change-back-img></div>
         <ul class="label">
           <li class="title">
             <SvgIcon :iconClass="'high-quality'" :className="'high-quality'"></SvgIcon>
             <i>精品歌单</i>
             <SvgIcon :iconClass="'arrow-right-thin'" :className="'arrow-right-thin'"></SvgIcon>
           </li>
-          <li class="name">{{highQualitySong.name | limitIn(19)}}</li>
+          <li class="name">{{highQualitySong.name | limitIn(17)}}</li>
           <li class="copywriter">{{highQualitySong.copywriter}}</li>
         </ul>
       </div>
@@ -35,8 +35,8 @@
     <Scroll class="container" ref="handpickSongList" :data-list="handpickSongListArray" :pullup="true"
       @scrollToEnd="doPullup" v-if="handpickSongListArray && handpickSongListArray.length>0">
       <ul class="list">
-        <li class="item" v-for="(item,index) in handpickSongListArray" :key="index" @click="gotoDetail(item)">
-          <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
+        <li class="item" v-for="(item,index) in handpickSongListArray" :key="item.id" @click="gotoDetail(item)">
+          <div class="pic" :data-background-img='item.coverImgUrl' v-change-back-img>
             <SvgIcon v-if="item.highQuality" :iconClass="'high-quality-triangle'" :className="'high-quality-triangle'"></SvgIcon>
             <div class="heared">
               <span>
@@ -81,9 +81,13 @@ import TopBar from '~/foundation/com/topBar.vue'
 import Footer from '~/foundation/com/footer.vue'
 import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 @Component({
-  components: { TopBar, Footer, Scroll }
+  components: { TopBar, Footer, Scroll },
+  directives: {
+    'change-back-img': ChangeBackImg
+  }
 })
 export default class SongTable extends mixins(CommonMixin) {
   @State tableCat: string
@@ -105,6 +109,7 @@ export default class SongTable extends mixins(CommonMixin) {
 
   // 初始化时获取歌单数据
   private getHandpickList() {
+    this.handpickSongListArray = []
     let params: { [propName: string]: any } = {
       offset: 0,
       limit: this.limit
@@ -148,14 +153,8 @@ export default class SongTable extends mixins(CommonMixin) {
   // 当点击切换歌单类型的时候
   private changeCat(name: string) {
     this.changeTableCat({ type: 0, cat: name })
-    this.getHandpickList()
     this.currentPage = 1
-    let scrollElement = this.$refs.handpickSongList as Vue & {
-      scrollTo: (x: number, y: number, time?: number, easing?: object) => void
-    }
-    this.$nextTick(() => {
-      scrollElement.scrollTo(0, 0, 1000)
-    })
+    this.getHandpickList()
   }
 
   // 获取热门歌单类型
@@ -187,7 +186,7 @@ $baseAsset: '../../../assets';
     background-color: #333;
     @include setSize(100%, 420px);
     .background {
-      @include setBgImg('', center, center, cover, no-repeat);
+      @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
       position: absolute;
       z-index: 9;
       top: 0px;
@@ -203,7 +202,7 @@ $baseAsset: '../../../assets';
       @include setFlexPos(row, space-around, center);
       .pic {
         @include setSize(292px, 292px);
-        @include setBgImg('', center, center, cover, no-repeat);
+        @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
         border-radius: 12px;
       }
       .label {
@@ -300,7 +299,7 @@ $baseAsset: '../../../assets';
         margin-bottom: 20px;
         .pic {
           @include setSize(100%, 520px);
-          @include setBgImg('', center, center, cover, no-repeat);
+          @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
           border-radius: 12px;
           position: relative;
           .high-quality-triangle {

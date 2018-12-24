@@ -4,7 +4,7 @@
     <div class="recommand-container">
       <ul class="recommand-list">
         <li v-for="(item,index) in SongList" :key="index" class="recommand-item" @click='onSongRecommandClick(item)'>
-          <div class="back-img" :style="{backgroundImage:'url('+item.picUrl+')'}">
+          <div class="back-img" :data-background-img='item.picUrl' v-change-back-img>
             <div class="heared">
               <span>
                 <i class="iconfont icon-erji"></i>
@@ -35,13 +35,17 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import { ISongRecommandList, IPlaylist } from '@/common/interface/base.ts'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 const enum SongRecType {
   RECOMMAND = 'recommand'
 }
 
 @Component({
-  components: {}
+  components: {},
+  directives: {
+    'change-back-img': ChangeBackImg
+  }
 })
 export default class SongRec extends mixins(CommonMixin) {
   private SongList: ISongRecommandList[] = []

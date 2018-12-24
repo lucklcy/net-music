@@ -11,8 +11,8 @@
     <Scroll class="container" ref="highQualitySongList" :data-list="highQualitySongListArray"
       :pullup="true" @scrollToEnd="doPullup" v-if="highQualitySongListArray && highQualitySongListArray.length>0">
       <ul class="list">
-        <li class="item" v-for="(item,index) in highQualitySongListArray" :key="index" @click="gotoDetail(item)">
-          <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
+        <li class="item" v-for="(item,index) in highQualitySongListArray" :key="item.id" @click="gotoDetail(item)">
+          <div class="pic" :data-background-img='item.coverImgUrl' v-change-back-img>
             <SvgIcon v-if="item.highQuality" :iconClass="'high-quality-triangle'" :className="'high-quality-triangle'"></SvgIcon>
             <div class="heared">
               <span>
@@ -76,9 +76,13 @@ import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
 import { isEmpty } from '@/utils/index.ts'
 import { HOT_TABLE_CAT_ARRAY } from '@/common/const.ts'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 @Component({
-  components: { TopBar, Footer, Scroll }
+  components: { TopBar, Footer, Scroll },
+  directives: {
+    'change-back-img': ChangeBackImg
+  }
 })
 export default class SongHighQualityTable extends mixins(CommonMixin) {
   @State hotTableCat: string
@@ -128,10 +132,7 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
   }
   // 获取精选歌单
   private getPlayList() {
-    let scrollElement = this.$refs.highQualitySongList as Vue & {
-      scrollTo: (x: number, y: number, time?: number, easing?: object) => void
-    }
-    scrollElement && scrollElement.scrollTo(0, 0, 200)
+    this.highQualitySongListArray = []
     this.$nextTick(() => {
       let params: { [propName: string]: string | number } = { limit: this.limit }
       if (this.hotTableCat !== '') {
@@ -260,7 +261,7 @@ $category-border-color: #aaa;
         @include setFlexPos(row, space-between, flex-start);
         .pic {
           @include setSize(320px, 320px);
-          @include setBgImg('', center, center, cover, no-repeat);
+          @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
           border-radius: 12px;
           position: relative;
           .high-quality-triangle {

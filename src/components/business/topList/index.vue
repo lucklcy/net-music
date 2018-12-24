@@ -21,12 +21,12 @@
         </li>
       </ul>
       <div class="spinner first" v-else>
-        <FadingCircle></FadingCircle>
+        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
       </div>
       <div class="global-title">
         <span>全球榜</span>
       </div>
-      <ul class="global-list" v-if=" globalList && globalList.length>0">
+      <ul class="global-list" v-if="globalList && globalList.length>0">
         <li class="item" v-for="(item,index) in globalList" :key="index" @click="goToSongList(item)">
           <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
             <div class="frequency">
@@ -42,7 +42,7 @@
         </li>
       </ul>
       <div class="spinner second" v-else>
-        <FadingCircle></FadingCircle>
+        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
       </div>
     </section>
     <Footer></Footer>
@@ -57,13 +57,11 @@ import TopBar from '~/foundation/com/topBar.vue'
 import { isEmpty } from '@/utils'
 import Footer from '~/foundation/com/footer.vue'
 import { Mutation } from 'vuex-class'
-import FadingCircle from '~/foundation/base/spinner/fadingCircle.vue'
 
 @Component({
   components: {
     TopBar,
-    Footer,
-    FadingCircle
+    Footer
   }
 })
 export default class TopList extends mixins(CommonMixin) {

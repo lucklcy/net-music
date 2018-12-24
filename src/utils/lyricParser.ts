@@ -121,7 +121,6 @@ export default class Lyric {
       const line = lines[i]
       const result = timeExp.exec(line)
       if (result) {
-        console.log({ result })
         const txt = line.replace(timeExp, '').trim()
         if (txt) {
           this.lines.push({

@@ -82,11 +82,14 @@
       }
     }
     .spinner {
+      @include setFlexPos(row, center, center);
+      font-size: 0.68rem;
+      color: $color-highlight-background;
       &.first {
         margin: 160px 0;
       }
       &.second {
-        margin: 240px 0;
+        margin: 300px 0;
       }
     }
   }

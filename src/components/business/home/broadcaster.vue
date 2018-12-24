@@ -5,7 +5,7 @@
       <ul class="program-list">
         <li v-for="(item,index) in ProgramList" :key="index" @click="onProgramPlay(item)">
           <div class="program-item">
-            <div class="pic" :style="{backgroundImage:'url('+item.coverUrl+')'}">
+            <div class="pic" :data-background-img='item.coverUrl' v-change-back-img>
               <SvgIcon :iconClass="'program-play'" :className="'program-play'"></SvgIcon>
             </div>
             <div class="content">
@@ -28,6 +28,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
 import { IDJPrograms, IPrograms, IPlaySong } from '@/common/interface/base.ts'
 import CommonMixin from '@/mixins/comMix'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 interface IBannerDataList {
   imageUrl: string
@@ -36,7 +37,10 @@ interface IBannerDataList {
 }
 
 @Component({
-  components: {}
+  components: {},
+  directives: {
+    'change-back-img': ChangeBackImg
+  }
 })
 export default class Broadcaster extends mixins(CommonMixin) {
   private ProgramList: IPrograms[] = []
@@ -97,7 +101,7 @@ $baseAssets: '../../../assets';
           border-radius: 12px;
           position: relative;
           @include setSize(240px, 240px);
-          @include setBgImg('', center, center, cover, no-repeat);
+          @include setBgImg('#{$baseAssets}/img/cd-default.jpeg', center, center, cover, no-repeat);
           @include setFlexPos(row, center, center);
           .program-play {
             font-size: 0.9rem;

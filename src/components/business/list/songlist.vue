@@ -30,9 +30,8 @@
             </template>
           </span>
           <span class="author">
-            <i class="author-pic" :style="{backgroundImage:'url('+songList.creator.avatarUrl+')'}"
-              v-if="songList && songList.creator"></i>
-            <SvgIcon :iconClass="'avatar-default'" :className="'avatar-default'" v-else> </SvgIcon>
+            <i class="author-pic" :data-background-img='songList?songList.creator.avatarUrl:defaultSingerImg'
+              v-change-back-img></i>
             <span class="author-name">
               {{songList?songList.creator.nickname:'作者还没出来哦...'}}
             </span>
@@ -80,7 +79,8 @@
         </li>
         <li class="subscribers">
           <template v-for="(item,index) in songList.subscribers">
-            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}" v-if="index < 6">
+            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}"
+              :data-background-img='item.avatarUrl' v-change-back-img v-if="index < 6">
             </span>
           </template>
           <i class="count">{{songList.subscribedCount}}人收藏</i>
@@ -105,12 +105,16 @@ import MiniPlayer from '~/business/player/mini.vue'
 import Scroll from '~/foundation/base/scroll.vue'
 import { IPlaySong, IPlaylist, ITrack } from '@/common/interface/base.ts'
 import { isEmpty } from '@/utils/index.ts'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 @Component({
   components: {
     MiniPlayer,
     Footer,
     Scroll
+  },
+  directives: {
+    'change-back-img': ChangeBackImg
   }
 })
 export default class SongList extends mixins(CommonMixin) {
@@ -120,6 +124,7 @@ export default class SongList extends mixins(CommonMixin) {
   @State currentSongListBackgroundUrl: string
   private songList: IPlaylist | null = null
   private songListId: number = 0
+  private defaultSingerImg: File = require('@/assets/img/singer-default.jpeg')
 
   @Mutation setPlayList: (tarcks: ITrack[]) => void
   @Mutation setCurrentSong: (songId: number) => void
@@ -177,6 +182,7 @@ export default class SongList extends mixins(CommonMixin) {
   private doSubscribe() {
     console.log((this.songList as IPlaylist).id)
   }
+
   created() {
     let songListId = this.$route.params && this.$route.params.id
     this.songListId = Number(songListId)
