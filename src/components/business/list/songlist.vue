@@ -87,8 +87,10 @@
         </li>
       </ul>
     </Scroll>
-    <div class="spinner" v-else>
-      <RectangleBounce></RectangleBounce>
+    <div class="spinner-container" v-else>
+      <div class="loadding">
+        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+      </div>
     </div>
     <Footer></Footer>
   </div>
@@ -101,7 +103,6 @@ import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
 import MiniPlayer from '~/business/player/mini.vue'
 import Scroll from '~/foundation/base/scroll.vue'
-import RectangleBounce from '~/foundation/base/loadding/rectangleBounce.vue'
 import { IPlaySong, IPlaylist, ITrack } from '@/common/interface/base.ts'
 import { isEmpty } from '@/utils/index.ts'
 
@@ -109,8 +110,7 @@ import { isEmpty } from '@/utils/index.ts'
   components: {
     MiniPlayer,
     Footer,
-    Scroll,
-    RectangleBounce
+    Scroll
   }
 })
 export default class SongList extends mixins(CommonMixin) {

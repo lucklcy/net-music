@@ -168,10 +168,19 @@ $baseAssets: '../../../assets';
       }
     }
   }
-  .spinner {
+  .spinner-container {
     flex: 1;
     @include setSize(100%, '');
-    @include setFlexPos(row, center, center);
+    overflow: hidden;
+    .loadding {
+      @include setSize(100%, 100%);
+      @include setFlexPos(row, center, center);
+      background-color: #fff;
+      .spinnner-bars {
+        font-size: 0.86rem;
+        color: $color-highlight-background;
+      }
+    }
   }
   .list-container {
     flex: 1;
