@@ -17,6 +17,9 @@
         </ul>
       </div>
     </section>
+    <div class="spinner-high-quality" v-else>
+      <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+    </div>
     <section class="oper-choose">
       <div class="all-category" @click="$router.push({ name: 'r_table_cat_choose' })">
         <span class="lable">全部歌单</span>
@@ -30,9 +33,9 @@
       </div>
     </section>
     <Scroll class="container" ref="handpickSongList" :data-list="handpickSongListArray" :pullup="true"
-      @scrollToEnd="doPullup">
+      @scrollToEnd="doPullup" v-if="handpickSongListArray && handpickSongListArray.length>0">
       <ul class="list">
-        <li class="item" v-for="(item,index) in handpickSongListArray" :key="index" @click="gotoDetail(item.id)">
+        <li class="item" v-for="(item,index) in handpickSongListArray" :key="index" @click="gotoDetail(item)">
           <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
             <SvgIcon v-if="item.highQuality" :iconClass="'high-quality-triangle'" :className="'high-quality-triangle'"></SvgIcon>
             <div class="heared">
@@ -61,6 +64,11 @@
         </li>
       </ul>
     </Scroll>
+    <div class="spinner-container" v-else>
+      <div class="loadding">
+        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+      </div>
+    </div>
     <Footer></Footer>
   </div>
 </template>
@@ -88,9 +96,11 @@ export default class SongTable extends mixins(CommonMixin) {
   private hotCategoryList: ICategory[] = []
 
   @Mutation changeTableCat: (payload: { type: number; cat: string }) => void
+  @Mutation setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
 
-  private gotoDetail(id: string) {
-    this.$router.push({ name: 'r_song_list', query: { id } })
+  private gotoDetail(item: IPlayList) {
+    this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
+    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
   }
 
   // 初始化时获取歌单数据
@@ -231,6 +241,16 @@ $baseAsset: '../../../assets';
       }
     }
   }
+  .spinner-high-quality {
+    @include setSize(100%, 420px);
+    @include setFlexPos(row, center, center);
+    z-index: 10;
+    background-color: #fff;
+    .spinnner-bars {
+      font-size: 0.86rem;
+      color: $color-highlight-background;
+    }
+  }
   .oper-choose {
     z-index: 10;
     @include setSize(100%, 152px);
@@ -340,6 +360,20 @@ $baseAsset: '../../../assets';
           font-size: 1rem;
           color: #999;
         }
+      }
+    }
+  }
+  .spinner-container {
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    .loadding {
+      @include setSize(100%, 100%);
+      @include setFlexPos(row, center, center);
+      background-color: #fff;
+      .spinnner-bars {
+        font-size: 0.86rem;
+        color: $color-highlight-background;
       }
     }
   }

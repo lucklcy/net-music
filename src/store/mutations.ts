@@ -2,6 +2,7 @@ import { State } from './state'
 import { isBoolean, isObject } from 'lodash'
 import { IPlaySong } from '@/common/interface/base.ts'
 import { UserInfo, ITrack, IArtist } from '@/common/interface/base.ts'
+import { isEmpty } from '@/utils'
 
 export interface IkeyVal {
   key: string
@@ -87,6 +88,11 @@ export default {
     const playList: IPlaySong[] = state.playList
     if (playList && playList.length > 0 && index >= 0 && index < playList.length - 1) {
       state.currentSong = playList[index]
+    }
+  },
+  setCurrentSongListBackgroundUrl(state: State, backgroundUrl: string): void {
+    if (!isEmpty(backgroundUrl)) {
+      state.currentSongListBackgroundUrl = backgroundUrl
     }
   },
   changePlayingMode(state: State, mode: string) {

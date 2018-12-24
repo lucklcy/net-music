@@ -59,6 +59,9 @@ $baseAssets: '../../../assets';
             font-size: 0.28rem;
             color: #fff;
             margin-left: 18px;
+            .play-count-data {
+              font-style: normal;
+            }
           }
         }
       }
@@ -83,6 +86,11 @@ $baseAssets: '../../../assets';
             @include setBgImg('', center, center, cover, no-repeat);
             border-radius: 50%;
             margin-right: 18px;
+          }
+          .avatar-default {
+            font-size: 0.5rem;
+            color: #fff;
+            margin-right: 12px;
           }
           .author-name {
             display: inline-block;
@@ -160,9 +168,14 @@ $baseAssets: '../../../assets';
       }
     }
   }
+  .spinner {
+    flex: 1;
+    @include setSize(100%, '');
+    @include setFlexPos(row, center, center);
+  }
   .list-container {
     flex: 1;
-    width: 100%;
+    @include setSize(100%, '');
     background-color: #fff;
     overflow: hidden;
     -webkit-overflow-scrolling: touch;

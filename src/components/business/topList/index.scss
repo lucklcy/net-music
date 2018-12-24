@@ -81,5 +81,13 @@
         }
       }
     }
+    .spinner {
+      &.first {
+        margin: 160px 0;
+      }
+      &.second {
+        margin: 240px 0;
+      }
+    }
   }
 }

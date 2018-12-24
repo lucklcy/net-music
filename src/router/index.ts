@@ -38,7 +38,7 @@ export default new Router({
       redirect: { name: 'r_home_recommand' }
     },
     {
-      path: '/song-list',
+      path: '/song-list/:id',
       name: 'r_song_list',
       component: SongList
     },

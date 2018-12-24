@@ -26,3 +26,23 @@ Vue.filter('dealWithPlayCount', (val: number) => {
     return `${Math.floor(val / 10000)}万`
   }
 })
+
+// 处理返回值为空的情况【'' , null】
+Vue.filter(
+  'dealEmpty',
+  (val: any, replaceMent = '--', suffix = '', withZero = false, hasData = false) => {
+    if (withZero) {
+      if (hasData) {
+        return val === '' || val === 0 || val === null || val === undefined
+          ? replaceMent
+          : val + suffix
+      } else {
+        return val === '' || val === 0 || val === null || val === undefined || val === '0.00'
+          ? replaceMent
+          : val + suffix
+      }
+    } else {
+      return val === '' || val === null || val === undefined ? replaceMent : val + suffix
+    }
+  }
+)

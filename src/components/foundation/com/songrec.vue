@@ -3,7 +3,7 @@
     <p class="title">{{songListTitle}}</p>
     <div class="recommand-container">
       <ul class="recommand-list">
-        <li v-for="(item,index) in SongList" :key="index" class="recommand-item" @click='onSongRecommandClick(item.id)'>
+        <li v-for="(item,index) in SongList" :key="index" class="recommand-item" @click='onSongRecommandClick(item)'>
           <div class="back-img" :style="{backgroundImage:'url('+item.picUrl+')'}">
             <div class="heared">
               <span>
@@ -33,8 +33,8 @@
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { State } from 'vuex-class'
-import { ISongRecommandList } from '@/common/interface/base.ts'
+import { State, Mutation } from 'vuex-class'
+import { ISongRecommandList, IPlaylist } from '@/common/interface/base.ts'
 
 const enum SongRecType {
   RECOMMAND = 'recommand'
@@ -45,14 +45,19 @@ const enum SongRecType {
 })
 export default class SongRec extends mixins(CommonMixin) {
   private SongList: ISongRecommandList[] = []
-  @Prop({ default: SongRecType.RECOMMAND })
-  private type: string
 
   @State(state => state.userInfo.userId)
   private userId: number
 
-  private onSongRecommandClick(id: string) {
-    this.$router.push({ name: 'r_song_list', query: { id } })
+  @Prop({ default: SongRecType.RECOMMAND })
+  private type: string
+
+  @Mutation
+  setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
+
+  private onSongRecommandClick(item: IPlaylist) {
+    this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
+    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
   }
 
   get songListTitle() {

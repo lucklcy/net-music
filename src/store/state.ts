@@ -29,6 +29,8 @@ export interface State {
   currentSongListId: number
   tableCat: string
   hotTableCat: string
+  // 当前歌单的背景图url
+  currentSongListBackgroundUrl: string
 }
 
 // 初始状态
@@ -52,7 +54,8 @@ const stateData: State = {
   // 当前歌单类型
   tableCat: '',
   // 当前精品歌单类型
-  hotTableCat: ''
+  hotTableCat: '',
+  currentSongListBackgroundUrl: ''
 }
 
 export default stateData
