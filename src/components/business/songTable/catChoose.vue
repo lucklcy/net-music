@@ -4,7 +4,7 @@
       <span class="cancel" @click="onCancel">取消</span>
       <span class="content">筛选歌单</span>
     </div>
-    <Scroll class="container" ref="categoryContaioner" :data-list="[]">
+    <Scroll class="container" ref="categoryContaioner" :data-list="[]" v-if="categoryList && categoryList.length>0">
       <section>
         <div class="all">
           <div :class="['title','border-1px',{'active':tableCat===''}]" @click="onCategoryItemClick('')">
@@ -55,6 +55,11 @@
         </template>
       </section>
     </Scroll>
+    <div class="spinner-container" v-else>
+      <div class="loadding">
+        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -280,6 +285,20 @@ $category-border-color: #efefef;
             color: $color-highlight-background;
           }
         }
+      }
+    }
+  }
+  .spinner-container {
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    .loadding {
+      @include setSize(100%, 100%);
+      @include setFlexPos(row, center, center);
+      background-color: #fff;
+      .spinnner-bars {
+        font-size: 0.86rem;
+        color: $color-highlight-background;
       }
     }
   }

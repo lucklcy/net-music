@@ -6,7 +6,7 @@
         <span>官方榜</span>
       </div>
       <ul class="official-list" v-if="officialList && officialList.length>0">
-        <li class="item" v-for="(item,index) in officialList" :key="index" @click="goToSongList(item.id)">
+        <li class="item" v-for="(item,index) in officialList" :key="index" @click="goToSongList(item)">
           <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
             <div class="frequency">
               <span>{{item.updateFrequency}}</span>
@@ -20,11 +20,14 @@
           </div>
         </li>
       </ul>
+      <div class="spinner first" v-else>
+        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+      </div>
       <div class="global-title">
         <span>全球榜</span>
       </div>
       <ul class="global-list" v-if="globalList && globalList.length>0">
-        <li class="item" v-for="(item,index) in globalList" :key="index" @click="goToSongList(item.id)">
+        <li class="item" v-for="(item,index) in globalList" :key="index" @click="goToSongList(item)">
           <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
             <div class="frequency">
               <span>{{item.updateFrequency}}</span>
@@ -34,7 +37,13 @@
             <span>{{item.name}}</span>
           </div>
         </li>
+        <li class="item space-holder" v-if="globalList.length%3===2">
+          &nbsp;
+        </li>
       </ul>
+      <div class="spinner second" v-else>
+        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+      </div>
     </section>
     <Footer></Footer>
   </div>
@@ -43,10 +52,11 @@
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import { ITopSongListDetail } from '@/common/interface/base.ts'
+import { ITopSongListDetail, IPlaylist } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
 import { isEmpty } from '@/utils'
 import Footer from '~/foundation/com/footer.vue'
+import { Mutation } from 'vuex-class'
 
 @Component({
   components: {
@@ -60,8 +70,10 @@ export default class TopList extends mixins(CommonMixin) {
   // 全球榜单
   private globalList: ITopSongListDetail[] = []
 
-  private goToSongList(songId: string) {
-    this.$router.push({ name: 'r_song_list', query: { id: songId } })
+  @Mutation setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
+  private goToSongList(item: IPlaylist) {
+    this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
+    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
   }
 
   private dealWithTopList(topList: ITopSongListDetail[]) {

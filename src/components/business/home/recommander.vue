@@ -8,6 +8,12 @@
         </a>
       </div>
     </Slide>
+    <div class="slide-no-data" v-else>
+      <div class="backgrond"></div>
+      <div class="content">
+        <span>网易云音乐</span>
+      </div>
+    </div>
     <TabContainer></TabContainer>
     <Songrec></Songrec>
   </div>
@@ -55,9 +61,32 @@ export default class Recommander extends mixins(CommonMixin) {
 }
 </script>
 <style lang="scss">
+$baseAssets: '../../../assets';
 .main-content {
   position: relative;
   -webkit-overflow-scrolling: touch;
+  .slide-no-data {
+    position: relative;
+    @include setSize(100%, 380px);
+    .backgrond {
+      @include setSize(100%, 180px);
+      background-color: $color-highlight-background;
+    }
+    .content {
+      position: absolute;
+      top: 0;
+      left: 3%;
+      @include setFlexPos(row, center, center);
+      @include setSize(94%, 380px);
+      background-color: #444;
+
+      border-radius: 10px;
+      span {
+        font-size: 0.5rem;
+        color: #eee;
+      }
+    }
+  }
 }
 </style>
 

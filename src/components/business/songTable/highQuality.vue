@@ -9,10 +9,10 @@
       </span>
     </div>
     <Scroll class="container" ref="highQualitySongList" :data-list="highQualitySongListArray"
-      :pullup="true" @scrollToEnd="doPullup">
+      :pullup="true" @scrollToEnd="doPullup" v-if="highQualitySongListArray && highQualitySongListArray.length>0">
       <ul class="list">
-        <li class="item" v-for="(item,index) in highQualitySongListArray" :key="index" @click="gotoDetail(item.id)">
-          <div class="pic" :style="{backgroundImage:'url('+item.coverImgUrl+')'}">
+        <li class="item" v-for="(item,index) in highQualitySongListArray" :key="item.id" @click="gotoDetail(item)">
+          <div class="pic" :data-background-img='item.coverImgUrl' v-change-back-img>
             <SvgIcon v-if="item.highQuality" :iconClass="'high-quality-triangle'" :className="'high-quality-triangle'"></SvgIcon>
             <div class="heared">
               <span>
@@ -36,8 +36,12 @@
         </li>
       </ul>
     </Scroll>
+    <div class="spinner-container" v-else>
+      <div class="loadding">
+        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+      </div>
+    </div>
     <Footer></Footer>
-
     <div class="table-cat" v-show="isShowTableCat">
       <div class="cat-container">
         <div class="all" @click="changeCat('')" :class="{'active':hotTableCat===''}">
@@ -72,21 +76,27 @@ import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
 import { isEmpty } from '@/utils/index.ts'
 import { HOT_TABLE_CAT_ARRAY } from '@/common/const.ts'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 @Component({
-  components: { TopBar, Footer, Scroll }
+  components: { TopBar, Footer, Scroll },
+  directives: {
+    'change-back-img': ChangeBackImg
+  }
 })
 export default class SongHighQualityTable extends mixins(CommonMixin) {
   @State hotTableCat: string
   @Mutation changeTableCat: (payload: { type: number; cat: string }) => void
+  @Mutation setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
   private highQualitySongListArray: IPlayList[] = []
   private limit: number = 10
   private updateTime: number = 0
   private tableCatArray: any[] = HOT_TABLE_CAT_ARRAY
   private isShowTableCat: boolean = false
   private total: number = 0
-  private gotoDetail(id: string) {
-    this.$router.push({ name: 'r_song_list', query: { id } })
+  private gotoDetail(item: IPlayList) {
+    this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
+    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
   }
   private doPullup() {
     this.addHighQualityList()
@@ -122,10 +132,7 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
   }
   // 获取精选歌单
   private getPlayList() {
-    let scrollElement = this.$refs.highQualitySongList as Vue & {
-      scrollTo: (x: number, y: number, time?: number, easing?: object) => void
-    }
-    scrollElement && scrollElement.scrollTo(0, 0, 200)
+    this.highQualitySongListArray = []
     this.$nextTick(() => {
       let params: { [propName: string]: string | number } = { limit: this.limit }
       if (this.hotTableCat !== '') {
@@ -254,7 +261,7 @@ $category-border-color: #aaa;
         @include setFlexPos(row, space-between, flex-start);
         .pic {
           @include setSize(320px, 320px);
-          @include setBgImg('', center, center, cover, no-repeat);
+          @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
           border-radius: 12px;
           position: relative;
           .high-quality-triangle {
@@ -318,6 +325,20 @@ $category-border-color: #aaa;
           font-size: 1rem;
           color: #999;
         }
+      }
+    }
+  }
+  .spinner-container {
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    .loadding {
+      @include setSize(100%, 100%);
+      @include setFlexPos(row, center, center);
+      background-color: #fff;
+      .spinnner-bars {
+        font-size: 0.86rem;
+        color: $color-highlight-background;
       }
     }
   }
