@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view />
+    <keep-alive>
+      <transition :name="transitionName">
+        <router-view />
+      </transition>
+    </keep-alive>
     <SongPlayer v-show="playList.length>0"></SongPlayer>
   </div>
 </template>
@@ -8,10 +12,10 @@
 import SongPlayer from '~/business/player/index.vue'
 
 import { mixins } from 'vue-class-component'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
-import { IPlaySong } from '@/common/interface/base.ts'
+import { IPlaySong, IRoute } from '@/common/interface/base.ts'
 
 @Component({
   components: {
@@ -20,6 +24,18 @@ import { IPlaySong } from '@/common/interface/base.ts'
 })
 export default class App extends mixins(CommonMixin) {
   @State playList: IPlaySong[]
+
+  private transitionName: string = ''
+
+  @Watch('$route', { deep: true })
+  routerChange(val: IRoute, oldVal: IRoute) {
+    //如果to索引大于from索引,判断为前进状态,反之
+    if (val.meta.index > oldVal.meta.index) {
+      this.transitionName = 'slide-left'
+    } else {
+      this.transitionName = 'slide-right'
+    }
+  }
 }
 </script>
 

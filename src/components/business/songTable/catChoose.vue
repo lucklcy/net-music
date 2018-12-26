@@ -57,7 +57,7 @@
     </Scroll>
     <div class="spinner-container" v-else>
       <div class="loadding">
-        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+        <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
   </div>
@@ -296,7 +296,7 @@ $category-border-color: #efefef;
       @include setSize(100%, 100%);
       @include setFlexPos(row, center, center);
       background-color: #fff;
-      .spinnner-bars {
+      .spinner-bars {
         font-size: 0.86rem;
         color: $color-highlight-background;
       }

@@ -216,8 +216,9 @@
       @include setFlexPos(row, center, center);
       background-color: #273238;
       border-radius: 50%;
-      .playing {
-        font-size: 0.62rem;
+      .play-status-playing,
+      .play-status-pause {
+        font-size: 0.64rem;
         color: $color-highlight-background;
       }
     }

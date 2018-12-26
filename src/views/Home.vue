@@ -3,7 +3,9 @@
     <Header></Header>
     <Scroll class="home-container" ref="homeContainer" :data-list="[]" @flick='doFlick' :flick="true">
       <div>
-        <router-view />
+        <transition :name="transitionName">
+          <router-view />
+        </transition>
       </div>
     </Scroll>
     <Footer></Footer>
@@ -18,15 +20,8 @@ import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
 import { UserInfo } from '@/common/interface/base.ts'
 import CommonMixin from '@/mixins/comMix'
-import { IPlaySong } from '@/common/interface/base.ts'
+import { IPlaySong, IRoute } from '@/common/interface/base.ts'
 import Scroll from '~/foundation/base/scroll.vue'
-
-interface IRoute {
-  fullPath: string
-  name: string
-  path: string
-  [propName: string]: any
-}
 
 @Component({
   components: {
@@ -38,6 +33,8 @@ interface IRoute {
 export default class Home extends mixins(CommonMixin) {
   @State playList: IPlaySong[]
 
+  private transitionName: string = ''
+
   private doFlick() {
     console.log('doFlick')
   }
@@ -48,6 +45,12 @@ export default class Home extends mixins(CommonMixin) {
     this.$nextTick(() => {
       homeContainerScrollElement.refresh()
     })
+    //如果to索引大于from索引,判断为前进状态,反之
+    if (val.meta.index > oldVal.meta.index) {
+      this.transitionName = 'slide-left'
+    } else {
+      this.transitionName = 'slide-right'
+    }
   }
 }
 </script>

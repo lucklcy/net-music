@@ -69,7 +69,8 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="content">
-          <SvgIcon :iconClass="'playing'" :className="'playing'"></SvgIcon>
+          <SvgIcon :iconClass="'play-status-playing'" :className="'play-status-playing'" v-if="playing"></SvgIcon>
+          <SvgIcon :iconClass="'play-status-pause'" :className="'play-status-pause'" v-else></SvgIcon>
         </div>
       </div>
     </transition>

@@ -185,3 +185,10 @@ export interface ICategory {
   hasBottom?: boolean
   usedCount: number
 }
+
+export interface IRoute {
+  fullPath: string
+  name: string
+  path: string
+  [propName: string]: any
+}

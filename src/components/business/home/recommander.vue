@@ -1,7 +1,7 @@
 <template>
   <div class="main-content">
     <Slide :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot" :interval="interval"
-      :threshold="threshold" :speed="speed" v-if="data && data.length>0">
+      :threshold="threshold" :speed="speed" v-if="data && data.length>0" ref="banner">
       <div v-for="(item,index) in data" :key="index">
         <a :href="item.url">
           <img :src="item.imageUrl">
@@ -11,7 +11,7 @@
     <div class="slide-no-data" v-else>
       <div class="backgrond"></div>
       <div class="content">
-        <span>网易云音乐</span>
+        <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
     <TabContainer></TabContainer>
@@ -48,11 +48,13 @@ export default class Recommander extends mixins(CommonMixin) {
   private threshold: number = 0.1
   private speed: number = 600
 
-  async created() {
+  created() {
     this.service
       .getBanner({})
       .then((resultBanner: { banners: IBannerDataList[] }) => {
-        this.data = resultBanner && resultBanner['banners']
+        setTimeout(() => {
+          this.data = resultBanner && resultBanner['banners']
+        }, 400)
       })
       .catch((err: Error) => {
         console.log(err)
@@ -79,11 +81,10 @@ $baseAssets: '../../../assets';
       @include setFlexPos(row, center, center);
       @include setSize(94%, 380px);
       background-color: #444;
-
       border-radius: 10px;
-      span {
-        font-size: 0.5rem;
-        color: #eee;
+      .spinner-bars {
+        font-size: 0.72rem;
+        color: $color-highlight-background;
       }
     }
   }

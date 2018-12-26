@@ -15,8 +15,11 @@
         <ul>
           <li v-for="(item,index) in playList" :key="index" class="border-bottom-1px" @click="doClick(item.id)">
             <div class="face">
-              <SvgIcon :iconClass="'playing'" :className="'playing'" v-show="currentSong.id === item.id"></SvgIcon>
-              <span v-show="currentSong.id !== item.id">&nbsp;</span>
+              <template v-if="currentSong.id === item.id">
+                <SvgIcon :iconClass="'play-status-playing'" :className="'play-status-playing'" v-if="playing"></SvgIcon>
+                <SvgIcon :iconClass="'play-status-pause'" :className="'play-status-pause'" v-else></SvgIcon>
+              </template>
+              <span v-else>&nbsp;</span>
               <span class="cd">{{index+1}}</span>
             </div>
             <div :class="{'content':true,'active':currentSong.id === item.id}">
@@ -55,6 +58,7 @@ export default class PlaySongList extends mixins(CommonMixin) {
   @State playList: IPlaySong[]
   @State currentSong: IPlaySong
   @State showSongList: boolean
+  @State playing: boolean
 
   @Mutation changePlayingMode: (mode: string) => void
   @Mutation setCurrentSong: (songId: number) => void
@@ -76,8 +80,12 @@ export default class PlaySongList extends mixins(CommonMixin) {
   }
 
   doClick(songId: number): void {
-    this.changePlayingStatus(false)
-    this.setCurrentSong(songId)
+    if (this.currentSong.id === songId) {
+      this.changePlayingStatus(!this.playing)
+    } else {
+      this.changePlayingStatus(false)
+      this.setCurrentSong(songId)
+    }
   }
 
   @Watch('showSongList')
@@ -155,9 +163,10 @@ export default class PlaySongList extends mixins(CommonMixin) {
         .face {
           width: 140px;
           @include setFlexPos(row, space-between, center);
-          .playing {
+          .play-status-playing,
+          .play-status-pause {
             margin-left: 20px;
-            font-size: 0.44rem;
+            font-size: 0.46rem;
             color: $color-highlight-background;
           }
           .cd {

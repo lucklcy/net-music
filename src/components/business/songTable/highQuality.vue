@@ -29,16 +29,19 @@
               {{item.copywriter}}</span>
           </div>
         </li>
-        <li class="pull-up-asking" v-show="total>highQualitySongListArray.length">
+        <li class="pull-up-asking" v-if="total>highQualitySongListArray.length">
           <SvgIcon :iconClass="'small-loading'" :className="'small-loading'"></SvgIcon>
           <span>加载中</span>
           <SvgIcon :iconClass="'small-loading'" :className="'small-loading'"></SvgIcon>
+        </li>
+        <li class="no-more" v-else>
+          <span>没有更过了...</span>
         </li>
       </ul>
     </Scroll>
     <div class="spinner-container" v-else>
       <div class="loadding">
-        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+        <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
     <Footer></Footer>
@@ -326,6 +329,15 @@ $category-border-color: #aaa;
           color: #999;
         }
       }
+      .no-more {
+        @include setSize(100%, 82px);
+        @include setFlexPos(row, center, center);
+        span {
+          font-size: 0.38rem;
+          margin: 0 24px;
+          color: #999;
+        }
+      }
     }
   }
   .spinner-container {
@@ -336,7 +348,7 @@ $category-border-color: #aaa;
       @include setSize(100%, 100%);
       @include setFlexPos(row, center, center);
       background-color: #fff;
-      .spinnner-bars {
+      .spinner-bars {
         font-size: 0.86rem;
         color: $color-highlight-background;
       }

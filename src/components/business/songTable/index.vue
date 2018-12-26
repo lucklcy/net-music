@@ -18,11 +18,11 @@
       </div>
     </section>
     <div class="spinner-high-quality" v-else>
-      <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+      <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
     </div>
     <section class="oper-choose">
       <div class="all-category" @click="$router.push({ name: 'r_table_cat_choose' })">
-        <span class="lable">全部歌单</span>
+        <span class="lable">{{tableCat || '全部歌单'}}</span>
         <SvgIcon :iconClass="'arrow-right-thin'" :className="'arrow-right-thin'"></SvgIcon>
       </div>
       <div class="hot-catgeory">
@@ -66,7 +66,7 @@
     </Scroll>
     <div class="spinner-container" v-else>
       <div class="loadding">
-        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+        <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
     <Footer></Footer>
@@ -245,7 +245,7 @@ $baseAsset: '../../../assets';
     @include setFlexPos(row, center, center);
     z-index: 10;
     background-color: #fff;
-    .spinnner-bars {
+    .spinner-bars {
       font-size: 0.86rem;
       color: $color-highlight-background;
     }
@@ -262,8 +262,8 @@ $baseAsset: '../../../assets';
       border-radius: 40px;
       .lable {
         margin-right: 20px;
-        font-size: 0.4rem;
-        color: #444;
+        font-size: 0.35rem;
+        color: $color-highlight-background;
       }
       .arrow-right-thin {
         font-size: 0.32rem;
@@ -370,7 +370,7 @@ $baseAsset: '../../../assets';
       @include setSize(100%, 100%);
       @include setFlexPos(row, center, center);
       background-color: #fff;
-      .spinnner-bars {
+      .spinner-bars {
         font-size: 0.86rem;
         color: $color-highlight-background;
       }
