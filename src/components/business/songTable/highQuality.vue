@@ -264,7 +264,7 @@ $category-border-color: #aaa;
         @include setFlexPos(row, space-between, flex-start);
         .pic {
           @include setSize(320px, 320px);
-          @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
+          @include setBgImg('#{$baseAsset}/img/cd-default.png', center, center, cover, no-repeat);
           border-radius: 12px;
           position: relative;
           .high-quality-triangle {

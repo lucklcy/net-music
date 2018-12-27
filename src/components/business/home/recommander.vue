@@ -4,7 +4,7 @@
       :threshold="threshold" :speed="speed" v-if="data && data.length>0" ref="banner">
       <div v-for="(item,index) in data" :key="index">
         <a :href="item.url">
-          <img :src="item.imageUrl">
+          <img :data-background-img='item.imageUrl' :src="defaultBanner" v-change-back-img:imgsrc>
         </a>
       </div>
     </Slide>
@@ -25,6 +25,7 @@ import Slide from '~/foundation/base/slide.vue'
 import Songrec from '~/foundation/com/songrec.vue'
 import TabContainer from '~/business/home/tabContainer.vue'
 import CommonMixin from '@/mixins/comMix'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 interface IBannerDataList {
   imageUrl: string
@@ -37,6 +38,9 @@ interface IBannerDataList {
     Slide,
     Songrec,
     TabContainer
+  },
+  directives: {
+    'change-back-img': ChangeBackImg
   }
 })
 export default class Recommander extends mixins(CommonMixin) {
@@ -48,13 +52,15 @@ export default class Recommander extends mixins(CommonMixin) {
   private threshold: number = 0.1
   private speed: number = 600
 
+  private defaultBanner: File = require('@/assets/img/banner-default.png')
+
   created() {
     this.service
       .getBanner({})
       .then((resultBanner: { banners: IBannerDataList[] }) => {
         setTimeout(() => {
           this.data = resultBanner && resultBanner['banners']
-        }, 400)
+        }, 200)
       })
       .catch((err: Error) => {
         console.log(err)

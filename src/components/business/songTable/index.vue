@@ -186,7 +186,7 @@ $baseAsset: '../../../assets';
     background-color: #333;
     @include setSize(100%, 420px);
     .background {
-      @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
+      @include setBgImg('#{$baseAsset}/img/cd-default.png', center, center, cover, no-repeat);
       position: absolute;
       z-index: 9;
       top: 0px;
@@ -202,7 +202,7 @@ $baseAsset: '../../../assets';
       @include setFlexPos(row, space-around, center);
       .pic {
         @include setSize(292px, 292px);
-        @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
+        @include setBgImg('#{$baseAsset}/img/cd-default.png', center, center, cover, no-repeat);
         border-radius: 12px;
       }
       .label {
@@ -299,7 +299,7 @@ $baseAsset: '../../../assets';
         margin-bottom: 20px;
         .pic {
           @include setSize(100%, 520px);
-          @include setBgImg('#{$baseAsset}/img/cd-default.jpeg', center, center, cover, no-repeat);
+          @include setBgImg('#{$baseAsset}/img/cd-default.png', center, center, cover, no-repeat);
           border-radius: 12px;
           position: relative;
           .high-quality-triangle {
