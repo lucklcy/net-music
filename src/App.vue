@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <keep-alive>
-      <transition :name="transitionName">
+    <transition :name="transitionName">
+      <keep-alive exclude="SongList">
         <router-view />
-      </transition>
-    </keep-alive>
+      </keep-alive>
+    </transition>
     <SongPlayer v-show="playList.length>0"></SongPlayer>
   </div>
 </template>

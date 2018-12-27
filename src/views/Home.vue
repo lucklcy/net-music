@@ -4,7 +4,9 @@
     <Scroll class="home-container" ref="homeContainer" :data-list="[]" @flick='doFlick' :flick="true">
       <div>
         <transition :name="transitionName">
-          <router-view />
+          <keep-alive>
+            <router-view />
+          </keep-alive>
         </transition>
       </div>
     </Scroll>
