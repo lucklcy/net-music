@@ -143,6 +143,11 @@ $baseAssets: '../../../assets';
         font-size: 0.58rem;
         color: #333;
       }
+      .play-status-playing,
+      .play-status-pause {
+        font-size: 0.56rem;
+        color: $color-highlight-background;
+      }
       span {
         margin-left: 40px;
         color: #333;
@@ -182,7 +187,7 @@ $baseAssets: '../../../assets';
       @include setSize(100%, 100%);
       @include setFlexPos(row, center, center);
       background-color: #fff;
-      .spinnner-bars {
+      .spinner-bars {
         font-size: 0.86rem;
         color: $color-highlight-background;
       }
@@ -240,8 +245,12 @@ $baseAssets: '../../../assets';
               font-size: 0.72rem;
               color: #999;
             }
-            .playing {
-              font-size: 0.62rem;
+            .play-status-playing {
+              font-size: 0.56rem;
+              color: $color-highlight-background;
+            }
+            .play-status-pause {
+              font-size: 0.56rem;
               color: $color-highlight-background;
             }
           }

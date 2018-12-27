@@ -1,17 +1,17 @@
 <template>
   <div class="main-content">
     <Slide :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot" :interval="interval"
-      :threshold="threshold" :speed="speed" v-if="data && data.length>0">
+      :threshold="threshold" :speed="speed" v-if="data && data.length>0" ref="banner">
       <div v-for="(item,index) in data" :key="index">
         <a :href="item.url">
-          <img :src="item.imageUrl">
+          <img :data-background-img='item.imageUrl' :src="defaultBanner" v-change-back-img:imgsrc>
         </a>
       </div>
     </Slide>
     <div class="slide-no-data" v-else>
       <div class="backgrond"></div>
       <div class="content">
-        <span>网易云音乐</span>
+        <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
     <TabContainer></TabContainer>
@@ -25,6 +25,7 @@ import Slide from '~/foundation/base/slide.vue'
 import Songrec from '~/foundation/com/songrec.vue'
 import TabContainer from '~/business/home/tabContainer.vue'
 import CommonMixin from '@/mixins/comMix'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 interface IBannerDataList {
   imageUrl: string
@@ -37,6 +38,9 @@ interface IBannerDataList {
     Slide,
     Songrec,
     TabContainer
+  },
+  directives: {
+    'change-back-img': ChangeBackImg
   }
 })
 export default class Recommander extends mixins(CommonMixin) {
@@ -48,11 +52,15 @@ export default class Recommander extends mixins(CommonMixin) {
   private threshold: number = 0.1
   private speed: number = 600
 
-  async created() {
+  private defaultBanner: File = require('@/assets/img/banner-default.png')
+
+  created() {
     this.service
       .getBanner({})
       .then((resultBanner: { banners: IBannerDataList[] }) => {
-        this.data = resultBanner && resultBanner['banners']
+        setTimeout(() => {
+          this.data = resultBanner && resultBanner['banners']
+        }, 200)
       })
       .catch((err: Error) => {
         console.log(err)
@@ -79,11 +87,10 @@ $baseAssets: '../../../assets';
       @include setFlexPos(row, center, center);
       @include setSize(94%, 380px);
       background-color: #444;
-
       border-radius: 10px;
-      span {
-        font-size: 0.5rem;
-        color: #eee;
+      .spinner-bars {
+        font-size: 0.72rem;
+        color: $color-highlight-background;
       }
     }
   }

@@ -101,7 +101,7 @@ $baseAssets: '../../../assets';
           border-radius: 12px;
           position: relative;
           @include setSize(240px, 240px);
-          @include setBgImg('#{$baseAssets}/img/cd-default.jpeg', center, center, cover, no-repeat);
+          @include setBgImg('#{$baseAssets}/img/cd-default.png', center, center, cover, no-repeat);
           @include setFlexPos(row, center, center);
           .program-play {
             font-size: 0.9rem;

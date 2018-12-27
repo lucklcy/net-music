@@ -1,3 +1,4 @@
+$assets: '../../../assets';
 .main-player {
   .normal-player {
     position: fixed;
@@ -18,7 +19,7 @@
       filter: blur(20px);
       .inner {
         @include setSize(100%, 100%);
-        @include setBgImg('', center, center, cover, no-repeat);
+        @include setBgImg('#{$assets}/img/cd-default.png', center, center, cover, no-repeat);
       }
     }
     .top {
@@ -86,7 +87,7 @@
               top: 0;
               width: 100%;
               height: 100%;
-              @include setBgImg('', center, center, cover, no-repeat);
+              @include setBgImg('#{$assets}/img/cd-default.png', center, center, cover, no-repeat);
               border-radius: 50%;
             }
           }
@@ -216,8 +217,9 @@
       @include setFlexPos(row, center, center);
       background-color: #273238;
       border-radius: 50%;
-      .playing {
-        font-size: 0.62rem;
+      .play-status-playing,
+      .play-status-pause {
+        font-size: 0.64rem;
         color: $color-highlight-background;
       }
     }

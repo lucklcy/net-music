@@ -3,7 +3,7 @@
     <transition name="normal">
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
-          <div :style="{backgroundImage:'url('+currentSong.picUrl+')'}" class="inner"></div>
+          <div class="inner" :data-background-img='currentSong.picUrl' v-change-back-img></div>
         </div>
         <div class="top">
           <i class="back iconfont icon-arrow-down-" @click="back"></i>
@@ -18,7 +18,7 @@
           <div class="middle-l" ref="middleL" :style="middleLStyle">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdCls">
-                <div class="image" :style="{backgroundImage:'url('+currentSong.picUrl+')'}"></div>
+                <div class="image" :data-background-img='currentSong.picUrl' v-change-back-img></div>
               </div>
             </div>
             <div class="playing-lyric-wrapper">
@@ -69,7 +69,8 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="content">
-          <SvgIcon :iconClass="'playing'" :className="'playing'"></SvgIcon>
+          <SvgIcon :iconClass="'play-status-playing'" :className="'play-status-playing'" v-if="playing"></SvgIcon>
+          <SvgIcon :iconClass="'play-status-pause'" :className="'play-status-pause'" v-else></SvgIcon>
         </div>
       </div>
     </transition>
@@ -89,6 +90,7 @@ import { prefixStyle } from '@/utils/dom'
 import lyricParser from '@/utils/lyricParser'
 import { PLAYING_MODE } from '@/store/state.ts'
 import { IPlaySong, ITouch, ISongDetail, ISongLyric } from '@/common/interface/base.ts'
+import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
@@ -98,6 +100,9 @@ const transitionDuration = prefixStyle('transitionDuration')
     scroll,
     ProgressBar,
     PlayingSongList
+  },
+  directives: {
+    'change-back-img': ChangeBackImg
   }
 })
 export default class SongMainPlayer extends mixins(CommonMixin) {

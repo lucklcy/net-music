@@ -47,10 +47,15 @@
     </section>
     <section class="summary border-bottom-1px">
       <div class="play-all" @click="doPlayAll">
-        <SvgIcon :iconClass="'playing'" :className="'playing'" v-if="currentSongListId === songListId"></SvgIcon>
-        <SvgIcon :iconClass="'list-play'" :className="'list-play'" v-else></SvgIcon>
-        <span v-if="currentSongListId === songListId">正在播放</span>
-        <span v-else>播放全部</span>
+        <template v-if="currentSongListId === songListId">
+          <SvgIcon :iconClass="'play-status-playing'" :className="'play-status-playing'" v-if="playing"></SvgIcon>
+          <SvgIcon :iconClass="'play-status-pause'" :className="'play-status-pause'" v-else></SvgIcon>
+          <span>正在播放</span>
+        </template>
+        <template v-else>
+          <SvgIcon :iconClass="'list-play'" :className="'list-play'"></SvgIcon>
+          <span>播放全部</span>
+        </template>
         <span class="track-count">共({{songList?songList.trackCount:'???'}})首</span>
       </div>
       <div class="collect" @click="doSubscribe">
@@ -70,7 +75,8 @@
               <span class="author">{{getAuthorString(item) | limitIn(28)}}</span>
             </div>
             <div class="oper active" v-if="currentSong.id === item.id">
-              <SvgIcon :iconClass="'playing'" :className="'playing'"></SvgIcon>
+              <SvgIcon :iconClass="'play-status-playing'" :className="'play-status-playing'" v-if="playing"></SvgIcon>
+              <SvgIcon :iconClass="'play-status-pause'" :className="'play-status-pause'" v-else></SvgIcon>
             </div>
             <div class="oper" v-else>
               <SvgIcon :iconClass="'and-so-on'" :className="'and-so-on'"></SvgIcon>
@@ -89,7 +95,7 @@
     </Scroll>
     <div class="spinner-container" v-else>
       <div class="loadding">
-        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+        <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
     <Footer></Footer>
@@ -122,6 +128,7 @@ export default class SongList extends mixins(CommonMixin) {
   @State playList: IPlaySong[]
   @State currentSong: IPlaySong
   @State currentSongListBackgroundUrl: string
+  @State playing: boolean
   private songList: IPlaylist | null = null
   private songListId: number = 0
   private defaultSingerImg: File = require('@/assets/img/singer-default.jpeg')
@@ -152,20 +159,25 @@ export default class SongList extends mixins(CommonMixin) {
   }
 
   private goToSongPlay(songId: number) {
-    this.changePlayingStatus(false)
-    let tracks = (this.songList as IPlaylist).tracks
-    let isInList = false
-    this.playList.forEach((item, index) => {
-      if (item['id'] === songId) {
-        isInList = true
-      }
-    })
-    if (isInList) {
-      this.setCurrentSong(songId)
+    // 若是当前正在播放歌曲
+    if (this.currentSong.id === songId) {
+      this.changePlayingStatus(!this.playing)
     } else {
-      this.setPlayList(tracks)
-      this.setCurrentSong(songId)
-      this.setCurrentSongListId(this.songListId)
+      this.changePlayingStatus(false)
+      let [tracks, isInList] = [(this.songList as IPlaylist).tracks, false]
+      this.playList.forEach((item, index) => {
+        if (item['id'] === songId) {
+          isInList = true
+        }
+      })
+      // 若是当前播放列表
+      if (isInList) {
+        this.setCurrentSong(songId)
+      } else {
+        this.setPlayList(tracks)
+        this.setCurrentSong(songId)
+        this.setCurrentSongListId(this.songListId)
+      }
     }
   }
 

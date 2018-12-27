@@ -15,13 +15,13 @@
           <div class="label-list border-bottom-1px">
             <span class="item" v-for="(innerIntem,innerIndex) in item.tracks">
               <span class="name">{{innerIndex+1}}.&nbsp;{{innerIntem.first+' - '+innerIntem.second
-                | limitIn(20)}}</span>
+                | limitIn(16)}}</span>
             </span>
           </div>
         </li>
       </ul>
       <div class="spinner first" v-else>
-        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+        <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
       <div class="global-title">
         <span>全球榜</span>
@@ -42,7 +42,7 @@
         </li>
       </ul>
       <div class="spinner second" v-else>
-        <SvgIcon :iconClass="'spinnner-bars'" :className="'spinnner-bars'"></SvgIcon>
+        <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </section>
     <Footer></Footer>

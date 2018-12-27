@@ -20,7 +20,7 @@ $baseAssets: '../../../assets';
           border-top-left-radius: 10px;
           border-top-right-radius: 10px;
           @include setSize(100%, 76%);
-          @include setBgImg('#{$baseAssets}/img/cd-default.jpeg', center, center, cover, no-repeat);
+          @include setBgImg('#{$baseAssets}/img/cd-default.png', center, center, cover, no-repeat);
           .heared {
             float: right;
             padding: 10px 10px 0 0;

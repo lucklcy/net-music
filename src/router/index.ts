@@ -23,11 +23,17 @@ export default new Router({
         {
           path: 'recommand',
           name: 'r_home_recommand',
+          meta: {
+            index: 0
+          },
           component: Recommander
         },
         {
           path: 'broadcast',
           name: 'r_home_broadcast',
+          meta: {
+            index: 1
+          },
           component: Broadcaster
         }
       ]
@@ -40,26 +46,41 @@ export default new Router({
     {
       path: '/song-list/:id',
       name: 'r_song_list',
+      meta: {
+        index: 4
+      },
       component: SongList
     },
     {
       path: '/table',
       name: 'r_song_table_index',
+      meta: {
+        index: 2
+      },
       component: SongTableIndex
     },
     {
       path: '/table/cat-choose',
       name: 'r_table_cat_choose',
+      meta: {
+        index: 3
+      },
       component: TableCatChoose
     },
     {
       path: '/table/high-quality',
       name: 'r_song_table_high_quality',
+      meta: {
+        index: 3
+      },
       component: SongTableHighQuality
     },
     {
       path: '/top-list',
       name: 'r_top_list',
+      meta: {
+        index: 2
+      },
       component: TopList
     }
   ]
