@@ -1,7 +1,6 @@
 import { IPlaySong, Indicator, UserInfo } from '@/common/interface/base.ts'
 
 export const PLAYING_MODE = {
-  SEQUENCE: 'sequence',
   LOOP: 'loop',
   RANDOM: 'random',
   CYCLE: 'cycle'
@@ -47,7 +46,7 @@ const stateData: State = {
   playing: false,
   fullScreen: true,
   currentIndex: -1,
-  mode: PLAYING_MODE.SEQUENCE,
+  mode: PLAYING_MODE.LOOP,
   footTab: FOOT_BAR_STATUS.MUSIC.code,
   showSongList: false,
   currentSongListId: 0,

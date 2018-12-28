@@ -43,9 +43,9 @@ $assets: '../../../assets';
         color: #fff;
         font-size: 0.62rem;
       }
-      .about {
+      .collect {
         color: #fff;
-        font-size: 0.52rem;
+        font-size: 0.58rem;
       }
     }
     .middle {
@@ -183,15 +183,15 @@ $assets: '../../../assets';
         }
       }
       .operators {
-        padding: 28px 40px 0 40px;
+        padding: 32px 40px 0 40px;
         @include setFlexPos(row, space-around, center);
-        .iconfont {
-          font-size: 0.56rem;
-          color: $color-theme;
-        }
+        .play-mode,
+        .play-prev,
+        .play-control,
+        .play-next,
         .play-list {
           font-size: 0.76rem;
-          color: $color-theme;
+          color: #fff;
           font-weight: 500;
         }
       }

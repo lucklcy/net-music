@@ -11,8 +11,8 @@
             <div class="content">
               <span class="name">{{item.name | limitIn(16)}}</span>
               <span class="count">
-                <i class="iconfont icon-erji"></i>
-                {{item.listenerCount|dealWithPlayCount}}
+                <SvgIcon :iconClass="'earpod'" :className="'earpod'"></SvgIcon>
+                <i>{{item.listenerCount|dealWithPlayCount}}</i>
               </span>
               <span class="desc">{{item.description | limitIn(46)}}</span>
             </div>
@@ -118,8 +118,17 @@ $baseAssets: '../../../assets';
             color: #555;
           }
           .count {
-            font-size: 0.22rem;
+            font-size: 0.3rem;
             color: #666;
+            i {
+              position: relative;
+              top: 1px;
+              font-style: normal;
+              margin-left: 16px;
+            }
+            .earpod {
+              font-size: 0.28rem;
+            }
           }
           .desc {
             color: #999;

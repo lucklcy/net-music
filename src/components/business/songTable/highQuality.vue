@@ -16,8 +16,8 @@
             <SvgIcon v-if="item.highQuality" :iconClass="'high-quality-triangle'" :className="'high-quality-triangle'"></SvgIcon>
             <div class="heared">
               <span>
-                <i class="iconfont icon-erji"></i>
-                {{item.playCount|dealWithPlayCount}}
+                <SvgIcon :iconClass="'earpod'" :className="'earpod'"></SvgIcon>
+                <i> {{item.playCount|dealWithPlayCount}}</i>
               </span>
             </div>
           </div>
@@ -278,8 +278,13 @@ $category-border-color: #aaa;
               margin: 0 0 0 8px;
               color: #eee;
               font-size: 0.32rem;
-              .iconfont {
+              .earpod {
                 font-size: 0.28rem;
+              }
+              i {
+                font-style: normal;
+                position: relative;
+                top: 1px;
               }
             }
           }

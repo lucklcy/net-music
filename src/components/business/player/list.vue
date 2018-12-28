@@ -4,8 +4,10 @@
     <div class="container">
       <div class="summary border-bottom-1px">
         <span>
-          <SvgIcon :iconClass="getIcon" :className="getIcon"></SvgIcon>
-          <span class="mode-lable" v-text="getModeString"></span>
+          <span class="mode">
+            <SvgIcon :iconClass="getIcon" :className="getIcon"></SvgIcon>
+          </span>
+          <span class="mode-lable" v-text="getModeString" @click="changeMode"></span>
           <SvgIcon :iconClass="'player-list-subscribe'" :className="'player-list-subscribe'"></SvgIcon>
           <span class="player-list-subscribe-lable">收藏全部</span>
         </span>
@@ -66,17 +68,50 @@ export default class PlaySongList extends mixins(CommonMixin) {
   @Mutation changeShowSongList: (flag: boolean) => void
 
   get getIcon() {
-    return `player-mode-${this.mode}`
+    let mode = this.mode
+    let returnModeClass = ''
+    switch (mode) {
+      case PLAYING_MODE.LOOP:
+        returnModeClass = 'control-cycle'
+        break
+      case PLAYING_MODE.RANDOM:
+        returnModeClass = 'control-random'
+        break
+      case PLAYING_MODE.CYCLE:
+        returnModeClass = 'control-cycle-one'
+        break
+      default:
+        returnModeClass = 'control-cycle'
+        break
+    }
+    return returnModeClass
   }
 
   get getModeString() {
     const MODE_NAME_MAP = {
-      [PLAYING_MODE.SEQUENCE]: '顺序播放',
-      [PLAYING_MODE.LOOP]: '单曲循环',
+      [PLAYING_MODE.LOOP]: '循环播放',
       [PLAYING_MODE.RANDOM]: '随机播放',
-      [PLAYING_MODE.CYCLE]: '循环播放'
+      [PLAYING_MODE.CYCLE]: '单曲循环'
     }
     return MODE_NAME_MAP[this.mode]
+  }
+
+  private changeMode() {
+    let mode = this.mode
+    switch (mode) {
+      case PLAYING_MODE.LOOP:
+        this.changePlayingMode(PLAYING_MODE.RANDOM)
+        break
+      case PLAYING_MODE.RANDOM:
+        this.changePlayingMode(PLAYING_MODE.CYCLE)
+        break
+      case PLAYING_MODE.CYCLE:
+        this.changePlayingMode(PLAYING_MODE.LOOP)
+        break
+      default:
+        this.changePlayingMode(PLAYING_MODE.LOOP)
+        break
+    }
   }
 
   doClick(songId: number): void {
@@ -117,28 +152,30 @@ export default class PlaySongList extends mixins(CommonMixin) {
       &.border-bottom-1px {
         @include border-set(bottom, $border-color);
       }
-      .svg-icon {
-        &.player-mode-sequence,
-        &.player-mode-loop,
-        &.player-mode-cycle,
-        &.player-mode-random {
-          font-size: 0.46rem;
-          color: #555;
-          margin-left: 40px;
+      .mode {
+        .svg-icon {
+          &.control-cycle,
+          &.control-cycle-one,
+          &.control-random {
+            font-size: 0.4rem;
+            color: #555;
+            margin-left: 40px;
+          }
         }
       }
+
       .mode-lable {
-        font-size: 0.38rem;
+        font-size: 0.36rem;
         color: #444;
         margin-left: 20px;
       }
       .player-list-subscribe {
-        font-size: 0.46rem;
+        font-size: 0.42rem;
         color: #555;
         margin-left: 160px;
       }
       .player-list-subscribe-lable {
-        font-size: 0.38rem;
+        font-size: 0.36rem;
         color: #444;
         margin-left: 20px;
       }

@@ -7,8 +7,8 @@
           <div class="back-img" :data-background-img='item.picUrl' v-change-back-img>
             <div class="heared">
               <span>
-                <i class="iconfont icon-erji"></i>
-                {{item.playcount|dealWithPlayCount}}
+                <SvgIcon :iconClass="'earpod'" :className="'earpod'"></SvgIcon>
+                <i>{{item.playcount|dealWithPlayCount}}</i>
               </span>
             </div>
             <div class="description">
