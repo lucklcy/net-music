@@ -12,7 +12,7 @@
         <div class="pic" :style="{backgroundImage:'url('+currentSongListBackgroundUrl+')'}">
           <div class="heared">
             <span class="data">
-              <i class="iconfont icon-erji"></i>
+              <SvgIcon :iconClass="'earpod'" :className="'earpod'"></SvgIcon>
               <i class="play-count-data" v-if="songList">
                 {{songList.playCount | dealWithPlayCount}}
               </i>
@@ -37,9 +37,9 @@
             </span>
           </span>
           <span class="info">
-            <i class="comment-pic iconfont icon-pinglun"></i>
+            <SvgIcon :iconClass="'song-comments'" :className="'song-comments'"></SvgIcon>
             <span class="comment-data">{{songList?songList.commentCount:'????'}}</span>
-            <i class="share-pic iconfont icon-fenxiang"></i>
+            <SvgIcon :iconClass="'song-share'" :className="'song-share'"></SvgIcon>
             <span class="share-data">{{songList?songList.shareCount:'????'}}</span>
           </span>
         </div>

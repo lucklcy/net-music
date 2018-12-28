@@ -27,9 +27,15 @@ $baseAssets: '../../../assets';
             span {
               margin: 0 0 0 8px;
               color: #eee;
-              font-size: 0.32rem;
-              .iconfont {
-                font-size: 0.28rem;
+              .earpod {
+                font-size: 0.27rem;
+              }
+              i {
+                position: relative;
+                top: 1px;
+                font-size: 0.3rem;
+                font-style: normal;
+                margin-left: 6px;
               }
             }
           }

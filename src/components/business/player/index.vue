@@ -6,12 +6,16 @@
           <div class="inner" :data-background-img='currentSong.picUrl' v-change-back-img></div>
         </div>
         <div class="top">
-          <i class="back iconfont icon-arrow-down-" @click="back"></i>
+          <span class="back" @click="back">
+            <SvgIcon :iconClass="'arrow-down'" :className="'arrow-down'"></SvgIcon>
+          </span>
           <div class="song-header">
             <span class="title">{{currentSong.name | limitIn(15)}}</span>
             <span class="subtitle">{{currentSong.songer | limitIn(20)}}</span>
           </div>
-          <i class="about iconfont icon-qunfengshoucang"></i>
+          <span class="collect">
+            <SvgIcon :iconClass="'collect'" :className="'collect'"></SvgIcon>
+          </span>
         </div>
         <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove"
           @touchend="middleTouchEnd">
@@ -55,12 +59,21 @@
             <span class="time time-r">{{format(currentSong.duration)}}</span>
           </div>
           <div class="operators">
-            <span class="play iconfont" :class="modeIcon" @click.stop="changeMode"></span>
-            <span class="play iconfont icon-Next" @click.stop="prev"></span>
-            <span class="play iconfont" :class="playIcon" @click.stop="togglePlaying"></span>
-            <span class="play iconfont icon-next1" @click.stop="next"></span>
-            <span @click.stop="changeShowSongList(true)">
-              <SvgIcon :iconClass="'play-list'" :className="'play-list'"></SvgIcon>
+            <span class="play-mode" @click.stop="changeMode">
+              <SvgIcon :iconClass="modeIcon" :className="modeIcon"></SvgIcon>
+            </span>
+            <span class="play-prev" @click.stop="prev">
+              <SvgIcon :iconClass="'control-prev'" :className="'control-prev'"></SvgIcon>
+            </span>
+            <span class="play-control" @click.stop="togglePlaying">
+              <SvgIcon :iconClass="'control-play'" :className="'control-play'" v-if="playing"></SvgIcon>
+              <SvgIcon :iconClass="'control-pause'" :className="'control-pause'" v-else></SvgIcon>
+            </span>
+            <span class="play-next" @click.stop="next">
+              <SvgIcon :iconClass="'control-next'" :className="'control-next'"></SvgIcon>
+            </span>
+            <span class="play-list" @click.stop="changeShowSongList(true)">
+              <SvgIcon :iconClass="'control-play-list'" :className="'control-play-list'"></SvgIcon>
             </span>
           </div>
         </div>
@@ -164,20 +177,17 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     let mode = this.mode
     let returnModeClass = ''
     switch (mode) {
-      case PLAYING_MODE.SEQUENCE:
-        returnModeClass = 'icon-shunxu'
-        break
       case PLAYING_MODE.LOOP:
-        returnModeClass = 'icon-danquxunhuan'
+        returnModeClass = 'control-cycle'
         break
       case PLAYING_MODE.RANDOM:
-        returnModeClass = 'icon-random'
+        returnModeClass = 'control-random'
         break
       case PLAYING_MODE.CYCLE:
-        returnModeClass = 'icon-loop'
+        returnModeClass = 'control-cycle-one'
         break
       default:
-        returnModeClass = 'icon-shunxu'
+        returnModeClass = 'control-cycle'
         break
     }
     return returnModeClass
@@ -186,9 +196,6 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private changeMode() {
     let mode = this.mode
     switch (mode) {
-      case PLAYING_MODE.SEQUENCE:
-        this.changePlayingMode(PLAYING_MODE.LOOP)
-        break
       case PLAYING_MODE.LOOP:
         this.changePlayingMode(PLAYING_MODE.RANDOM)
         break
@@ -196,10 +203,10 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
         this.changePlayingMode(PLAYING_MODE.CYCLE)
         break
       case PLAYING_MODE.CYCLE:
-        this.changePlayingMode(PLAYING_MODE.SEQUENCE)
+        this.changePlayingMode(PLAYING_MODE.LOOP)
         break
       default:
-        this.changePlayingMode(PLAYING_MODE.SEQUENCE)
+        this.changePlayingMode(PLAYING_MODE.LOOP)
         break
     }
   }
@@ -300,22 +307,37 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   }
 
   private loop() {
+    this.changePlayingStatus(false)
     let audioElement = this.$refs.audio as HTMLAudioElement
     audioElement.currentTime = 0
-    audioElement.play()
-    this.changePlayingStatus(true)
-    if (this.currentLyric) {
-      this.currentLyric.seek(0)
+    setTimeout(() => {
+      this.changePlayingStatus(true)
+      if (this.currentLyric) {
+        this.currentLyric.seek(0)
+      }
+    }, 200)
+  }
+  private getRandomIndex() {
+    let playList = this.playList
+    let currentSong = this.currentSong
+    let randomNum = Math.floor(Math.random() * playList.length)
+    while (playList[randomNum].id === currentSong.id) {
+      randomNum = Math.floor(Math.random() * playList.length)
     }
+    return randomNum
   }
   // 下一首
   private next() {
     if (!this.songReady) {
       return
     }
-    if (this.playList.length === 1) {
+    if (this.mode === PLAYING_MODE.CYCLE || this.playList.length === 1) {
       this.loop()
       return
+    } else if (this.mode === PLAYING_MODE.RANDOM) {
+      let index = this.getRandomIndex()
+      this.changePlayingStatus(false)
+      this.setCurrentIndex(index)
     } else {
       let index = this.currentIndex + 1
       if (index === this.playList.length) {
@@ -330,9 +352,12 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     if (!this.songReady) {
       return
     }
-    if (this.playList.length === 1) {
+    if (this.mode === PLAYING_MODE.CYCLE || this.playList.length === 1) {
       this.loop()
-      return
+    } else if (this.mode === PLAYING_MODE.RANDOM) {
+      let index = this.getRandomIndex()
+      this.changePlayingStatus(false)
+      this.setCurrentIndex(index)
     } else {
       let index = this.currentIndex - 1
       if (index === -1) {

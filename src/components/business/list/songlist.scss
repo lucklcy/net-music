@@ -62,6 +62,11 @@ $baseAssets: '../../../assets';
             .play-count-data {
               font-style: normal;
             }
+            .earpod {
+              font-size: 0.27rem;
+              position: relative;
+              top: -1px;
+            }
           }
         }
       }
@@ -107,20 +112,19 @@ $baseAssets: '../../../assets';
         }
         .info {
           @include setFlexPos(row, flex-start, center);
-          .comment-pic {
-            color: #fff;
-            font-size: 0.44rem;
+          color: #fff;
+          .song-comments {
+            font-size: 0.46rem;
           }
-          .share-pic {
+          .song-share {
             margin-left: 100px;
-            color: #fff;
-            font-size: 0.44rem;
+            font-size: 0.42rem;
           }
           .comment-data,
           .share-data {
             padding: 8px;
             font-size: 0.3rem;
-            color: #fff;
+
             margin-left: 20px;
           }
         }
