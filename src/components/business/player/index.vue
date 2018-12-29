@@ -299,7 +299,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   }
 
   private end() {
-    if (this.mode === PLAYING_MODE.LOOP) {
+    if (this.mode === PLAYING_MODE.CYCLE) {
       this.loop()
     } else {
       this.next()
