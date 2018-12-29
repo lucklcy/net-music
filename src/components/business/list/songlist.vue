@@ -213,7 +213,7 @@ export default class SongList extends mixins(CommonMixin) {
     console.log((this.songList as IPlaylist).id)
   }
 
-  created() {
+  private init() {
     let songListId = this.$route.params && this.$route.params.id
     this.songListId = Number(songListId)
     this.service
@@ -229,6 +229,14 @@ export default class SongList extends mixins(CommonMixin) {
       .catch((err: Error) => {
         console.log(err)
       })
+  }
+
+  activated() {
+    this.init()
+  }
+
+  created() {
+    this.init()
   }
 }
 </script>
