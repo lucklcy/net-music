@@ -47,7 +47,7 @@ module.exports = {
     inline: true,
     proxy: {
       '/api/*': {
-        target: 'http://127.0.0.1:3000',
+        target: 'http://10.113.24.80:3000',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {

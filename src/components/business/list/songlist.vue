@@ -112,6 +112,7 @@ import Scroll from '~/foundation/base/scroll.vue'
 import { IPlaySong, IPlaylist, ITrack } from '@/common/interface/base.ts'
 import { isEmpty } from '@/utils/index.ts'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
+import { isIos } from '@/utils/index.ts'
 
 @Component({
   components: {
@@ -129,6 +130,7 @@ export default class SongList extends mixins(CommonMixin) {
   @State currentSong: IPlaySong
   @State currentSongListBackgroundUrl: string
   @State playing: boolean
+  @State iosAudioTrigger: boolean
   private songList: IPlaylist | null = null
   private songListId: number = 0
   private defaultSingerImg: File = require('@/assets/img/singer-default.jpeg')
@@ -138,9 +140,23 @@ export default class SongList extends mixins(CommonMixin) {
   @Mutation changePlayingStatus: (flag: boolean) => void
   @Mutation setCurrentSongListId: (listId: number) => void
   @Mutation setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
+  @Mutation changeIosAudioTrigger: (flag: boolean) => void
 
   get getCoverImgUrl() {
     return ''
+  }
+
+  private dealIosPlay() {
+    if (isIos && !this.iosAudioTrigger) {
+      const audio = document.querySelector('#song_audio') as HTMLAudioElement
+      try {
+        audio.play()
+        audio.pause()
+        this.changeIosAudioTrigger(true)
+      } catch (error) {
+        console.log({ error })
+      }
+    }
   }
 
   private goBack() {
@@ -159,6 +175,7 @@ export default class SongList extends mixins(CommonMixin) {
   }
 
   private goToSongPlay(songId: number) {
+    this.dealIosPlay()
     // 若是当前正在播放歌曲
     if (this.currentSong.id === songId) {
       this.changePlayingStatus(!this.playing)
@@ -183,6 +200,7 @@ export default class SongList extends mixins(CommonMixin) {
 
   private doPlayAll() {
     if (this.currentSongListId !== this.songListId) {
+      this.dealIosPlay()
       let tracks = (this.songList as IPlaylist).tracks
       this.changePlayingStatus(false)
       this.setPlayList(tracks)

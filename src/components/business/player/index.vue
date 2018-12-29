@@ -66,8 +66,8 @@
               <SvgIcon :iconClass="'control-prev'" :className="'control-prev'"></SvgIcon>
             </span>
             <span class="play-control" @click.stop="togglePlaying">
-              <SvgIcon :iconClass="'control-play'" :className="'control-play'" v-if="playing"></SvgIcon>
-              <SvgIcon :iconClass="'control-pause'" :className="'control-pause'" v-else></SvgIcon>
+              <SvgIcon :iconClass="'control-pause'" :className="'control-pause'" v-if="playing"></SvgIcon>
+              <SvgIcon :iconClass="'control-play'" :className="'control-play'" v-else></SvgIcon>
             </span>
             <span class="play-next" @click.stop="next">
               <SvgIcon :iconClass="'control-next'" :className="'control-next'"></SvgIcon>
@@ -88,7 +88,7 @@
       </div>
     </transition>
     <PlayingSongList class="song-list" v-show="showSongList"></PlayingSongList>
-    <audio :src="songUrl" ref="audio" @timeupdate="updateTime" @ended="end"></audio>
+    <audio id="song_audio" :src="songUrl" ref="audio" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
 <script lang="ts">
