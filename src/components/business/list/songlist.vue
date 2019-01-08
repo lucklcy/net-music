@@ -64,7 +64,7 @@
         <span class="subscribe">({{songList?songList.subscribedCount:'???'}})</span>
       </div>
     </section>
-    <Scroll class="list-container" ref="songList" :data-list="songList.tracks" v-if="songList && songList.tracks && songList.tracks.length>0">
+    <div class="list-container" v-if="songList && songList.tracks && songList.tracks.length>0">
       <ul>
         <li v-for="(item,index) in songList.tracks" :key="index" @click="goToSongPlay(item.id)"
           :class="{'active':currentSong.id === item.id}">
@@ -92,7 +92,7 @@
           <i class="count">{{songList.subscribedCount}}人收藏</i>
         </li>
       </ul>
-    </Scroll>
+    </div>
     <div class="spinner-container" v-else>
       <div class="loadding">
         <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>

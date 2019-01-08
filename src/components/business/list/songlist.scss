@@ -201,7 +201,7 @@ $baseAssets: '../../../assets';
     flex: 1;
     @include setSize(100%, '');
     background-color: #fff;
-    overflow: hidden;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
     ul {
       li {

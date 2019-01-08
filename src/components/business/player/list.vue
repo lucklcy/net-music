@@ -13,7 +13,7 @@
         </span>
         <SvgIcon :iconClass="'player-list-garbage'" :className="'player-list-garbage'"></SvgIcon>
       </div>
-      <Scroll class="list-wrapper" ref="playList" :data-list="playList">
+      <div class="list-wrapper" :data-list="playList">
         <ul>
           <li v-for="(item,index) in playList" :key="index" class="border-bottom-1px" @click="doClick(item.id)">
             <div class="face">
@@ -35,7 +35,7 @@
             <span>...到底啦....</span>
           </li>
         </ul>
-      </Scroll>
+      </div>
       <div class="close border-bottom-1px" @click="changeShowSongList(false)">
         <span>关闭</span>
       </div>
@@ -120,14 +120,6 @@ export default class PlaySongList extends mixins(CommonMixin) {
     } else {
       this.changePlayingStatus(false)
       this.setCurrentSong(songId)
-    }
-  }
-
-  @Watch('showSongList')
-  showSongListChange(val: boolean, oldVal: boolean) {
-    if (val) {
-      let playListScrollElement = this.$refs.playList as Vue & { refresh: () => void }
-      playListScrollElement.refresh()
     }
   }
 }
