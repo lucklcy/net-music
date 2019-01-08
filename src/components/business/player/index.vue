@@ -142,7 +142,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private playingLyric: string = ''
   private currentLyric: lyricParser = new lyricParser('', () => {})
   private currentTime: number = 10
-  private songUrl: string = ''
+  private songUrl: string = require('@/assets/music/background.mp3')
   private autoPlayTimer: number = 0
   private currentLineNum: number = 0
   private songReady: boolean = false
@@ -415,7 +415,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     this.songId = songId
     this.songReady = false
     this.service.getSongUrl({ id: songId }).then((resultSongDetail: { data: ISongDetail[] }) => {
-      let dataArray = resultSongDetail['data']
+      let dataArray = resultSongDetail['data'] || require('@/assets/music/background.mp3')
       this.songUrl = dataArray[0]['url']
       this.timer && clearTimeout(this.timer)
       this.timer = setTimeout(() => {
