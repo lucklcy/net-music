@@ -29,6 +29,7 @@ import { State, Mutation } from 'vuex-class'
 import { IDJPrograms, IPrograms, IPlaySong } from '@/common/interface/base.ts'
 import CommonMixin from '@/mixins/comMix'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
+import { isIos } from '@/utils/index.ts'
 
 interface IBannerDataList {
   imageUrl: string
@@ -45,11 +46,13 @@ interface IBannerDataList {
 export default class Broadcaster extends mixins(CommonMixin) {
   private ProgramList: IPrograms[] = []
   private title: string = ''
+  @State iosAudioTrigger: boolean
 
   @Mutation addIntoPlayList: (song: IPlaySong) => void
   @Mutation setCurrentSong: (id: number) => void
   @Mutation changeFullScreen: (fullScreenFlag: boolean) => void
   @Mutation changePlayingStatus: (playingFlag: boolean) => void
+  @Mutation changeIosAudioTrigger: (flag: boolean) => void
   private onProgramPlay(item: IPrograms) {
     const songItem: IPlaySong = {
       id: item['mainSong']['id'],
@@ -62,6 +65,16 @@ export default class Broadcaster extends mixins(CommonMixin) {
     this.addIntoPlayList(songItem)
     this.changeFullScreen(true)
     this.setCurrentSong(item['mainSong']['id'])
+    if (isIos && !this.iosAudioTrigger) {
+      const audio = document.querySelector('#song_audio') as HTMLAudioElement
+      try {
+        audio.play()
+        audio.pause()
+        this.changeIosAudioTrigger(true)
+      } catch (error) {
+        console.log({ error })
+      }
+    }
   }
 
   created() {

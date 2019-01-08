@@ -278,3 +278,8 @@ export const srorageGet = (key: string, storageType: string = STORAGETYPE.LOCAL)
   }
   return returnObj
 }
+
+export const isIos = () => {
+  const u = window.navigator.userAgent
+  return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+}

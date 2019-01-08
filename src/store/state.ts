@@ -30,6 +30,7 @@ export interface State {
   hotTableCat: string
   // 当前歌单的背景图url
   currentSongListBackgroundUrl: string
+  iosAudioTrigger: boolean
 }
 
 // 初始状态
@@ -54,7 +55,8 @@ const stateData: State = {
   tableCat: '',
   // 当前精品歌单类型
   hotTableCat: '',
-  currentSongListBackgroundUrl: ''
+  currentSongListBackgroundUrl: '',
+  iosAudioTrigger: false
 }
 
 export default stateData

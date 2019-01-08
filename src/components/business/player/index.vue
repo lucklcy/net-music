@@ -66,8 +66,8 @@
               <SvgIcon :iconClass="'control-prev'" :className="'control-prev'"></SvgIcon>
             </span>
             <span class="play-control" @click.stop="togglePlaying">
-              <SvgIcon :iconClass="'control-play'" :className="'control-play'" v-if="playing"></SvgIcon>
-              <SvgIcon :iconClass="'control-pause'" :className="'control-pause'" v-else></SvgIcon>
+              <SvgIcon :iconClass="'control-pause'" :className="'control-pause'" v-if="playing"></SvgIcon>
+              <SvgIcon :iconClass="'control-play'" :className="'control-play'" v-else></SvgIcon>
             </span>
             <span class="play-next" @click.stop="next">
               <SvgIcon :iconClass="'control-next'" :className="'control-next'"></SvgIcon>
@@ -88,7 +88,7 @@
       </div>
     </transition>
     <PlayingSongList class="song-list" v-show="showSongList"></PlayingSongList>
-    <audio :src="songUrl" ref="audio" @timeupdate="updateTime" @ended="end"></audio>
+    <audio id="song_audio" :src="songUrl" ref="audio" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
 <script lang="ts">
@@ -142,7 +142,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private playingLyric: string = ''
   private currentLyric: lyricParser = new lyricParser('', () => {})
   private currentTime: number = 10
-  private songUrl: string = ''
+  private songUrl: string = require('@/assets/music/background.mp3')
   private autoPlayTimer: number = 0
   private currentLineNum: number = 0
   private songReady: boolean = false
@@ -299,7 +299,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   }
 
   private end() {
-    if (this.mode === PLAYING_MODE.LOOP) {
+    if (this.mode === PLAYING_MODE.CYCLE) {
       this.loop()
     } else {
       this.next()
@@ -415,7 +415,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     this.songId = songId
     this.songReady = false
     this.service.getSongUrl({ id: songId }).then((resultSongDetail: { data: ISongDetail[] }) => {
-      let dataArray = resultSongDetail['data']
+      let dataArray = resultSongDetail['data'] || require('@/assets/music/background.mp3')
       this.songUrl = dataArray[0]['url']
       this.timer && clearTimeout(this.timer)
       this.timer = setTimeout(() => {

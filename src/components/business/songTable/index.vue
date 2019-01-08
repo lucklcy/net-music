@@ -169,10 +169,14 @@ export default class SongTable extends mixins(CommonMixin) {
     this.addHandpickList()
   }
 
-  created() {
+  activated() {
     this.getHandpickList()
+  }
+
+  created() {
     this.getHighQualityList()
     this.getHotCategoryList()
+    this.getHandpickList()
   }
 }
 </script>

@@ -114,5 +114,8 @@ export default {
     } else if (type === 1) {
       state.hotTableCat = cat
     }
+  },
+  changeIosAudioTrigger(state: State, flag: boolean) {
+    state.iosAudioTrigger = flag
   }
 }

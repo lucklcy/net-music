@@ -60,7 +60,7 @@ export default class SongRec extends mixins(CommonMixin) {
   setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
 
   private onSongRecommandClick(item: IPlaylist) {
-    this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
+    this.setCurrentSongListBackgroundUrl(item.picUrl)
     this.$router.push({ name: 'r_song_list', params: { id: item.id } })
   }
 
