@@ -10,7 +10,6 @@
         </transition>
       </div>
     </Scroll>
-    <Footer></Footer>
   </div>
 </template>
 
@@ -18,7 +17,6 @@
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import Header from '~/foundation/com/header.vue'
-import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
 import { UserInfo } from '@/common/interface/base.ts'
 import CommonMixin from '@/mixins/comMix'
@@ -28,7 +26,6 @@ import Scroll from '~/foundation/base/scroll.vue'
 @Component({
   components: {
     Header,
-    Footer,
     Scroll
   }
 })

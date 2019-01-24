@@ -6,7 +6,9 @@
           <SvgIcon :iconClass="'arrow-left'" :className="'arrow-left'"></SvgIcon>
         </span>
         <span class="title">歌单</span>
-        <MiniPlayer></MiniPlayer>
+        <span class="collect">
+          <SvgIcon :iconClass="'collect'" :className="'collect'"></SvgIcon>
+        </span>
       </div>
       <div class="content">
         <div class="pic" :style="{backgroundImage:'url('+currentSongListBackgroundUrl+')'}">
@@ -98,16 +100,13 @@
         <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
-    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
-import Footer from '~/foundation/com/footer.vue'
 import { State, Mutation } from 'vuex-class'
-import MiniPlayer from '~/business/player/mini.vue'
 import Scroll from '~/foundation/base/scroll.vue'
 import { IPlaySong, IPlaylist, ITrack } from '@/common/interface/base.ts'
 import { isEmpty } from '@/utils/index.ts'
@@ -116,8 +115,6 @@ import { isIos } from '@/utils/index.ts'
 
 @Component({
   components: {
-    MiniPlayer,
-    Footer,
     Scroll
   },
   directives: {

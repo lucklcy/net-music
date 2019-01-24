@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
-      <keep-alive>
-        <router-view />
-      </keep-alive>
-    </transition>
+    <keep-alive>
+      <router-view />
+    </keep-alive>
     <SongPlayer v-show="playList.length>0"></SongPlayer>
   </div>
 </template>

@@ -69,7 +69,6 @@
         <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
-    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
@@ -78,13 +77,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { ICreator, IPlayList, ICategory } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
-import Footer from '~/foundation/com/footer.vue'
 import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 @Component({
-  components: { TopBar, Footer, Scroll },
+  components: { TopBar, Scroll },
   directives: {
     'change-back-img': ChangeBackImg
   }
@@ -260,7 +258,7 @@ $baseAsset: '../../../assets';
     @include setFlexPos(row, space-between, center);
     background-color: #fff;
     .all-category {
-      padding: 10px 28px;
+      padding: 4px 28px 10px 28px;
       margin-left: 20px;
       border: 1px #aaa solid;
       border-radius: 40px;
