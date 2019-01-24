@@ -37,7 +37,9 @@ $baseAssets: '../../../assets';
         border-radius: 8px;
         color: #fff;
       }
-      .palyer-mini {
+      .collect {
+        color: #fff;
+        font-size: 0.54rem;
         z-index: 11;
       }
     }
@@ -201,7 +203,7 @@ $baseAssets: '../../../assets';
     flex: 1;
     @include setSize(100%, '');
     background-color: #fff;
-    overflow: hidden;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
     ul {
       li {

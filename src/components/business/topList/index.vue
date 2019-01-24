@@ -45,7 +45,6 @@
         <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </section>
-    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
@@ -55,13 +54,11 @@ import CommonMixin from '@/mixins/comMix'
 import { ITopSongListDetail, IPlaylist } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
 import { isEmpty } from '@/utils'
-import Footer from '~/foundation/com/footer.vue'
 import { Mutation } from 'vuex-class'
 
 @Component({
   components: {
-    TopBar,
-    Footer
+    TopBar
   }
 })
 export default class TopList extends mixins(CommonMixin) {
@@ -79,13 +76,7 @@ export default class TopList extends mixins(CommonMixin) {
   private dealWithTopList(topList: ITopSongListDetail[]) {
     let tempOfficialList: ITopSongListDetail[] = []
     let tempGlobalList: ITopSongListDetail[] = []
-    const officalListNameArray = [
-      '云音乐飙升榜',
-      '云音乐新歌榜',
-      '云音乐原创榜',
-      '云音乐热歌榜',
-      '云音乐电音榜'
-    ]
+    const officalListNameArray = ['云音乐飙升榜', '云音乐新歌榜', '云音乐原创榜', '云音乐热歌榜']
     if (topList && topList.length > 0) {
       topList.forEach((item: ITopSongListDetail, index: number) => {
         let { name } = item

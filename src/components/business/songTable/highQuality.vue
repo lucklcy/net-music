@@ -44,7 +44,6 @@
         <SvgIcon :iconClass="'spinner-bars'" :className="'spinner-bars'"></SvgIcon>
       </div>
     </div>
-    <Footer></Footer>
     <div class="table-cat" v-show="isShowTableCat">
       <div class="cat-container">
         <div class="all" @click="changeCat('')" :class="{'active':hotTableCat===''}">
@@ -74,7 +73,6 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { ICreator, IPlayList } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
-import Footer from '~/foundation/com/footer.vue'
 import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
 import { isEmpty } from '@/utils/index.ts'
@@ -82,7 +80,7 @@ import { HOT_TABLE_CAT_ARRAY } from '@/common/const.ts'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 @Component({
-  components: { TopBar, Footer, Scroll },
+  components: { TopBar, Scroll },
   directives: {
     'change-back-img': ChangeBackImg
   }
