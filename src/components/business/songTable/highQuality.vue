@@ -271,8 +271,11 @@ $category-border-color: #aaa;
           }
           .heared {
             float: right;
-            padding: 10px 10px 0 0;
             span {
+              display: inline-block;
+              padding: 4px 12px 8px 12px;
+              background-color: rgba(61, 60, 60, 0.52);
+              border-radius: 6px;
               margin: 0 0 0 8px;
               color: #eee;
               font-size: 0.32rem;

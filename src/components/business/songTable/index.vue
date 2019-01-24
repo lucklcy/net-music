@@ -258,7 +258,9 @@ $baseAsset: '../../../assets';
     @include setFlexPos(row, space-between, center);
     background-color: #fff;
     .all-category {
-      padding: 4px 28px 10px 28px;
+      padding: 0 28px;
+      @include setFlexPos(row, space-between, center);
+      @include setSize('', 76px);
       margin-left: 20px;
       border: 1px #aaa solid;
       border-radius: 40px;
@@ -312,6 +314,10 @@ $baseAsset: '../../../assets';
             float: right;
             padding: 10px 10px 0 0;
             span {
+              display: inline-block;
+              padding: 4px 20px 8px 20px;
+              background-color: rgba(61, 60, 60, 0.363);
+              border-radius: 6px;
               margin: 0 0 0 8px;
               color: #eee;
               font-size: 0.32rem;
