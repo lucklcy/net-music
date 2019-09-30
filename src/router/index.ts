@@ -8,6 +8,7 @@ import SongTableIndex from '~/business/songTable/index.vue'
 import SongTableHighQuality from '~/business/songTable/highQuality.vue'
 import TopList from '~/business/topList/index.vue'
 import TableCatChoose from '~/business/songTable/catChoose.vue'
+import SongTableOfMine from '~/business/myTable/index.vue'
 
 Vue.use(Router)
 
@@ -58,6 +59,14 @@ export default new Router({
         index: 2
       },
       component: SongTableIndex
+    },
+    {
+      path: '/table/mine',
+      name: 'r_song_table_mine',
+      meta: {
+        index: 2
+      },
+      component: SongTableOfMine
     },
     {
       path: '/table/cat-choose',

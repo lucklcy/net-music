@@ -2,12 +2,8 @@
   <div class="tab border-bottom-1px">
     <ul class="container" v-if="type === 'recommand'">
       <li class="item">
-        <div class="pic fm-img"></div>
-        <span>私人FM</span>
-      </li>
-      <li class="item">
-        <div class="pic recommand-img"></div>
-        <span>每日推荐</span>
+        <div class="pic fm-img" @click="goToMyFavorite"></div>
+        <span>我的</span>
       </li>
       <li class="item" @click="goToSongTable">
         <div class="pic song-list-img"></div>
@@ -22,6 +18,7 @@
 </template>
 <script lang="ts">
 import { mixins } from 'vue-class-component'
+import { State, Mutation } from 'vuex-class'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 
@@ -37,6 +34,9 @@ export default class TabContainer extends mixins(CommonMixin) {
   @Prop({ default: TAB_TYPE.RECOMMAND })
   private type: string
 
+  private goToMyFavorite() {
+    this.$router.push({ name: 'r_song_table_mine' })
+  }
   private goToSongTable() {
     this.$router.push({ name: 'r_song_table_index' })
   }

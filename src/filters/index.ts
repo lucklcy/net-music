@@ -1,13 +1,18 @@
 import Vue from 'vue'
 import { getStrLength } from '@/utils'
 // 处理返回值为空的情况【'' , null】
-Vue.filter('dealEmpty', (val: any, replaceMent = '--', suffix = '', withZero = false) => {
-  if (withZero) {
-    return val === '' || val === 0 || val === null || val === undefined ? replaceMent : val + suffix
-  } else {
-    return val === '' || val === null || val === undefined ? replaceMent : val + suffix
+Vue.filter(
+  'dealEmpty',
+  (val: any, replaceMent: string = '--', suffix: string = '', withZero: boolean = false) => {
+    if (withZero) {
+      return val === '' || val === 0 || val === null || val === undefined
+        ? replaceMent
+        : val + suffix
+    } else {
+      return val === '' || val === null || val === undefined ? replaceMent : val + suffix
+    }
   }
-})
+)
 
 // 处理字数超过的情形
 Vue.filter('limitIn', (val: any, limit: number) => {
@@ -30,7 +35,13 @@ Vue.filter('dealWithPlayCount', (val: number) => {
 // 处理返回值为空的情况【'' , null】
 Vue.filter(
   'dealEmpty',
-  (val: any, replaceMent = '--', suffix = '', withZero = false, hasData = false) => {
+  (
+    val: any,
+    replaceMent: string = '--',
+    suffix: string = '',
+    withZero: boolean = false,
+    hasData: boolean = false
+  ) => {
     if (withZero) {
       if (hasData) {
         return val === '' || val === 0 || val === null || val === undefined

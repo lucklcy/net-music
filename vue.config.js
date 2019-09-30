@@ -4,7 +4,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  baseUrl: `${process.env.VUE_APP_CDN}`,
+  publicPath: `${process.env.VUE_APP_CDN}`,
   outputDir: `${process.env.VUE_APP_DIST_DIR}`,
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
   productionSourceMap: process.env.VUE_APP_SOURCE_MAP === 'yes',

@@ -68,8 +68,7 @@
     </section>
     <div class="list-container" v-if="songList && songList.tracks && songList.tracks.length>0">
       <ul>
-        <li v-for="(item,index) in songList.tracks" :key="index" @click="goToSongPlay(item.id)"
-          :class="{'active':currentSong.id === item.id}">
+        <li v-for="(item,index) in songList.tracks" :key="index" @click="goToSongPlay(item.id)" :class="{'active':currentSong.id === item.id}">
           <div class="index">{{index+1}}</div>
           <div class="song-content border-bottom-1px">
             <div class="label">
@@ -87,8 +86,8 @@
         </li>
         <li class="subscribers">
           <template v-for="(item,index) in songList.subscribers">
-            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}"
-              :data-background-img='item.avatarUrl' v-change-back-img v-if="index < 6">
+            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}" :data-background-img='item.avatarUrl'
+              v-change-back-img v-if="index < 6">
             </span>
           </template>
           <i class="count">{{songList.subscribedCount}}人收藏</i>
@@ -122,22 +121,34 @@ import { isIos } from '@/utils/index.ts'
   }
 })
 export default class SongList extends mixins(CommonMixin) {
-  @State currentSongListId: number
-  @State playList: IPlaySong[]
-  @State currentSong: IPlaySong
-  @State currentSongListBackgroundUrl: string
-  @State playing: boolean
-  @State iosAudioTrigger: boolean
+  @State
+  currentSongListId: number
+  @State
+  playList: IPlaySong[]
+  @State
+  currentSong: IPlaySong
+  @State
+  currentSongListBackgroundUrl: string
+  @State
+  playing: boolean
+  @State
+  iosAudioTrigger: boolean
   private songList: IPlaylist | null = null
   private songListId: number = 0
   private defaultSingerImg: File = require('@/assets/img/singer-default.jpeg')
 
-  @Mutation setPlayList: (tarcks: ITrack[]) => void
-  @Mutation setCurrentSong: (songId: number) => void
-  @Mutation changePlayingStatus: (flag: boolean) => void
-  @Mutation setCurrentSongListId: (listId: number) => void
-  @Mutation setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
-  @Mutation changeIosAudioTrigger: (flag: boolean) => void
+  @Mutation
+  setPlayList: (tarcks: ITrack[]) => void
+  @Mutation
+  setCurrentSong: (songId: number) => void
+  @Mutation
+  changePlayingStatus: (flag: boolean) => void
+  @Mutation
+  setCurrentSongListId: (listId: number) => void
+  @Mutation
+  setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
+  @Mutation
+  changeIosAudioTrigger: (flag: boolean) => void
 
   get getCoverImgUrl() {
     return ''
