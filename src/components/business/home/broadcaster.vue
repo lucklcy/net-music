@@ -9,7 +9,7 @@
               <SvgIcon :iconClass="'program-play'" :className="'program-play'"></SvgIcon>
             </div>
             <div class="content">
-              <span class="name">{{item.name | limitIn(16)}}</span>
+              <span class="name">{{item.name}}</span>
               <span class="count">
                 <SvgIcon :iconClass="'earpod'" :className="'earpod'"></SvgIcon>
                 <i>{{item.listenerCount|dealWithPlayCount}}</i>
@@ -46,13 +46,19 @@ interface IBannerDataList {
 export default class Broadcaster extends mixins(CommonMixin) {
   private ProgramList: IPrograms[] = []
   private title: string = ''
-  @State iosAudioTrigger: boolean
+  @State
+  iosAudioTrigger: boolean
 
-  @Mutation addIntoPlayList: (song: IPlaySong) => void
-  @Mutation setCurrentSong: (id: number) => void
-  @Mutation changeFullScreen: (fullScreenFlag: boolean) => void
-  @Mutation changePlayingStatus: (playingFlag: boolean) => void
-  @Mutation changeIosAudioTrigger: (flag: boolean) => void
+  @Mutation
+  addIntoPlayList: (song: IPlaySong) => void
+  @Mutation
+  setCurrentSong: (id: number) => void
+  @Mutation
+  changeFullScreen: (fullScreenFlag: boolean) => void
+  @Mutation
+  changePlayingStatus: (playingFlag: boolean) => void
+  @Mutation
+  changeIosAudioTrigger: (flag: boolean) => void
   private onProgramPlay(item: IPrograms) {
     const songItem: IPlaySong = {
       id: item['mainSong']['id'],
@@ -127,6 +133,11 @@ $baseAssets: '../../../assets';
           @include setSize(74%, 240px);
           font-size: 0.222222rem;
           .name {
+            display: inline-block;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             font-size: 0.351852rem;
             color: #555;
           }
