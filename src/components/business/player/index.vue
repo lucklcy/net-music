@@ -13,14 +13,14 @@
             <span class="title">{{currentSong.name | limitIn(15)}}</span>
             <span class="subtitle">{{currentSong.songer | limitIn(20)}}</span>
           </div>
-          <span class="collect">
-            <SvgIcon :iconClass="'collect'" :className="'collect'"></SvgIcon>
+          <span class="collect" @click="doLikeSong">
+            <SvgIcon iconClass="collect" className="collect liked" v-if="currentSong.liked"></SvgIcon>
+            <SvgIcon iconClass="collect" className="collect" v-else></SvgIcon>
           </span>
         </div>
-        <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove"
-          @touchend="middleTouchEnd">
+        <div class="middle" @touchstart.prevent="middleTouchStart" @touchmove.prevent="middleTouchMove" @touchend="middleTouchEnd">
           <div class="middle-l" ref="middleL" :style="middleLStyle">
-            <div class="cd-wrapper" ref="cdWrapper">
+            <div class="cd-wrapper" ref="cdWrapper" @click="changePanel('lyric')">
               <div class="cd" :class="cdCls">
                 <div class="image" :data-background-img='currentSong.picUrl' v-change-back-img></div>
               </div>
@@ -35,12 +35,10 @@
             </div>
           </div>
           <template v-else>
-            <scroll class="middle-r" ref="lyricList" :data-list="currentLyric && currentLyric.lines"
-              :style="lyricListStyle">
-              <div class="lyric-wrapper">
+            <scroll class="middle-r" ref="lyricList" :data-list="currentLyric && currentLyric.lines" :style="lyricListStyle">
+              <div class="lyric-wrapper" @click="changePanel('cd')">
                 <div v-if="currentLyric">
-                  <p ref="lyricLine" class="text" :class="{'current': currentLineNum ===index}"
-                    v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+                  <p ref="lyricLine" class="text" :class="{'current': currentLineNum ===index}" v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
                 </div>
               </div>
             </scroll>
@@ -119,13 +117,20 @@ const transitionDuration = prefixStyle('transitionDuration')
   }
 })
 export default class SongMainPlayer extends mixins(CommonMixin) {
-  @State currentSong: IPlaySong
-  @State playing: boolean
-  @State fullScreen: boolean
-  @State playList: IPlaySong[]
-  @State currentIndex: number
-  @State mode: string
-  @State showSongList: boolean
+  @State
+  currentSong: IPlaySong
+  @State
+  playing: boolean
+  @State
+  fullScreen: boolean
+  @State
+  playList: IPlaySong[]
+  @State
+  currentIndex: number
+  @State
+  mode: string
+  @State
+  showSongList: boolean
 
   private songId: number = 0
   private middleLStyle: string = ''
@@ -150,11 +155,18 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   private timer: number
   private noLyricFlag: boolean = false
 
-  @Mutation changePlayingStatus: (flag: boolean) => void
-  @Mutation changeFullScreen: (flag: boolean) => void
-  @Mutation setCurrentIndex: (index: number) => void
-  @Mutation changePlayingMode: (mode: string) => void
-  @Mutation changeShowSongList: (flag: boolean) => void
+  @Mutation
+  changePlayingStatus: (flag: boolean) => void
+  @Mutation
+  changeFullScreen: (flag: boolean) => void
+  @Mutation
+  setCurrentIndex: (index: number) => void
+  @Mutation
+  changePlayingMode: (mode: string) => void
+  @Mutation
+  changeShowSongList: (flag: boolean) => void
+  @Mutation
+  updateLikedSongList: (operate: { flag: string; songId: number }) => void
 
   get cdCls() {
     return this.playing ? 'play' : 'play pause'
@@ -275,6 +287,31 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     this.middleLStyle = `opacity:${opacity};${transitionDuration}:${time}ms;`
     this.touch.initiated = false
   }
+  private changePanel(panel: string) {
+    let costTime = 300
+    if (panel === 'lyric') {
+      Object.assign(this, {
+        currentShow: panel,
+        middleLStyle: `opacity:0;${transitionDuration}:${costTime}ms;`,
+        lyricListStyle: `opacity:1;${transform}:translate3d(-100vw,0,0);${transitionDuration}:${costTime}ms;`
+      })
+    } else {
+      Object.assign(this, {
+        currentShow: panel,
+        middleLStyle: `opacity:1;${transitionDuration}:${costTime}ms;`,
+        lyricListStyle: `opacity:0;${transform}:translate3d(100vw,0,0);${transitionDuration}:${costTime}ms;`
+      })
+    }
+  }
+
+  private doLikeSong() {
+    let { id, liked } = this.currentSong
+    if (id) {
+      this.service.doLikeSong({ id, like: !liked }).then((res: { code: number }) => {
+        this.updateLikedSongList({ flag: liked ? 'minus' : 'add', songId: id })
+      })
+    }
+  }
 
   private onProgressBarChange(percent: number) {
     const currentTime = this.currentSong.duration * percent
@@ -394,13 +431,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     this.playingLyric = txt
     this.currentLineNum = lineNum
     let scrollElement = this.$refs.lyricList as Vue & {
-      scrollToElement: (
-        el: HTMLElement | string,
-        time?: number,
-        offsetX?: number | boolean,
-        offsetY?: number | boolean,
-        easing?: object
-      ) => void
+      scrollToElement: (el: HTMLElement | string, time?: number, offsetX?: number | boolean, offsetY?: number | boolean, easing?: object) => void
       scrollTo: (x: number, y: number, time?: number, easing?: object) => void
     }
     if (lineNum > 6) {
@@ -435,13 +466,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
         this.currentLyric = new lyricParser(lyric, this.lyricHandler)
         this.$nextTick(() => {
           let scrollElement = this.$refs.lyricList as Vue & {
-            scrollToElement: (
-              el: HTMLElement | string,
-              time?: number,
-              offsetX?: number | boolean,
-              offsetY?: number | boolean,
-              easing?: object
-            ) => void
+            scrollToElement: (el: HTMLElement | string, time?: number, offsetX?: number | boolean, offsetY?: number | boolean, easing?: object) => void
             scrollTo: (x: number, y: number, time?: number, easing?: object) => void
           }
           scrollElement.scrollTo(0, 0, 1000)

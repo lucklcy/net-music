@@ -3,6 +3,7 @@ import { isBoolean, isObject } from 'lodash'
 import { IPlaySong } from '@/common/interface/base.ts'
 import { UserInfo, ITrack, IArtist } from '@/common/interface/base.ts'
 import { isEmpty } from '@/utils'
+import Vue from 'vue'
 
 export interface IkeyVal {
   key: string
@@ -24,7 +25,7 @@ export default {
     const tempPlaySongList: IPlaySong[] = []
     if (val && val.length > 0) {
       val.forEach((innerItem: ITrack) => {
-        const { id, name, dt: duration } = innerItem
+        const { id, name, dt: duration, liked } = innerItem
         const { name: album, picUrl } = innerItem.al
         const artist = innerItem.ar
         let songer = ''
@@ -41,7 +42,8 @@ export default {
           name,
           picUrl,
           songer,
-          duration: Math.floor((duration || 0) / 1000)
+          duration: Math.floor((duration || 0) / 1000),
+          liked
         })
       })
       state.playList = tempPlaySongList
@@ -117,5 +119,42 @@ export default {
   },
   changeIosAudioTrigger(state: State, flag: boolean) {
     state.iosAudioTrigger = flag
+  },
+  initialLikedSonglist(state: State, songIdList: number[]) {
+    state['likedSongList'] = songIdList
+  },
+  updateLikedSongList(state: State, operate: { flag: string; songId: number }) {
+    let { likedSongList, playList: tempPlayList, currentSong } = state
+    let { flag, songId } = operate
+    switch (flag) {
+      case 'add':
+        likedSongList.push(songId)
+        if (currentSong && currentSong['id'] && currentSong['id'] === songId) {
+          state.currentSong = { ...state.currentSong, liked: true }
+          state.changeSongLikeInfo = { ...state.currentSong, liked: true }
+        }
+        break
+      case 'minus':
+        let tempIndex = likedSongList.findIndex(val => {
+          return val === songId
+        })
+        if (tempIndex && tempIndex > -1) {
+          likedSongList.splice(tempIndex, 1)
+        }
+        if (currentSong && currentSong['id'] && currentSong['id'] === songId) {
+          state.currentSong = { ...state.currentSong, liked: false }
+          state.changeSongLikeInfo = { ...state.currentSong, liked: false }
+        }
+        break
+    }
+    if (tempPlayList) {
+      tempPlayList.forEach((item, index) => {
+        if (item.id === songId) {
+          item.liked = !item.liked
+        }
+      })
+      state.playList = tempPlayList
+    }
+    state.likedSongList = likedSongList
   }
 }

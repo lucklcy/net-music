@@ -31,6 +31,8 @@ export interface State {
   // 当前歌单的背景图url
   currentSongListBackgroundUrl: string
   iosAudioTrigger: boolean
+  likedSongList: number[]
+  changeSongLikeInfo: IPlaySong
 }
 
 // 初始状态
@@ -43,7 +45,7 @@ const stateData: State = {
     backgroundUrl: ''
   },
   playList: [],
-  currentSong: { id: 0, name: '', picUrl: '', songer: '', duration: 0 },
+  currentSong: { id: 0, name: '', picUrl: '', songer: '', duration: 0, liked: false },
   playing: false,
   fullScreen: true,
   currentIndex: -1,
@@ -56,7 +58,9 @@ const stateData: State = {
   // 当前精品歌单类型
   hotTableCat: '',
   currentSongListBackgroundUrl: '',
-  iosAudioTrigger: false
+  iosAudioTrigger: false,
+  likedSongList: [],
+  changeSongLikeInfo: { id: 0, name: '', picUrl: '', songer: '', duration: 0, liked: false }
 }
 
 export default stateData

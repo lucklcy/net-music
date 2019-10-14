@@ -47,8 +47,8 @@ module.exports = {
     inline: true,
     proxy: {
       '/api/*': {
-        // target: 'http://10.113.24.80:3000',
-        target: 'http://127.0.0.1:3000',
+        target: 'http://10.113.24.80:3000',
+        // target: 'http://127.0.0.1:3000',
         changeOrigin: true,
         logLevel: 'debug',
         pathRewrite: {
@@ -63,9 +63,7 @@ module.exports = {
     resolve_alias['~'] = resolve('src/components')
     if (process.env.NODE_ENV === 'production') {
       // 为生产环境修改配置...
-      config.performance
-        ? (config.performance.hints = false)
-        : (config.performance = { hints: false })
+      config.performance ? (config.performance.hints = false) : (config.performance = { hints: false })
     } else {
       // 为开发环境修改配置...
     }

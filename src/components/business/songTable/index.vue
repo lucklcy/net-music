@@ -26,14 +26,12 @@
         <SvgIcon :iconClass="'arrow-right-thin'" :className="'arrow-right-thin'"></SvgIcon>
       </div>
       <div class="hot-catgeory">
-        <span :class="{'border-right-1px':index!== 4,'active':item.name===tableCat}" v-for="(item,index) in hotCategoryList"
-          :key="index" @click="changeCat(item.name)" v-if="index<=4">
+        <span :class="{'border-right-1px':index!== 4,'active':item.name===tableCat}" v-for="(item,index) in hotCategoryList" :key="index" @click="changeCat(item.name)" v-if="index<=4">
           {{item.name}}
         </span>
       </div>
     </section>
-    <Scroll class="container" ref="handpickSongList" :data-list="handpickSongListArray" :pullup="true"
-      @scrollToEnd="doPullup" v-if="handpickSongListArray && handpickSongListArray.length>0">
+    <Scroll class="container" ref="handpickSongList" :data-list="handpickSongListArray" :pullup="true" @scrollToEnd="doPullup" v-if="handpickSongListArray && handpickSongListArray.length>0">
       <ul class="list">
         <li class="item" v-for="(item,index) in handpickSongListArray" :key="item.id" @click="gotoDetail(item)">
           <div class="pic" :data-background-img='item.coverImgUrl' v-change-back-img>
@@ -46,10 +44,8 @@
             </div>
             <div class="description">
               <div class="avatar">
-                <SvgIcon v-if="item.creator.gender === 1" :iconClass="'avatar-male-default'"
-                  :className="'avatar-male-default'"></SvgIcon>
-                <SvgIcon v-else-if="item.creator.gender === 2" :iconClass="'avatar-female-default'"
-                  :className="'avatar-female-default'"></SvgIcon>
+                <SvgIcon v-if="item.creator.gender === 1" :iconClass="'avatar-male-default'" :className="'avatar-male-default'"></SvgIcon>
+                <SvgIcon v-else-if="item.creator.gender === 2" :iconClass="'avatar-female-default'" :className="'avatar-female-default'"></SvgIcon>
                 <SvgIcon v-else :iconClass="'avatar-default'" :className="'avatar-default'"></SvgIcon>
               </div>
               <span>{{item.creator.nickname | limitIn(7)}}</span>
@@ -80,6 +76,7 @@ import TopBar from '~/foundation/com/topBar.vue'
 import Scroll from '~/foundation/base/scroll.vue'
 import { Mutation, State } from 'vuex-class'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
+import { Y, N } from '@/common/const'
 
 @Component({
   components: { TopBar, Scroll },
@@ -88,7 +85,8 @@ import ChangeBackImg from '@/directives/changeBackImg.ts'
   }
 })
 export default class SongTable extends mixins(CommonMixin) {
-  @State tableCat: string
+  @State
+  tableCat: string
 
   private currentPage: number = 1
   private highQualitySong: IPlayList | null = null
@@ -97,12 +95,20 @@ export default class SongTable extends mixins(CommonMixin) {
   private categoryList: ICategory[] = []
   private hotCategoryList: ICategory[] = []
 
-  @Mutation changeTableCat: (payload: { type: number; cat: string }) => void
-  @Mutation setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
+  @Mutation
+  changeTableCat: (payload: { type: number; cat: string }) => void
+  @Mutation
+  setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
 
   private gotoDetail(item: IPlayList) {
     this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
-    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
+    this.$router.push({
+      name: 'r_song_list',
+      params: { id: item.id },
+      query: {
+        subscribed: item['subscribed'] ? Y : N
+      }
+    })
   }
 
   // 初始化时获取歌单数据
@@ -140,12 +146,9 @@ export default class SongTable extends mixins(CommonMixin) {
 
   // 获取精品歌单，作为顶部精品歌单概览展示用
   private getHighQualityList() {
-    this.service
-      .getHighQualityList({ limit: 1 })
-      .then((highQualityListResult: { playlists: IPlayList[] }) => {
-        this.highQualitySong =
-          highQualityListResult['playlists'] && highQualityListResult['playlists'][0]
-      })
+    this.service.getHighQualityList({ limit: 1 }).then((highQualityListResult: { playlists: IPlayList[] }) => {
+      this.highQualitySong = highQualityListResult['playlists'] && highQualityListResult['playlists'][0]
+    })
   }
 
   // 当点击切换歌单类型的时候

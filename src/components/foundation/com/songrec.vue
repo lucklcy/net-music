@@ -13,10 +13,8 @@
             </div>
             <div class="description">
               <div class="avatar">
-                <SvgIcon v-if="item.creator.gender === 1" :iconClass="'avatar-male-default'"
-                  :className="'avatar-male-default'"></SvgIcon>
-                <SvgIcon v-else-if="item.creator.gender === 2" :iconClass="'avatar-female-default'"
-                  :className="'avatar-female-default'"></SvgIcon>
+                <SvgIcon v-if="item.creator.gender === 1" :iconClass="'avatar-male-default'" :className="'avatar-male-default'"></SvgIcon>
+                <SvgIcon v-else-if="item.creator.gender === 2" :iconClass="'avatar-female-default'" :className="'avatar-female-default'"></SvgIcon>
                 <SvgIcon v-else :iconClass="'avatar-default'" :className="'avatar-default'"></SvgIcon>
               </div>
               <span>{{item.creator.nickname | limitIn(5)}}</span>
@@ -36,6 +34,7 @@ import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import { ISongRecommandList, IPlaylist } from '@/common/interface/base.ts'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
+import {Y,N} from '@/common/const'
 
 const enum SongRecType {
   RECOMMAND = 'recommand'
@@ -61,7 +60,13 @@ export default class SongRec extends mixins(CommonMixin) {
 
   private onSongRecommandClick(item: IPlaylist) {
     this.setCurrentSongListBackgroundUrl(item.picUrl)
-    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
+    this.$router.push({
+      name: 'r_song_list',
+      params: { id: item.id },
+      query: {
+        subscribed: item['subscribed'] ? Y : N
+      }
+    })
   }
 
   get songListTitle() {

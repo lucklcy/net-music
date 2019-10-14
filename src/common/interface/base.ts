@@ -5,6 +5,7 @@ export interface IPlaySong {
   picUrl: string
   songer: string
   duration: number
+  liked: boolean
 }
 
 export interface ICreator {
@@ -38,6 +39,7 @@ export interface ITrack {
   ar: IArtist[]
   dt: number
   name: string
+  liked: boolean
 }
 
 export interface IDJPrograms {

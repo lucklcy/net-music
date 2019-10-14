@@ -32,8 +32,7 @@
             </template>
           </span>
           <span class="author">
-            <i class="author-pic" :data-background-img='songList?songList.creator.avatarUrl:defaultSingerImg'
-              v-change-back-img></i>
+            <i class="author-pic" :data-background-img='songList?songList.creator.avatarUrl:defaultSingerImg' v-change-back-img></i>
             <span class="author-name">
               {{songList?songList.creator.nickname:'作者还没出来哦...'}}
             </span>
@@ -61,8 +60,15 @@
         <span class="track-count">共({{songList?songList.trackCount:'???'}})首</span>
       </div>
       <div class="collect" @click="doSubscribe">
-        <SvgIcon :iconClass="'list-plus'" :className="'list-plus'"></SvgIcon>
-        <span>收藏</span>
+        <template v-if="isSongListSubscribed">
+          <SvgIcon iconClass="duihao" className="duihao"></SvgIcon>
+          <span>已收藏</span>
+        </template>
+        <template v-else>
+          <SvgIcon iconClass="list-plus" className="list-plus"></SvgIcon>
+          <span>收藏</span>
+        </template>
+
         <span class="subscribe">({{songList?songList.subscribedCount:'???'}})</span>
       </div>
     </section>
@@ -76,18 +82,21 @@
               <span class="author">{{getAuthorString(item) | limitIn(28)}}</span>
             </div>
             <div class="oper active" v-if="currentSong.id === item.id">
+              <SvgIcon iconClass="collect" className="collect liked" v-if="item.liked"></SvgIcon>
+              <SvgIcon iconClass="collect" className="collect" v-else></SvgIcon>
               <SvgIcon :iconClass="'play-status-playing'" :className="'play-status-playing'" v-if="playing"></SvgIcon>
               <SvgIcon :iconClass="'play-status-pause'" :className="'play-status-pause'" v-else></SvgIcon>
             </div>
             <div class="oper" v-else>
+              <SvgIcon iconClass="collect" className="collect liked" v-if="item.liked"></SvgIcon>
+              <SvgIcon iconClass="collect" className="collect" v-else></SvgIcon>
               <SvgIcon :iconClass="'and-so-on'" :className="'and-so-on'"></SvgIcon>
             </div>
           </div>
         </li>
         <li class="subscribers">
           <template v-for="(item,index) in songList.subscribers">
-            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}" :data-background-img='item.avatarUrl'
-              v-change-back-img v-if="index < 6">
+            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}" :data-background-img='item.avatarUrl' v-change-back-img v-if="index < 6">
             </span>
           </template>
           <i class="count">{{songList.subscribedCount}}人收藏</i>
@@ -103,7 +112,7 @@
 </template>
 <script lang="ts">
 import { mixins } from 'vue-class-component'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import Scroll from '~/foundation/base/scroll.vue'
@@ -111,6 +120,7 @@ import { IPlaySong, IPlaylist, ITrack } from '@/common/interface/base.ts'
 import { isEmpty } from '@/utils/index.ts'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
 import { isIos } from '@/utils/index.ts'
+import { Y, N } from '@/common/const'
 
 @Component({
   components: {
@@ -132,10 +142,15 @@ export default class SongList extends mixins(CommonMixin) {
   @State
   playing: boolean
   @State
+  likedSongList: number[]
+  @State
   iosAudioTrigger: boolean
+  @State
+  changeSongLikeInfo: IPlaySong
   private songList: IPlaylist | null = null
   private songListId: number = 0
   private defaultSingerImg: File = require('@/assets/img/singer-default.jpeg')
+  private isSongListSubscribed: boolean = false
 
   @Mutation
   setPlayList: (tarcks: ITrack[]) => void
@@ -149,6 +164,21 @@ export default class SongList extends mixins(CommonMixin) {
   setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
   @Mutation
   changeIosAudioTrigger: (flag: boolean) => void
+
+  @Watch('changeSongLikeInfo')
+  onChildChanged(val: IPlaySong, oldVal: IPlaySong) {
+    let { songList } = this
+    let { id, liked } = val
+    if (songList && songList['tracks']) {
+      let tempTracks = songList['tracks']
+      tempTracks.forEach((element: ITrack, index) => {
+        let { id: innerId } = element
+        if (innerId === id) {
+          Vue.set(tempTracks, index, { ...element, liked: val['liked'] })
+        }
+      })
+    }
+  }
 
   get getCoverImgUrl() {
     return ''
@@ -218,16 +248,32 @@ export default class SongList extends mixins(CommonMixin) {
   }
 
   private doSubscribe() {
-    console.log((this.songList as IPlaylist).id)
+    let { isSongListSubscribed, songListId } = this
+    this.service.doSonglistSubscribe({ t: isSongListSubscribed ? 2 : 1, id: songListId }).then((res: { code: number }) => {
+      if (res.code === 200) {
+        Object.assign(this, { isSongListSubscribed: !isSongListSubscribed })
+      }
+    })
   }
 
   private init() {
     let songListId = this.$route.params && this.$route.params.id
     this.songListId = Number(songListId)
+    let { likedSongList } = this
     this.service
       .getPlayListDetail({ id: songListId })
       .then((playListDetail: { playlist: IPlaylist }) => {
         let tempPlaylist = playListDetail && playListDetail['playlist']
+        if (tempPlaylist && tempPlaylist['tracks']) {
+          let tempTracks = tempPlaylist['tracks']
+          tempTracks.forEach((element: ITrack) => {
+            let { id } = element
+            let likedIndex = likedSongList.findIndex((val, index) => {
+              return val === id
+            })
+            element['liked'] = likedIndex > -1
+          })
+        }
         this.songList = tempPlaylist
         // 处理刷新情况背景未被注入的情况
         if (isEmpty(this.currentSongListBackgroundUrl)) {
@@ -241,10 +287,14 @@ export default class SongList extends mixins(CommonMixin) {
 
   activated() {
     this.init()
+    let { subscribed = N } = this.$route.query || {}
+    Object.assign(this, { isSongListSubscribed: subscribed === Y })
   }
 
   created() {
     this.init()
+    let { subscribed = N } = this.$route.query || {}
+    Object.assign(this, { isSongListSubscribed: subscribed === Y })
   }
 }
 </script>

@@ -37,7 +37,7 @@
           }
         }
         .label-list {
-          padding: 60px 0;
+          padding: 60px 0 60px 10px;
           @include setSize(620px, 392px);
           @include setFlexPos(column, space-around, flex-start);
           &.border-bottom-1px {
@@ -57,7 +57,7 @@
       @include setFlexPos(row, space-between, flex-start);
       flex-wrap: wrap;
       .item {
-        width: 31.6vw;
+        width: 30.8vw;
         .pic {
           @include setSize(100%, 340px);
           @include setBgImg('', center, center, cover, no-repeat);

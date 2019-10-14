@@ -118,5 +118,25 @@ export default [
     subUrl: '/toplist/detail',
     name: 'getTopListDetail',
     method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口 , 传入音乐 id, 可喜欢该音乐 接口地址 : /like
+  {
+    subUrl: '/like',
+    name: 'doLikeSong',
+    method: REQUEST_METHOD_MAP.GET
+  },
+  //  调用此接口 , 传入用户 id, 可获取已喜欢音乐id列表(id数组) likelist
+  {
+    subUrl: '/likelist',
+    name: 'getLikedSongList',
+    method: REQUEST_METHOD_MAP.GET
+  },
+  // 调用此接口 , 传入类型和歌单 id 可收藏歌单或者取消收藏歌单 /playlist/
+  // 必选参数 :
+  // t : 类型,1:收藏,2:取消收藏 id : 歌单 id
+  {
+    subUrl: '/playlist/subscribe',
+    name: 'doSonglistSubscribe',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]

@@ -46,6 +46,9 @@ $assets: '../../../assets';
       .collect {
         color: #fff;
         font-size: 0.58rem;
+        &.liked {
+          color: red;
+        }
       }
     }
     .middle {

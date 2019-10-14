@@ -51,6 +51,7 @@ import { UserInfo, IPlayList, ICreator, ICategory } from '@/common/interface/bas
 import TopBar from '~/foundation/com/topBar.vue'
 import { Mutation, State } from 'vuex-class'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
+import { N, Y } from '@/common/const'
 
 @Component({
   components: { TopBar },
@@ -71,16 +72,20 @@ export default class MyTable extends mixins(CommonMixin) {
 
   private gotoDetail(item: IPlayList) {
     this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
-    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
+    this.$router.push({
+      name: 'r_song_list',
+      params: { id: item.id },
+      query: {
+        subscribed: item['subscribed'] ? Y : N
+      }
+    })
   }
 
   // 初始化时获取歌单数据
   private getMyTable() {
-    this.service
-      .getUserPlayList({ uid: this.userInfo.userId })
-      .then((playListDetail: { playlist: IPlayList[] }) => {
-        this.mySongListArray = playListDetail.playlist
-      })
+    this.service.getUserPlayList({ uid: this.userInfo.userId }).then((playListDetail: { playlist: IPlayList[] }) => {
+      this.mySongListArray = playListDetail.playlist
+    })
   }
 
   private onOpenPlayList(item: IPlayList) {}

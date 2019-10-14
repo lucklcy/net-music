@@ -65,7 +65,8 @@ export default class Broadcaster extends mixins(CommonMixin) {
       name: item['name'],
       picUrl: item['coverUrl'],
       songer: item['dj']['brand'],
-      duration: item['duration'] / 1000
+      duration: item['duration'] / 1000,
+      liked: false
     }
     this.changePlayingStatus(false)
     this.addIntoPlayList(songItem)

@@ -1,7 +1,6 @@
 <template>
   <div class="main-content">
-    <Slide :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot" :interval="interval"
-      :threshold="threshold" :speed="speed" v-if="data && data.length>0" ref="banner">
+    <Slide :autoPlay="isAutoPlay" :loop="isLoop" :showDot="isShowDot" :interval="interval" :threshold="threshold" :speed="speed" v-if="data && data.length>0" ref="banner">
       <div v-for="(item,index) in data" :key="index">
         <a :href="item.url">
           <img :data-background-img='item.imageUrl' :src="defaultBanner" v-change-back-img:imgsrc>

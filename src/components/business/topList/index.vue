@@ -55,6 +55,7 @@ import { ITopSongListDetail, IPlaylist } from '@/common/interface/base.ts'
 import TopBar from '~/foundation/com/topBar.vue'
 import { isEmpty } from '@/utils'
 import { Mutation } from 'vuex-class'
+import { Y, N } from '@/common/const'
 
 @Component({
   components: {
@@ -67,10 +68,17 @@ export default class TopList extends mixins(CommonMixin) {
   // 全球榜单
   private globalList: ITopSongListDetail[] = []
 
-  @Mutation setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
+  @Mutation
+  setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
   private goToSongList(item: IPlaylist) {
     this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
-    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
+    this.$router.push({
+      name: 'r_song_list',
+      params: { id: item.id },
+      query: {
+        subscribed: item['subscribed'] ? Y : N
+      }
+    })
   }
 
   private dealWithTopList(topList: ITopSongListDetail[]) {
@@ -92,12 +100,10 @@ export default class TopList extends mixins(CommonMixin) {
   }
 
   created() {
-    this.service
-      .getTopListDetail({})
-      .then((topListDetailResult: { list: ITopSongListDetail[] }) => {
-        let topList = topListDetailResult['list']
-        this.dealWithTopList(topList)
-      })
+    this.service.getTopListDetail({}).then((topListDetailResult: { list: ITopSongListDetail[] }) => {
+      let topList = topListDetailResult['list']
+      this.dealWithTopList(topList)
+    })
   }
 }
 </script>

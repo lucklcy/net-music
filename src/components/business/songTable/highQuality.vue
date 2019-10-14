@@ -8,8 +8,7 @@
         筛选
       </span>
     </div>
-    <Scroll class="container" ref="highQualitySongList" :data-list="highQualitySongListArray"
-      :pullup="true" @scrollToEnd="doPullup" v-if="highQualitySongListArray && highQualitySongListArray.length>0">
+    <Scroll class="container" ref="highQualitySongList" :data-list="highQualitySongListArray" :pullup="true" @scrollToEnd="doPullup" v-if="highQualitySongListArray && highQualitySongListArray.length>0">
       <ul class="list">
         <li class="item" v-for="(item,index) in highQualitySongListArray" :key="item.id" @click="gotoDetail(item)">
           <div class="pic" :data-background-img='item.coverImgUrl' v-change-back-img>
@@ -78,6 +77,7 @@ import { Mutation, State } from 'vuex-class'
 import { isEmpty } from '@/utils/index.ts'
 import { HOT_TABLE_CAT_ARRAY } from '@/common/const.ts'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
+import { Y, N } from '@/common/const'
 
 @Component({
   components: { TopBar, Scroll },
@@ -86,9 +86,12 @@ import ChangeBackImg from '@/directives/changeBackImg.ts'
   }
 })
 export default class SongHighQualityTable extends mixins(CommonMixin) {
-  @State hotTableCat: string
-  @Mutation changeTableCat: (payload: { type: number; cat: string }) => void
-  @Mutation setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
+  @State
+  hotTableCat: string
+  @Mutation
+  changeTableCat: (payload: { type: number; cat: string }) => void
+  @Mutation
+  setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
   private highQualitySongListArray: IPlayList[] = []
   private limit: number = 10
   private updateTime: number = 0
@@ -97,7 +100,13 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
   private total: number = 0
   private gotoDetail(item: IPlayList) {
     this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
-    this.$router.push({ name: 'r_song_list', params: { id: item.id } })
+    this.$router.push({
+      name: 'r_song_list',
+      params: { id: item.id },
+      query: {
+        subscribed: item['subscribed'] ? Y : N
+      }
+    })
   }
   private doPullup() {
     this.addHighQualityList()
@@ -112,18 +121,12 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
       if (this.hotTableCat !== '') {
         params['cat'] = this.hotTableCat
       }
-      this.service
-        .getHighQualityList(params)
-        .then((highQualityListResult: { playlists: IPlayList[] }) => {
-          let thisHighQualitySongListArray = this.highQualitySongListArray
-          let tempHighQualitySongListArray =
-            highQualityListResult['playlists'] && highQualityListResult['playlists']
-          this.updateTime =
-            tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
-          this.highQualitySongListArray = thisHighQualitySongListArray.concat(
-            tempHighQualitySongListArray
-          )
-        })
+      this.service.getHighQualityList(params).then((highQualityListResult: { playlists: IPlayList[] }) => {
+        let thisHighQualitySongListArray = this.highQualitySongListArray
+        let tempHighQualitySongListArray = highQualityListResult['playlists'] && highQualityListResult['playlists']
+        this.updateTime = tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
+        this.highQualitySongListArray = thisHighQualitySongListArray.concat(tempHighQualitySongListArray)
+      })
     }
   }
   private changeCat(name: string) {
@@ -139,16 +142,12 @@ export default class SongHighQualityTable extends mixins(CommonMixin) {
       if (this.hotTableCat !== '') {
         params['cat'] = this.hotTableCat
       }
-      this.service
-        .getHighQualityList(params)
-        .then((highQualityListResult: { playlists: IPlayList[]; total: number }) => {
-          this.total = highQualityListResult['total']
-          let tempHighQualitySongListArray =
-            highQualityListResult['playlists'] && highQualityListResult['playlists']
-          this.highQualitySongListArray = tempHighQualitySongListArray
-          this.updateTime =
-            tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
-        })
+      this.service.getHighQualityList(params).then((highQualityListResult: { playlists: IPlayList[]; total: number }) => {
+        this.total = highQualityListResult['total']
+        let tempHighQualitySongListArray = highQualityListResult['playlists'] && highQualityListResult['playlists']
+        this.highQualitySongListArray = tempHighQualitySongListArray
+        this.updateTime = tempHighQualitySongListArray[tempHighQualitySongListArray.length - 1]['updateTime']
+      })
     })
   }
   get getCatTitle() {
