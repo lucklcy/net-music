@@ -138,5 +138,11 @@ export default [
     subUrl: '/playlist/subscribe',
     name: 'doSonglistSubscribe',
     method: REQUEST_METHOD_MAP.GET
+  },
+  // 私人 FM( 需要登录 )   /personal_fm
+  {
+    subUrl: '/personal_fm',
+    name: 'getPersonalFm',
+    method: REQUEST_METHOD_MAP.GET
   }
 ]

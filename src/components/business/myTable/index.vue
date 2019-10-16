@@ -1,6 +1,16 @@
 <template>
   <div class="my-song-table">
     <TopBar back-route-name='r_home_recommand' title='我的歌单'></TopBar>
+    <div class="tab border-bottom-1px">
+      <ul class="container">
+        <li class="item">
+          <div class="pic fm-img" @click="doShowFmPlayer">
+            <SvgIcon icon-class="fm" class-name="fm"></SvgIcon>
+          </div>
+          <span class="name-title">私人FM</span>
+        </li>
+      </ul>
+    </div>
     <template v-if="mySongListArray && mySongListArray.length>0">
       <div class="label-title">我创建的歌单</div>
       <ul class="program-list">
@@ -52,6 +62,7 @@ import TopBar from '~/foundation/com/topBar.vue'
 import { Mutation, State } from 'vuex-class'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
 import { N, Y } from '@/common/const'
+import { isIos } from '@/utils/index.ts'
 
 @Component({
   components: { TopBar },
@@ -62,6 +73,8 @@ import { N, Y } from '@/common/const'
 export default class MyTable extends mixins(CommonMixin) {
   @State
   userInfo: UserInfo
+  @State
+  showFmPlayer: boolean
 
   private mySongListArray: IPlayList[] = []
 
@@ -69,6 +82,10 @@ export default class MyTable extends mixins(CommonMixin) {
   changeTableCat: (payload: { type: number; cat: string }) => void
   @Mutation
   setCurrentSongListBackgroundUrl: (backgroundUrl: string) => void
+  @Mutation
+  changeFmPlayStatus: (flag: boolean) => void
+  @Mutation
+  changeFullScreen: (flag: boolean) => void
 
   private gotoDetail(item: IPlayList) {
     this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
@@ -88,6 +105,11 @@ export default class MyTable extends mixins(CommonMixin) {
     })
   }
 
+  private doShowFmPlayer() {
+    !this.showFmPlayer && this.changeFmPlayStatus(true)
+    this.changeFullScreen(true)
+  }
+
   private onOpenPlayList(item: IPlayList) {}
 
   activated() {
@@ -103,6 +125,35 @@ export default class MyTable extends mixins(CommonMixin) {
 $baseAssets: '../../../assets';
 .my-song-table {
   @include setSize(100%, 100%);
+  .tab {
+    @include setSize(100%, 240px);
+    &.border-bottom-1px {
+      @include border-set(bottom, $border-color);
+    }
+    .container {
+      @include setFlexPos(row, flex-start, center);
+      height: 100%;
+      padding: 20px 80px;
+      .item {
+        height: 100%;
+        @include setFlexPos(column, space-around, center);
+        .pic {
+          @include setSize(120px, 120px);
+          border-radius: 50%;
+          background-color: $color-highlight-background;
+          @include setFlexPos(row, center, center);
+          &.fm-img .fm {
+            color: #fff;
+            font-size: 0.68rem;
+          }
+        }
+        .name-title {
+          font-size: 0.32rem;
+          color: #555;
+        }
+      }
+    }
+  }
   .label-title {
     padding: 28px 0 28px 50px;
     font-size: 0.42rem;

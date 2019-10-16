@@ -194,3 +194,16 @@ export interface IRoute {
   path: string
   [propName: string]: any
 }
+
+interface IAlbum {
+  picUrl: string
+  type: string
+  [propName: string]: any
+}
+export interface IFmPlayItm {
+  album: IAlbum
+  artists: IArtist
+  duration: number
+  name: string
+  id: number
+}

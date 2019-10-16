@@ -3,11 +3,13 @@
     <keep-alive>
       <router-view />
     </keep-alive>
-    <SongPlayer v-show="playList.length>0"></SongPlayer>
+    <FmPlayer v-if="playList.length===0 && showFmPlayer"></FmPlayer>
+    <SongPlayer v-if="playList.length>0 && showMainPlayer"></SongPlayer>
   </div>
 </template>
 <script lang="ts">
 import SongPlayer from '~/business/player/index.vue'
+import FmPlayer from '~/business/fmplayer/index.vue'
 
 import { mixins } from 'vue-class-component'
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
@@ -17,11 +19,17 @@ import { IPlaySong, IRoute } from '@/common/interface/base.ts'
 
 @Component({
   components: {
-    SongPlayer
+    SongPlayer,
+    FmPlayer
   }
 })
 export default class App extends mixins(CommonMixin) {
-  @State playList: IPlaySong[]
+  @State
+  playList: IPlaySong[]
+  @State
+  showFmPlayer: boolean
+  @State
+  showMainPlayer: boolean
 
   private transitionName: string = ''
 

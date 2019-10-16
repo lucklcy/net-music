@@ -57,21 +57,12 @@
             <span class="time time-r">{{format(currentSong.duration)}}</span>
           </div>
           <div class="operators">
-            <span class="play-mode" @click.stop="changeMode">
-              <SvgIcon :iconClass="modeIcon" :className="modeIcon"></SvgIcon>
-            </span>
-            <span class="play-prev" @click.stop="prev">
-              <SvgIcon :iconClass="'control-prev'" :className="'control-prev'"></SvgIcon>
-            </span>
             <span class="play-control" @click.stop="togglePlaying">
               <SvgIcon :iconClass="'control-pause'" :className="'control-pause'" v-if="playing"></SvgIcon>
               <SvgIcon :iconClass="'control-play'" :className="'control-play'" v-else></SvgIcon>
             </span>
             <span class="play-next" @click.stop="next">
               <SvgIcon :iconClass="'control-next'" :className="'control-next'"></SvgIcon>
-            </span>
-            <span class="play-list" @click.stop="changeShowSongList(true)">
-              <SvgIcon :iconClass="'control-play-list'" :className="'control-play-list'"></SvgIcon>
             </span>
           </div>
         </div>
@@ -85,8 +76,7 @@
         </div>
       </div>
     </transition>
-    <PlayingSongList class="song-list" v-show="showSongList"></PlayingSongList>
-    <audio id="song_audio" :src="songUrl" ref="audio" @timeupdate="updateTime" @ended="end"></audio>
+    <audio id="fm_song_audio" :src="songUrl" ref="fm_audio" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
 <script lang="ts">
@@ -96,11 +86,10 @@ import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import scroll from '~/foundation/base/scroll.vue'
 import ProgressBar from '~/foundation/base/progressBar.vue'
-import PlayingSongList from '~/business/player/list.vue'
 import { prefixStyle } from '@/utils/dom'
 import lyricParser from '@/utils/lyricParser'
 import { PLAYING_MODE } from '@/store/state.ts'
-import { IPlaySong, ITouch, ISongDetail, ISongLyric } from '@/common/interface/base.ts'
+import { IPlaySong, ITouch, ISongDetail, IPlayList, ISongLyric, ITrack, IArtist, IFmPlayItm } from '@/common/interface/base.ts'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
 
 const transform = prefixStyle('transform')
@@ -109,29 +98,28 @@ const transitionDuration = prefixStyle('transitionDuration')
 @Component({
   components: {
     scroll,
-    ProgressBar,
-    PlayingSongList
+    ProgressBar
   },
   directives: {
     'change-back-img': ChangeBackImg
   }
 })
-export default class SongMainPlayer extends mixins(CommonMixin) {
-  @State
-  currentSong: IPlaySong
+export default class FmSongMainPlayer extends mixins(CommonMixin) {
   @State
   playing: boolean
   @State
   fullScreen: boolean
   @State
-  playList: IPlaySong[]
-  @State
-  currentIndex: number
-  @State
   mode: string
   @State
   showSongList: boolean
+  @State
+  showFmPlayer: boolean
+  @State
+  likedSongList: number[]
 
+  private currentSong: IPlaySong = { id: 0, name: '', picUrl: '', songer: '', duration: 0, liked: false }
+  private playList: IPlaySong[] = []
   private songId: number = 0
   private middleLStyle: string = ''
   private lyricListStyle: string = ''
@@ -144,6 +132,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     left: 0
   }
   private currentShow: string = 'cd'
+  private currentIndex: number = 0
   private playingLyric: string = ''
   private currentLyric: lyricParser = new lyricParser('', () => {})
   private currentTime: number = 10
@@ -160,13 +149,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   @Mutation
   changeFullScreen: (flag: boolean) => void
   @Mutation
-  setCurrentIndex: (index: number) => void
-  @Mutation
   changePlayingMode: (mode: string) => void
-  @Mutation
-  changeShowSongList: (flag: boolean) => void
-  @Mutation
-  updateLikedSongList: (operate: { flag: string; songId: number }) => void
 
   get cdCls() {
     return this.playing ? 'play' : 'play pause'
@@ -178,49 +161,53 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   get miniIcon() {
     return this.playing ? 'icon-icon_palyer' : 'icon-paly'
   }
-  get disableCls() {
-    return this.songReady ? '' : 'disable'
-  }
   get percent() {
     return this.currentTime / this.currentSong.duration
   }
 
-  get modeIcon() {
-    let mode = this.mode
-    let returnModeClass = ''
-    switch (mode) {
-      case PLAYING_MODE.LOOP:
-        returnModeClass = 'control-cycle'
-        break
-      case PLAYING_MODE.RANDOM:
-        returnModeClass = 'control-random'
-        break
-      case PLAYING_MODE.CYCLE:
-        returnModeClass = 'control-cycle-one'
-        break
-      default:
-        returnModeClass = 'control-cycle'
-        break
-    }
-    return returnModeClass
-  }
-
-  private changeMode() {
-    let mode = this.mode
-    switch (mode) {
-      case PLAYING_MODE.LOOP:
-        this.changePlayingMode(PLAYING_MODE.RANDOM)
-        break
-      case PLAYING_MODE.RANDOM:
-        this.changePlayingMode(PLAYING_MODE.CYCLE)
-        break
-      case PLAYING_MODE.CYCLE:
-        this.changePlayingMode(PLAYING_MODE.LOOP)
-        break
-      default:
-        this.changePlayingMode(PLAYING_MODE.LOOP)
-        break
-    }
+  private getFmPlaylist() {
+    let { likedSongList, playList } = this
+    return new Promise((reslove, reject) => {
+      this.service
+        .getPersonalFm({})
+        .then((playListDetail: { data: IFmPlayItm[] }) => {
+          const tempPlaySongList: IPlaySong[] = []
+          if (playListDetail && playListDetail['data'] && playListDetail['data'].length > 0) {
+            playListDetail['data'].forEach((innerItem: IFmPlayItm) => {
+              const { id, name, duration, artists, album } = innerItem
+              const { picUrl } = album
+              let songer = ''
+              if (artists && artists.length > 0) {
+                songer = artists
+                  .map((artItem: IArtist) => {
+                    return artItem.name
+                  })
+                  .join('/')
+              }
+              let liked = false
+              if (likedSongList && likedSongList.length > 0) {
+                liked =
+                  likedSongList.findIndex(item => {
+                    return item === id
+                  }) > -1
+              }
+              tempPlaySongList.push({
+                id,
+                name,
+                picUrl,
+                songer,
+                duration: Math.floor((duration || 0) / 1000),
+                liked
+              })
+            })
+            this.playList = this.playList.concat(tempPlaySongList)
+            reslove()
+          }
+        })
+        .catch((err: Error) => {
+          reject(err)
+        })
+    })
   }
 
   private back() {
@@ -308,14 +295,14 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
     let { id, liked } = this.currentSong
     if (id) {
       this.service.doLikeSong({ id, like: !liked }).then((res: { code: number }) => {
-        this.updateLikedSongList({ flag: liked ? 'minus' : 'add', songId: id })
+        this.currentSong.liked = !liked
       })
     }
   }
 
   private onProgressBarChange(percent: number) {
     const currentTime = this.currentSong.duration * percent
-    let AudioElement = this.$refs.audio as HTMLAudioElement
+    let AudioElement = this.$refs.fm_audio as HTMLAudioElement
     AudioElement.currentTime = currentTime
     if (!this.playing) {
       this.togglePlaying()
@@ -345,7 +332,7 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
 
   private loop() {
     this.changePlayingStatus(false)
-    let audioElement = this.$refs.audio as HTMLAudioElement
+    let audioElement = this.$refs.fm_audio as HTMLAudioElement
     audioElement.currentTime = 0
     setTimeout(() => {
       this.changePlayingStatus(true)
@@ -354,55 +341,18 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
       }
     }, 200)
   }
-  private getRandomIndex() {
-    let playList = this.playList
-    let currentSong = this.currentSong
-    let randomNum = Math.floor(Math.random() * playList.length)
-    while (playList[randomNum].id === currentSong.id) {
-      randomNum = Math.floor(Math.random() * playList.length)
-    }
-    return randomNum
-  }
   // 下一首
   private next() {
     if (!this.songReady) {
       return
     }
-    if (this.mode === PLAYING_MODE.CYCLE || this.playList.length === 1) {
-      this.loop()
-      return
-    } else if (this.mode === PLAYING_MODE.RANDOM) {
-      let index = this.getRandomIndex()
-      this.changePlayingStatus(false)
-      this.setCurrentIndex(index)
-    } else {
-      let index = this.currentIndex + 1
-      if (index === this.playList.length) {
-        index = 0
-      }
-      this.changePlayingStatus(false)
-      this.setCurrentIndex(index)
+    this.changePlayingStatus(false)
+    let { playList, currentIndex } = this
+    ++currentIndex
+    if (currentIndex === playList.length - 1) {
+      this.getFmPlaylist()
     }
-  }
-  // 上一首
-  private prev() {
-    if (!this.songReady) {
-      return
-    }
-    if (this.mode === PLAYING_MODE.CYCLE || this.playList.length === 1) {
-      this.loop()
-    } else if (this.mode === PLAYING_MODE.RANDOM) {
-      let index = this.getRandomIndex()
-      this.changePlayingStatus(false)
-      this.setCurrentIndex(index)
-    } else {
-      let index = this.currentIndex - 1
-      if (index === -1) {
-        index = this.playList.length - 1
-      }
-      this.changePlayingStatus(false)
-      this.setCurrentIndex(index)
-    }
+    Object.assign(this, { currentSong: playList[currentIndex], currentIndex })
   }
 
   private format(interval: number) {
@@ -493,14 +443,22 @@ export default class SongMainPlayer extends mixins(CommonMixin) {
   }
   @Watch('playing')
   onChangePlayingStatus(playingFlagNew: boolean, playingFlagOld: boolean) {
-    const audio = this.$refs.audio as HTMLAudioElement
+    const audio = this.$refs.fm_audio as HTMLAudioElement
     this.$nextTick(() => {
       playingFlagNew ? audio.play() : audio.pause()
     })
   }
-
-  created() {
-    this.onCurrentSongChange(this.currentSong, { id: 0, name: '', picUrl: '', songer: '', duration: 0, liked: false })
+  @Watch('showFmPlayer')
+  onShowFmPlayerChange(showFlagNew: boolean, showFlagOld: boolean) {
+    let { playList } = this
+    if (showFlagNew && playList.length === 0) {
+      this.getFmPlaylist().then(() => {
+        this.currentSong = this.playList[this.currentIndex]
+      })
+    }
+  }
+  mounted() {
+    this.onShowFmPlayerChange(true, false)
   }
 }
 </script>

@@ -33,6 +33,9 @@ export interface State {
   iosAudioTrigger: boolean
   likedSongList: number[]
   changeSongLikeInfo: IPlaySong
+  // 是否展示私人FM播放器
+  showFmPlayer: boolean
+  showMainPlayer: boolean
 }
 
 // 初始状态
@@ -60,7 +63,10 @@ const stateData: State = {
   currentSongListBackgroundUrl: '',
   iosAudioTrigger: false,
   likedSongList: [],
-  changeSongLikeInfo: { id: 0, name: '', picUrl: '', songer: '', duration: 0, liked: false }
+  changeSongLikeInfo: { id: 0, name: '', picUrl: '', songer: '', duration: 0, liked: false },
+  // 是否展示私人FM播放器
+  showFmPlayer: false,
+  showMainPlayer: true
 }
 
 export default stateData

@@ -46,7 +46,7 @@ export default {
           liked
         })
       })
-      state.playList = tempPlaySongList
+      Object.assign(state, { playList: tempPlaySongList, showFmPlayer: false, showMainPlayer: true })
     }
   },
   setCurrentSong(state: State, song: number): void {
@@ -156,5 +156,19 @@ export default {
       state.playList = tempPlayList
     }
     state.likedSongList = likedSongList
+  },
+  changeFmPlayStatus(state: State, flag: boolean) {
+    if (flag) {
+      Object.assign(state, {
+        playing: false,
+        playList: [],
+        showFmPlayer: true,
+        showMainPlayer: false,
+        currentSong: { id: 0, name: '', picUrl: '', songer: '', duration: 0, liked: false },
+        currentSongListId: 0
+      })
+    } else {
+      Object.assign(state, { showFmPlayer: false, showMainPlayer: true })
+    }
   }
 }
