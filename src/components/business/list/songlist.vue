@@ -32,8 +32,7 @@
             </template>
           </span>
           <span class="author">
-            <i class="author-pic" :data-background-img='songList?songList.creator.avatarUrl:defaultSingerImg'
-              v-change-back-img></i>
+            <i class="author-pic" :data-background-img='songList?songList.creator.avatarUrl:defaultSingerImg' v-change-back-img></i>
             <span class="author-name">
               {{songList?songList.creator.nickname:'作者还没出来哦...'}}
             </span>
@@ -97,8 +96,7 @@
         </li>
         <li class="subscribers">
           <template v-for="(item,index) in songList.subscribers">
-            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}" :data-background-img='item.avatarUrl'
-              v-change-back-img v-if="index < 6">
+            <span :key="index" :style="{backgroundImage:'url('+item.avatarUrl+')'}" :data-background-img='item.avatarUrl' v-change-back-img v-if="index < 6">
             </span>
           </template>
           <i class="count">{{songList.subscribedCount}}人收藏</i>
@@ -193,9 +191,7 @@ export default class SongList extends mixins(CommonMixin) {
         audio.play()
         audio.pause()
         this.changeIosAudioTrigger(true)
-      } catch (error) {
-        console.log({ error })
-      }
+      } catch (error) {}
     }
   }
 

@@ -8,10 +8,7 @@
             <SvgIcon :iconClass="getIcon" :className="getIcon"></SvgIcon>
           </span>
           <span class="mode-lable" v-text="getModeString" @click="changeMode"></span>
-          <SvgIcon :iconClass="'player-list-subscribe'" :className="'player-list-subscribe'"></SvgIcon>
-          <span class="player-list-subscribe-lable">收藏全部</span>
         </span>
-        <SvgIcon :iconClass="'player-list-garbage'" :className="'player-list-garbage'"></SvgIcon>
       </div>
       <div class="list-wrapper" :data-list="playList">
         <ul>
@@ -56,16 +53,25 @@ import { IPlaySong } from '@/common/interface/base.ts'
   components: { Scroll }
 })
 export default class PlaySongList extends mixins(CommonMixin) {
-  @State mode: string
-  @State playList: IPlaySong[]
-  @State currentSong: IPlaySong
-  @State showSongList: boolean
-  @State playing: boolean
+  @State
+  mode: string
+  @State
+  playList: IPlaySong[]
+  @State
+  currentSong: IPlaySong
+  @State
+  showSongList: boolean
+  @State
+  playing: boolean
 
-  @Mutation changePlayingMode: (mode: string) => void
-  @Mutation setCurrentSong: (songId: number) => void
-  @Mutation changePlayingStatus: (flag: boolean) => void
-  @Mutation changeShowSongList: (flag: boolean) => void
+  @Mutation
+  changePlayingMode: (mode: string) => void
+  @Mutation
+  setCurrentSong: (songId: number) => void
+  @Mutation
+  changePlayingStatus: (flag: boolean) => void
+  @Mutation
+  changeShowSongList: (flag: boolean) => void
 
   get getIcon() {
     let mode = this.mode
@@ -140,10 +146,11 @@ export default class PlaySongList extends mixins(CommonMixin) {
     overflow: auto;
     .summary {
       @include setSize(100%, 100px);
-      @include setFlexPos(row, space-between, center);
+      @include setFlexPos(row, flex-end, center);
       &.border-bottom-1px {
         @include border-set(bottom, $border-color);
       }
+      padding: 0 40px;
       .mode {
         .svg-icon {
           &.control-cycle,

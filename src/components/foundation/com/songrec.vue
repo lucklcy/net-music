@@ -34,7 +34,7 @@ import CommonMixin from '@/mixins/comMix'
 import { State, Mutation } from 'vuex-class'
 import { ISongRecommandList, IPlaylist } from '@/common/interface/base.ts'
 import ChangeBackImg from '@/directives/changeBackImg.ts'
-import {Y,N} from '@/common/const'
+import { Y, N } from '@/common/const'
 
 const enum SongRecType {
   RECOMMAND = 'recommand'
@@ -81,12 +81,33 @@ export default class SongRec extends mixins(CommonMixin) {
     }
     return title
   }
+  private dealRecommendList(SongList: ISongRecommandList[]) {
+    if (SongList && SongList.length > 0) {
+      if (SongList.length <= 9) {
+        this.SongList = SongList.slice(0, 6)
+      } else if (SongList.length <= 12) {
+        this.SongList = SongList.slice(0, 9)
+      } else if (SongList.length <= 15) {
+        this.SongList = SongList.slice(0, 12)
+      } else if (SongList.length <= 18) {
+        this.SongList = SongList.slice(0, 15)
+      } else if (SongList.length <= 21) {
+        this.SongList = SongList.slice(0, 18)
+      } else if (SongList.length <= 24) {
+        this.SongList = SongList.slice(0, 21)
+      } else if (SongList.length <= 27) {
+        this.SongList = SongList.slice(0, 24)
+      } else if (SongList.length <= 30) {
+        this.SongList = SongList.slice(0, 27)
+      }
+    }
+  }
   created() {
     if (this.type === SongRecType.RECOMMAND) {
       this.service
         .getRecommendList({})
         .then((resultRecommendList: { recommend: ISongRecommandList[] }) => {
-          this.SongList = resultRecommendList && resultRecommendList['recommend']
+          this.dealRecommendList(resultRecommendList && resultRecommendList['recommend'])
         })
         .catch((err: Error) => {
           console.log(err)

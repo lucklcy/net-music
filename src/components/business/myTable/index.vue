@@ -9,6 +9,12 @@
           </div>
           <span class="name-title">私人FM</span>
         </li>
+        <li class="item">
+          <div class="pic recommend-img" @click="gotoRecommendSongList">
+            <SvgIcon icon-class="recommend" class-name="recommend"></SvgIcon>
+          </div>
+          <span class="name-title">推荐歌曲</span>
+        </li>
       </ul>
     </div>
     <template v-if="mySongListArray && mySongListArray.length>0">
@@ -75,6 +81,8 @@ export default class MyTable extends mixins(CommonMixin) {
   userInfo: UserInfo
   @State
   showFmPlayer: boolean
+  @State
+  iosAudioTrigger: boolean
 
   private mySongListArray: IPlayList[] = []
 
@@ -86,6 +94,8 @@ export default class MyTable extends mixins(CommonMixin) {
   changeFmPlayStatus: (flag: boolean) => void
   @Mutation
   changeFullScreen: (flag: boolean) => void
+  @Mutation
+  changeIosAudioTrigger: (flag: boolean) => void
 
   private gotoDetail(item: IPlayList) {
     this.setCurrentSongListBackgroundUrl(item.coverImgUrl)
@@ -98,6 +108,17 @@ export default class MyTable extends mixins(CommonMixin) {
     })
   }
 
+  private dealIosPlay() {
+    if (isIos && !this.iosAudioTrigger) {
+      const audio = document.querySelector('#song_audio') as HTMLAudioElement
+      try {
+        audio.play()
+        audio.pause()
+        this.changeIosAudioTrigger(true)
+      } catch (error) {}
+    }
+  }
+
   // 初始化时获取歌单数据
   private getMyTable() {
     this.service.getUserPlayList({ uid: this.userInfo.userId }).then((playListDetail: { playlist: IPlayList[] }) => {
@@ -106,11 +127,19 @@ export default class MyTable extends mixins(CommonMixin) {
   }
 
   private doShowFmPlayer() {
+    this.dealIosPlay()
     !this.showFmPlayer && this.changeFmPlayStatus(true)
     this.changeFullScreen(true)
   }
 
   private onOpenPlayList(item: IPlayList) {}
+
+  private gotoRecommendSongList() {
+    this.dealIosPlay()
+    this.$router.push({
+      name: 'r_recommend_song_list'
+    })
+  }
 
   activated() {
     this.getMyTable()
@@ -131,7 +160,7 @@ $baseAssets: '../../../assets';
       @include border-set(bottom, $border-color);
     }
     .container {
-      @include setFlexPos(row, flex-start, center);
+      @include setFlexPos(row, space-around, center);
       height: 100%;
       padding: 20px 80px;
       .item {
@@ -139,12 +168,17 @@ $baseAssets: '../../../assets';
         @include setFlexPos(column, space-around, center);
         .pic {
           @include setSize(120px, 120px);
+          cursor: pointer;
           border-radius: 50%;
           background-color: $color-highlight-background;
           @include setFlexPos(row, center, center);
           &.fm-img .fm {
             color: #fff;
             font-size: 0.68rem;
+          }
+          &.recommend-img .recommend {
+            color: #fff;
+            font-size: 0.76rem;
           }
         }
         .name-title {

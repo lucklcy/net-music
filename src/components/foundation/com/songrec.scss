@@ -13,7 +13,7 @@ $baseAssets: '../../../assets';
       flex-wrap: wrap;
       justify-content: space-between;
       .recommand-item {
-        @include setSize(30%, 460px);
+        @include setSize(32%, 460px);
         margin: 0 0 20px 0;
         .back-img {
           position: relative;

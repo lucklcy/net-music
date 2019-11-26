@@ -9,6 +9,7 @@ import SongTableHighQuality from '~/business/songTable/highQuality.vue'
 import TopList from '~/business/topList/index.vue'
 import TableCatChoose from '~/business/songTable/catChoose.vue'
 import SongTableOfMine from '~/business/myTable/index.vue'
+import RecommendSongList from '~/business/myTable/reSongList.vue'
 
 Vue.use(Router)
 
@@ -67,6 +68,14 @@ export default new Router({
         index: 2
       },
       component: SongTableOfMine
+    },
+    {
+      path: '/recommend/song/list',
+      name: 'r_recommend_song_list',
+      meta: {
+        index: 3
+      },
+      component: RecommendSongList
     },
     {
       path: '/table/cat-choose',

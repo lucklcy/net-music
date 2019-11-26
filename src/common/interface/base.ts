@@ -202,7 +202,8 @@ interface IAlbum {
 }
 export interface IFmPlayItm {
   album: IAlbum
-  artists: IArtist
+  artists: IArtist[]
+  artistes: string
   duration: number
   name: string
   id: number

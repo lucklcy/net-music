@@ -10,6 +10,7 @@ export default [
     name: 'getBanner',
     method: REQUEST_METHOD_MAP.GET
   },
+  // 获取每日推荐歌单
   {
     subUrl: '/recommend/resource',
     name: 'getRecommendList',
@@ -43,6 +44,12 @@ export default [
   {
     subUrl: '/personalized/djprogram',
     name: 'getDjprogram',
+    method: REQUEST_METHOD_MAP.GET
+  },
+  // 获取每日推荐歌曲
+  {
+    subUrl: '/recommend/songs',
+    name: 'getRecommandSongs',
     method: REQUEST_METHOD_MAP.GET
   },
   // 调用此接口 , 可获取推荐电台
