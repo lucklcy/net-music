@@ -57,7 +57,7 @@
       @include setFlexPos(row, space-between, flex-start);
       flex-wrap: wrap;
       .item {
-        width: 30.8vw;
+        width: 32%;
         .pic {
           @include setSize(100%, 340px);
           @include setBgImg('', center, center, cover, no-repeat);

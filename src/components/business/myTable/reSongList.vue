@@ -46,6 +46,8 @@ export default class RecommendSongList extends mixins(CommonMixin) {
   private title: string = ''
   @State
   iosAudioTrigger: boolean
+  @State
+  showFmPlayer: boolean
 
   @Mutation
   addIntoPlayList: (song: IPlaySong) => void
@@ -60,7 +62,7 @@ export default class RecommendSongList extends mixins(CommonMixin) {
   @Mutation
   changeFmPlayStatus: (flag: boolean) => void
   private onSongPlay(item: IFmPlayItm) {
-    this.changeFmPlayStatus(false)
+    this.showFmPlayer && this.changeFmPlayStatus(false)
     if (isIos && !this.iosAudioTrigger) {
       const audio = document.querySelector('#song_audio') as HTMLAudioElement
       try {
