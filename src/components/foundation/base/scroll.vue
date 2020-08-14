@@ -73,7 +73,7 @@ export default class Scroll extends Vue {
     this.scroll = new BScroll(<Element>this.$refs.wrapper, {
       probeType: this.probeType,
       click: this.click,
-      scrollX: this.scrollX
+      scrollX: this.scrollX,
     })
 
     // 是否派发滚动事件
@@ -94,14 +94,14 @@ export default class Scroll extends Vue {
     }
 
     // 是否派发顶部下拉事件，用于下拉刷新
-    if (this.pulldown) {
-      this.scroll.on('touchEnd', pos => {
-        // 下拉动作
-        if (pos.y > 50) {
-          this.$emit('pulldown')
-        }
-      })
-    }
+    // if (this.pulldown) {
+    //   this.scroll.on('touchEnd', pos => {
+    //     // 下拉动作
+    //     if (pos.y > 50) {
+    //       this.$emit('pulldown')
+    //     }
+    //   })
+    // }
 
     // 是否派发列表滚动开始的事件
     if (this.beforeScroll) {
@@ -132,13 +132,7 @@ export default class Scroll extends Vue {
     // 代理better-scroll的scrollTo方法
     this.scroll && this.scroll.scrollTo(x, y, time, easing)
   }
-  public scrollToElement(
-    el: HTMLElement | string,
-    time?: number,
-    offsetX?: number | boolean,
-    offsetY?: number | boolean,
-    easing?: object
-  ) {
+  public scrollToElement(el: HTMLElement | string, time?: number, offsetX?: number | boolean, offsetY?: number | boolean, easing?: object) {
     // 代理better-scroll的scrollToElement方法
     this.scroll && this.scroll.scrollToElement(el, time, offsetX, offsetY, easing)
   }
